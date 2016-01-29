@@ -1,0 +1,7 @@
+﻿* Remove Prism
+* Implement IModeView
+* Consider to creation of Model and Service
+* Comments
+* Unit Tests
+## Master-Detail UI
+* Set focus to the first invalidate element during saving.
