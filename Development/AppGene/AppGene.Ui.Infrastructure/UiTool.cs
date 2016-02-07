@@ -28,11 +28,6 @@ namespace AppGene.Ui.Infrastructure
             }
             catch (Exception ex)
             {
-                if (exceptionRaisingAction != null)
-                {
-                    exceptionRaisingAction.Invoke();
-                }
-
                 string errorMessage = "";
                 if (ex is DbEntityValidationException)
                 {
@@ -53,8 +48,12 @@ namespace AppGene.Ui.Infrastructure
 #endif
                 }
 
-                //MessageBox.Show("Error: " + errorMessage);
                 Debug.WriteLine("Error: " + errorMessage);
+                MessageBox.Show("Error: " + errorMessage);
+                if (exceptionRaisingAction != null)
+                {
+                    exceptionRaisingAction.Invoke();
+                }
                 return false;
             }
             finally

@@ -107,9 +107,7 @@
     </None>
     <AppDesigner Include="Properties\" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Views\" />
-  </ItemGroup>
+  <ItemGroup />
   <ItemGroup>
     <ProjectReference Include="..\AppGene.DB\AppGene.Db.csproj">
       <Project>{de76c8e2-6b00-40c4-ac30-5f8328d356d5}</Project>

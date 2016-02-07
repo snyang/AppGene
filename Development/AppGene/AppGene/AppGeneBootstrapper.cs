@@ -2,7 +2,6 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using Microsoft.Practices.Prism.Logging;
-using AppGene.Modules.Employee.Ui;
 
 namespace AppGene
 {

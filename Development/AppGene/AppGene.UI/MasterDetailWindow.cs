@@ -1,6 +1,7 @@
-﻿using AppGene.Db.Core;
-using AppGene.Modules.Employee.Ui.Services;
+﻿using AppGene.Business.Infrastructure;
+using AppGene.Db.Core;
 using AppGene.Ui.Infrastructure.Patterns;
+using AppGene.Ui.Patterns.MasterDetail;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -12,7 +13,7 @@ namespace AppGene.Ui
 {
     public class MasterDetailWindow<TModel, TDataService> : Window
        where TModel : IUiModel, new()
-       where TDataService : IDataService<TModel>, new()
+       where TDataService : ICommonBusinessService<TModel>, new()
     {
         public MasterDetailWindow()
         {

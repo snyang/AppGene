@@ -7,7 +7,8 @@ using System.Threading.Tasks;
 
 namespace AppGene.Db.Core
 {
-    internal class Memento<T>
+    //http://www.codeproject.com/Articles/35066/Generic-implementation-of-IEditableObject-via-Type
+    public class Memento<T>
     {
         public Dictionary<PropertyInfo, object> StoredProperties { get; set; } = new Dictionary<PropertyInfo, object>();
 

@@ -1,4 +1,6 @@
-﻿using AppGene.Modules.Employee.Ui.Services;
+﻿using AppGene.Business.Sample;
+using AppGene.Db.Core;
+using AppGene.Model.Entities;
 using AppGene.Ui;
 using System;
 using System.Collections.Generic;
@@ -41,7 +43,10 @@ namespace AppGene
 
         private void employeeButton_Click(object sender, RoutedEventArgs e)
         {
-            var employee = new MasterDetailWindow<Db.Model.Employee, EmployeeService>();
+            BaseUiModel<Employee> test = new BaseUiModel<Employee>(null);
+            
+            //test.ValidateColumn
+            var employee = new MasterDetailWindow<Employee, EmployeeService>();
             employee.ShowDialog();
         }
     }

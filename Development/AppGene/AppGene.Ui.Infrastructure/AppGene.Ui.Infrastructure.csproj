@@ -52,12 +52,8 @@
     <Compile Include="DelegateParameterCommand.cs" />
     <Compile Include="DependencyObjectValidationExtension.cs" />
     <Compile Include="EnumToBooleanConverter.cs" />
-    <Compile Include="Patterns\MasterDetailController.cs" />
-    <Compile Include="Patterns\MasterDetailViewAdapter.cs" />
-    <Compile Include="Patterns\MasterDetailViewModel.cs" />
     <Compile Include="Patterns\ViewModelBase.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Services\IDataService.cs" />
     <Compile Include="UiTool.cs" />
   </ItemGroup>
   <ItemGroup>

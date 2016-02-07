@@ -138,6 +138,7 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
+    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -149,13 +150,21 @@
     <None Include="App.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\AppGene.Business.Infrastructure\AppGene.Business.Infrastructure.csproj">
+      <Project>{85fb4980-393b-4659-a962-46e75fa7feb6}</Project>
+      <Name>AppGene.Business.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Business.Sample\AppGene.Business.Sample.csproj">
+      <Project>{7fcb9a2e-f3d5-4766-8d94-8afdf9ea9c56}</Project>
+      <Name>AppGene.Business.Sample</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppGene.DB\AppGene.Db.csproj">
       <Project>{de76c8e2-6b00-40c4-ac30-5f8328d356d5}</Project>
       <Name>AppGene.Db</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Modules.Employee.Ui\AppGene.Modules.Employee.Ui.csproj">
-      <Project>{b1054b5b-b3b0-4c32-9d40-9639a0f19fc5}</Project>
-      <Name>AppGene.Modules.Employee.Ui</Name>
+    <ProjectReference Include="..\AppGene.Model.Entities.Sample\AppGene.Model.Entities.Sample.csproj">
+      <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>
+      <Name>AppGene.Model.Entities.Sample</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
       <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>

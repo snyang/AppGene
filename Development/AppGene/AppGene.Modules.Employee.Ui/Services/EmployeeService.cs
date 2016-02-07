@@ -2,29 +2,29 @@
 
 namespace AppGene.Modules.Employee.Ui.Services
 {
-    public class EmployeeService : IDataService<Db.Model.Employee>
+    public class EmployeeService : IBusinessService<Db.Model.Employee>
     {
         public EmployeeService()
-            {
-            }
+        {
+        }
         public void Delete(IList<Db.Model.Employee> employees)
         {
-            AppGene.Db.EmployeeDbController.Delete(employees);
+            new AppGene.Db.EmployeeDbService().Delete(employees);
         }
 
         public void Insert(Db.Model.Employee employee)
         {
-            AppGene.Db.EmployeeDbController.Insert(employee);
+            new AppGene.Db.EmployeeDbService().Insert(employee);
         }
 
         public IList<Db.Model.Employee> Query()
         {
-            return AppGene.Db.EmployeeDbController.Query();
+            return new AppGene.Db.EmployeeDbService().Query();
         }
 
         public void Update(Db.Model.Employee employee)
         {
-            AppGene.Db.EmployeeDbController.Update(employee);
+            new AppGene.Db.EmployeeDbService().Update(employee);
         }
     }
 }

@@ -54,19 +54,17 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\BaseUiModel.cs" />
+    <Compile Include="Core\InternalPropertyDescriptorFactory.cs" />
     <Compile Include="Core\IUiModel.cs" />
     <Compile Include="Core\Memento.cs" />
+    <Compile Include="Core\PropertyDescriptorFactory.cs" />
+    <Compile Include="Core\UiModelView.cs" />
+    <Compile Include="Core\UiModelViewColumn.cs" />
     <Compile Include="Core\ValidationExtension.cs" />
-    <Compile Include="EmployeeDbController.cs" />
-    <Compile Include="Model\AppGeneDbContext.cs" />
-    <Compile Include="Model\AppGeneDbContextInitializer.cs" />
-    <Compile Include="Model\Employee.cs" />
-    <Compile Include="Model\Employee.Ex.cs" />
-    <Compile Include="Model\Genders.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="App.config" />
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
