@@ -29,7 +29,7 @@ namespace AppGene
         {
             var factory = base.ConfigureDefaultRegionBehaviors();
 
-            //TODO add it later
+            //TODO: remove PRISM
             //factory.AddIfMissing("AutoPopulateExportedViewsBehavior", typeof(AutoPopulateExportedViewsBehavior));
 
             return factory;
