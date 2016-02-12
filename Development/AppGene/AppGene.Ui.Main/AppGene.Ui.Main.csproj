@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{7D06F608-881E-445A-8DA2-386FB921B105}</ProjectGuid>
+    <OutputType>library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>AppGene.Ui.Main</RootNamespace>
+    <AssemblyName>AppGene.Ui.Main</AssemblyName>
+    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="System.Net.Http" />
+    <Reference Include="System.Xaml">
+      <RequiredTargetFramework>4.0</RequiredTargetFramework>
+    </Reference>
+    <Reference Include="WindowsBase" />
+    <Reference Include="PresentationCore" />
+    <Reference Include="PresentationFramework" />
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MasterDetailWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Compile Include="MasterDetailWindow.xaml.cs">
+      <DependentUpon>MasterDetailWindow.xaml</DependentUpon>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Properties\AssemblyInfo.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Properties\Resources.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>Resources.resx</DependentUpon>
+    </Compile>
+    <Compile Include="Properties\Settings.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DependentUpon>Settings.settings</DependentUpon>
+      <DesignTimeSharedInput>True</DesignTimeSharedInput>
+    </Compile>
+    <EmbeddedResource Include="Properties\Resources.resx">
+      <Generator>ResXFileCodeGenerator</Generator>
+      <LastGenOutput>Resources.Designer.cs</LastGenOutput>
+    </EmbeddedResource>
+    <None Include="Properties\Settings.settings">
+      <Generator>SettingsSingleFileGenerator</Generator>
+      <LastGenOutput>Settings.Designer.cs</LastGenOutput>
+    </None>
+    <AppDesigner Include="Properties\" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AppGene.Business.Infrastructure\AppGene.Business.Infrastructure.csproj">
+      <Project>{85fb4980-393b-4659-a962-46e75fa7feb6}</Project>
+      <Name>AppGene.Business.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
+      <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
+      <Name>AppGene.Model.Core</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Model.DataAnnotations\AppGene.Model.DataAnnotations.csproj">
+      <Project>{1769ee6c-40a5-4ce7-b33c-be809efbac82}</Project>
+      <Name>AppGene.Model.DataAnnotations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Model.EntityPerception\AppGene.Model.EntityPerception.csproj">
+      <Project>{b7ffe2fd-a635-4cff-ab20-aee5aa9202b4}</Project>
+      <Name>AppGene.Model.EntityPerception</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
+      <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>
+      <Name>AppGene.Ui.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Ui.Patterns.GenericMvvmBusiness\AppGene.Ui.Patterns.GenericMvvmBusiness.csproj">
+      <Project>{8860b441-50ac-4289-8cf4-609f9fee6f95}</Project>
+      <Name>AppGene.Ui.Patterns.GenericMvvmBusiness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Ui.Patterns.MasterDetail\AppGene.Ui.Patterns.MasterDetail.csproj">
+      <Project>{0b5927bb-8003-458c-a373-fded1f1032f3}</Project>
+      <Name>AppGene.Ui.Patterns.MasterDetail</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

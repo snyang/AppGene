@@ -35,15 +35,16 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="IPattern.cs" />
-    <Compile Include="Layers\IBusinessLogicalService.cs" />
-    <Compile Include="Layers\IDataAccessService.cs" />
-    <Compile Include="Mvvm\IModel.cs" />
-    <Compile Include="Mvvm\IMvvmPattern.cs" />
-    <Compile Include="Mvvm\IView.cs" />
-    <Compile Include="Mvvm\IViewController.cs" />
-    <Compile Include="Mvvm\IViewModel.cs" />
+    <Compile Include="IDesignPattern.cs" />
+    <Compile Include="Layers\IBusinessLayerService.cs" />
+    <Compile Include="Layers\IDataLayerService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
+      <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
+      <Name>AppGene.Model.Core</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

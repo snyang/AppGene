@@ -10,7 +10,6 @@ namespace AppGene
         protected override void ConfigureAggregateCatalog()
         {
             this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(AppGeneBootstrapper).Assembly));
-            this.AggregateCatalog.Catalogs.Add(new AssemblyCatalog(typeof(Ui.UiModule).Assembly));
         }
 
         protected override void ConfigureContainer()

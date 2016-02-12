@@ -1,68 +1,33 @@
-﻿using System;
+﻿using AppGene.Model.Entities.Sample;
+using System;
+using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppGene.Model.Entities
 {
-    public partial class Employee
+    public class Employee
     {
         public int EmployeeID { get; set; }
 
-        int employeeCode;
         [Index(IsUnique = true)]
-        public int EmployeeCode
-        {
-            get { return employeeCode; }
-            set
-            {
-                //HandleSet(() =>
-                //{
-                    this.employeeCode = value;
-                //});
-            }
-        }
+        [DisplayFormat(DataFormatString = "0000")]
+        public int EmployeeCode { get; set; }
 
-        string employeeName;
         [StringLength(50, ErrorMessage = "Employee name is too long.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Employee name is required")]
-        public string EmployeeName
-        {
-            get { return employeeName; }
-            set
-            {
-                //HandleSet(() =>
-                //{
-                    this.employeeName = value;
-                //});
-            }
-        }
+        [Display(ResourceType = typeof(EntityResource),
+            Name = "Employee_EmployeeName_Name",
+            ShortName = "Employee_EmployeeName_ShortName",
+            Description = "Employee_EmployeeName_Description",
+            Prompt = "Employee_EmployeeName_Prompt")]
+        [DefaultValue("New Employee")]
+        public string EmployeeName { get; set; }
 
-        Genders gender;
-        [Range(0, 1, ErrorMessage ="Gender must be female or male.")]
-        public Genders Gender
-        {
-            get { return gender; }
-            set
-            {
-                //HandleSet(()=>
-                //{ 
-                    this.gender = value;
-                //}, "Gender");
-            }
-        }
+        [Range(0, 1, ErrorMessage = "Gender must be female or male.")]
+        public Genders Gender { get; set; }
 
-        DateTime birthday;
         [Column(TypeName = "date")]
-        public DateTime Birthday
-        {
-            get { return birthday; }
-            set
-            {
-                //HandleSet(() =>
-                //{
-                    this.birthday = value;
-                //}, "Birthday");
-            }
-        }
+        public DateTime Birthday { get; set; }
     }
 }

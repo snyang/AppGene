@@ -145,17 +145,17 @@
       <Project>{85fb4980-393b-4659-a962-46e75fa7feb6}</Project>
       <Name>AppGene.Business.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.DB\AppGene.Db.csproj">
-      <Project>{de76c8e2-6b00-40c4-ac30-5f8328d356d5}</Project>
-      <Name>AppGene.Db</Name>
+    <ProjectReference Include="..\AppGene.Model.Patterns.Core\AppGene.Model.Patterns.Core.csproj">
+      <Project>{5665ead1-0cd0-49a8-b75c-e486aa58f08e}</Project>
+      <Name>AppGene.Model.Patterns.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
       <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>
       <Name>AppGene.Ui.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Ui.Patterns.MasterDetail.Core\AppGene.Ui.Patterns.MasterDetail.Core.csproj">
-      <Project>{a8827d9b-e397-4732-b02f-5fb49a14f6be}</Project>
-      <Name>AppGene.Ui.Patterns.MasterDetail.Core</Name>
+    <ProjectReference Include="..\AppGene.Ui.Patterns.GenericMvvmBusiness\AppGene.Ui.Patterns.GenericMvvmBusiness.csproj">
+      <Project>{8860b441-50ac-4289-8cf4-609f9fee6f95}</Project>
+      <Name>AppGene.Ui.Patterns.GenericMvvmBusiness</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Ui.Patterns.MasterDetail\AppGene.Ui.Patterns.MasterDetail.csproj">
       <Project>{0b5927bb-8003-458c-a373-fded1f1032f3}</Project>

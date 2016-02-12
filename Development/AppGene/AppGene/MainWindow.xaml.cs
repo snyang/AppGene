@@ -1,7 +1,7 @@
 ﻿using AppGene.Business.Sample;
-using AppGene.Db.Core;
 using AppGene.Model.Entities;
-using AppGene.Ui;
+using AppGene.Ui.Main;
+using AppGene.Ui.Patterns.MasterDetail;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.Composition;
@@ -43,10 +43,7 @@ namespace AppGene
 
         private void employeeButton_Click(object sender, RoutedEventArgs e)
         {
-            BaseUiModel<Employee> test = new BaseUiModel<Employee>(null);
-            
-            //test.ValidateColumn
-            var employee = new MasterDetailWindow<Employee, EmployeeService>();
+            var employee = new MasterDetailWindow<Employee, MasterDetailModel<Employee>, CommonCrudBusinessService<Employee>>();
             employee.ShowDialog();
         }
     }

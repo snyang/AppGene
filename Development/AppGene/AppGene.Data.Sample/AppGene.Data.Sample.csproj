@@ -45,7 +45,7 @@
   <ItemGroup>
     <Compile Include="AppGeneDbContext.cs" />
     <Compile Include="AppGeneDbContextInitializer.cs" />
-    <Compile Include="EmployeeDataService.cs" />
+    <Compile Include="CommonCrudDataService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -53,13 +53,17 @@
       <Project>{8eba308d-f06a-41f9-9b27-146813d4b21d}</Project>
       <Name>AppGene.Data.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.DB\AppGene.Db.csproj">
-      <Project>{de76c8e2-6b00-40c4-ac30-5f8328d356d5}</Project>
-      <Name>AppGene.Db</Name>
+    <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
+      <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
+      <Name>AppGene.Model.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Model.Entities.Sample\AppGene.Model.Entities.Sample.csproj">
       <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>
       <Name>AppGene.Model.Entities.Sample</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Model.EntityPerception\AppGene.Model.EntityPerception.csproj">
+      <Project>{b7ffe2fd-a635-4cff-ab20-aee5aa9202b4}</Project>
+      <Name>AppGene.Model.EntityPerception</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

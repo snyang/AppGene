@@ -8,7 +8,8 @@ using System.Threading.Tasks;
 
 namespace AppGene.Data.Sample
 {
-    public class AppGeneDbContextInitializer :  DropCreateDatabaseAlways<AppGeneDbContext>
+    public class AppGeneDbContextInitializer : DropCreateDatabaseIfModelChanges<AppGeneDbContext>
+        //DropCreateDatabaseAlways<AppGeneDbContext>
     {
         protected override void Seed(AppGeneDbContext context)
         {

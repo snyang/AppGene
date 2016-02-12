@@ -138,7 +138,6 @@
       <Generator>PublicResXFileCodeGenerator</Generator>
       <LastGenOutput>Resources.Designer.cs</LastGenOutput>
     </EmbeddedResource>
-    <None Include="ClassDiagram1.cd" />
     <None Include="packages.config" />
     <None Include="Properties\Settings.settings">
       <Generator>SettingsSingleFileGenerator</Generator>
@@ -158,21 +157,33 @@
       <Project>{7fcb9a2e-f3d5-4766-8d94-8afdf9ea9c56}</Project>
       <Name>AppGene.Business.Sample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.DB\AppGene.Db.csproj">
-      <Project>{de76c8e2-6b00-40c4-ac30-5f8328d356d5}</Project>
-      <Name>AppGene.Db</Name>
+    <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
+      <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
+      <Name>AppGene.Model.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Model.Entities.Sample\AppGene.Model.Entities.Sample.csproj">
       <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>
       <Name>AppGene.Model.Entities.Sample</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AppGene.Model.Patterns.Core\AppGene.Model.Patterns.Core.csproj">
+      <Project>{5665ead1-0cd0-49a8-b75c-e486aa58f08e}</Project>
+      <Name>AppGene.Model.Patterns.Core</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
       <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>
       <Name>AppGene.Ui.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.UI\AppGene.Ui.csproj">
-      <Project>{16c98d57-abeb-46dc-a152-2b591754a7e2}</Project>
-      <Name>AppGene.Ui</Name>
+    <ProjectReference Include="..\AppGene.Ui.Main\AppGene.Ui.Main.csproj">
+      <Project>{7d06f608-881e-445a-8da2-386fb921b105}</Project>
+      <Name>AppGene.Ui.Main</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Ui.Patterns.GenericMvvmBusiness\AppGene.Ui.Patterns.GenericMvvmBusiness.csproj">
+      <Project>{8860b441-50ac-4289-8cf4-609f9fee6f95}</Project>
+      <Name>AppGene.Ui.Patterns.GenericMvvmBusiness</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Ui.Patterns.MasterDetail\AppGene.Ui.Patterns.MasterDetail.csproj">
+      <Project>{0b5927bb-8003-458c-a373-fded1f1032f3}</Project>
+      <Name>AppGene.Ui.Patterns.MasterDetail</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

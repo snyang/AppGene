@@ -44,8 +44,11 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="IMasterDetailModel.cs" />
     <Compile Include="MasterDetailController.cs" />
-    <Compile Include="MasterDetailViewAdapter.cs" />
+    <Compile Include="MasterDetailModel.cs" />
+    <Compile Include="MasterDetailPattern.cs" />
+    <Compile Include="MasterDetailViewConstructor.cs" />
     <Compile Include="MasterDetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -54,13 +57,13 @@
       <Project>{85fb4980-393b-4659-a962-46e75fa7feb6}</Project>
       <Name>AppGene.Business.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.DB\AppGene.Db.csproj">
-      <Project>{de76c8e2-6b00-40c4-ac30-5f8328d356d5}</Project>
-      <Name>AppGene.Db</Name>
+    <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
+      <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
+      <Name>AppGene.Model.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Model.Entities.Sample\AppGene.Model.Entities.Sample.csproj">
-      <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>
-      <Name>AppGene.Model.Entities.Sample</Name>
+    <ProjectReference Include="..\AppGene.Model.EntityPerception\AppGene.Model.EntityPerception.csproj">
+      <Project>{b7ffe2fd-a635-4cff-ab20-aee5aa9202b4}</Project>
+      <Name>AppGene.Model.EntityPerception</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Model.Patterns.Core\AppGene.Model.Patterns.Core.csproj">
       <Project>{5665ead1-0cd0-49a8-b75c-e486aa58f08e}</Project>
@@ -69,6 +72,10 @@
     <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
       <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>
       <Name>AppGene.Ui.Infrastructure</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Ui.Patterns.GenericMvvmBusiness\AppGene.Ui.Patterns.GenericMvvmBusiness.csproj">
+      <Project>{8860b441-50ac-4289-8cf4-609f9fee6f95}</Project>
+      <Name>AppGene.Ui.Patterns.GenericMvvmBusiness</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

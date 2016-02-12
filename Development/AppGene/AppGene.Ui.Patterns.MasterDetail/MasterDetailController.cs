@@ -1,5 +1,4 @@
 ﻿using AppGene.Business.Infrastructure;
-using AppGene.Db.Core;
 using AppGene.Ui.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -14,9 +13,10 @@ namespace AppGene.Ui.Patterns.MasterDetail
     /// <summary>
     /// The class is used to as a controller to control MasterDetailView operations
     /// </summary>
-    public class MasterDetailController<TModel, TDataService>
-        where TModel : IUiModel, new()
-        where TDataService: ICommonBusinessService<TModel>, new()
+    public class MasterDetailController<TEntity, TModel, TBunsinessService>
+        where TEntity : class, new()
+        where TModel : IMasterDetailModel<TEntity>, new()
+        where TBunsinessService: AbstractCrudBusinessService<TEntity>, new()
         
     {
         private int currentIndex;
@@ -41,11 +41,11 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         #endregion
 
-        public MasterDetailViewModel<TModel> ViewModel
+        public MasterDetailViewModel<TEntity, TModel> ViewModel
         {
             get
             {
-                return this.Owner.DataContext as MasterDetailViewModel<TModel>;
+                return this.Owner.DataContext as MasterDetailViewModel<TEntity, TModel>;
             }
             set
             {
@@ -55,7 +55,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         public void Initialize()
         {
-            ViewModel = new MasterDetailViewModel<TModel>(new TDataService());
+            ViewModel = new MasterDetailViewModel<TEntity, TModel>(new TBunsinessService());
             initOwner();
             HandleEvent();
             BindingData();
@@ -108,10 +108,10 @@ namespace AppGene.Ui.Patterns.MasterDetail
         public void GetData()
         {
             ViewModel.GetData();
-            ViewModel.CollectionView.CurrentChanged += EmployeeList_CurrentChanged;
+            ViewModel.CollectionView.CurrentChanged += CollectionView_CurrentChanged;
         }
 
-        private void EmployeeList_CurrentChanged(object sender, EventArgs e)
+        private void CollectionView_CurrentChanged(object sender, EventArgs e)
         {
             newCommand.RaiseCanExecuteChanged();
             deleteCommand.RaiseCanExecuteChanged();
@@ -193,8 +193,8 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
 
             int selectedIndex = DataGridMain.SelectedIndex;
-            IList<TModel> employees = ViewModel.Delete(DataGridMain.SelectedItems);
-            foreach (var item in employees)
+            IList<TModel> models = ViewModel.Delete(DataGridMain.SelectedItems);
+            foreach (var item in models)
             {
                 ViewModel.CollectionView.Remove(item);
             }
@@ -218,7 +218,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 e.Handled = true;
                 string confirmDeleteMessage = grid.SelectedItems.Count > 1 
                     ? "Would you like to delete selected items?"
-                    : String.Format("Would you like to delete '{0}'?", (grid.SelectedItem as IUiModel).ToDisplayString());
+                    : String.Format("Would you like to delete '{0}'?", (grid.SelectedItem as IMasterDetailModel<TEntity>).ToDisplayString());
                 
                 if (MessageBox.Show(confirmDeleteMessage, 
                     "Confirm Delete", 
@@ -245,10 +245,10 @@ namespace AppGene.Ui.Patterns.MasterDetail
         {
             UiTool.HandleUiEvent(() =>
             {
-                TModel employee = this.ViewModel.LastItem;
-                if (employee != null && (employee as IUiModel).IsChanged)
+                TModel model = this.ViewModel.LastItem;
+                if (model != null && (model as IMasterDetailModel<TEntity>).IsChanged)
                 {
-                    ViewModel.DataSave(employee);
+                    ViewModel.DataSave(model);
                 }
 
                 this.currentIndex = DataGridMain.SelectedIndex;
@@ -275,10 +275,13 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         private void DataGrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
         {
-            if (e.NewItem == null)
-            {
-                e.NewItem = SetNewItem(new TModel());
-            }
+            UiTool.HandleUiEvent(() =>
+           {
+               if (e.NewItem == null)
+               {
+                   e.NewItem = SetNewItem(new TModel());
+               }
+           });
         }
 
         private static TModel SetNewItem(TModel item)

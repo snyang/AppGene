@@ -136,6 +136,7 @@ namespace AppGene.Ui.Infrastructure
             Label labelElement = new Label
             {
                 Name = "label" + name,
+                //TODO: localization ":"
                 Content = label + ":"
             };
             Grid.SetRow(labelElement, row);
