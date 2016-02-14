@@ -18,7 +18,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             (this as IMasterDetailModel<TEntity>).IsNew = true;
             (this as IMasterDetailModel<TEntity>).SetDefault();
         }
-               
+
         bool IMasterDetailModel<TEntity>.IsNew
         {
             get; set;

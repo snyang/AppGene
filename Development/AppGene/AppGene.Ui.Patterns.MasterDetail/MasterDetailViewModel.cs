@@ -12,7 +12,6 @@ using System.Windows.Threading;
 
 namespace AppGene.Ui.Patterns.MasterDetail
 {
-
     public class MasterDetailViewModel<TEntity, TModel> : BaseViewModel
         where TEntity : class, new()
         where TModel : IMasterDetailModel<TEntity>, new()
@@ -23,7 +22,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         private MasterDetailEntityPerception entityPerception = new MasterDetailEntityPerception(typeof(TEntity));
         private string filterString;
 
-        DispatcherTimer filterTimer;
+        private DispatcherTimer filterTimer;
 
         public MasterDetailViewModel(AbstractCrudBusinessService<TEntity> service)
         {
@@ -101,6 +100,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 }
             }
         }
+
         public TModel LastItem { get; private set; }
 
         public void DataSave(TModel item)
@@ -140,8 +140,8 @@ namespace AppGene.Ui.Patterns.MasterDetail
                     models.Add(item);
                 }
             }
-            if (entities.Count>0)
-            { 
+            if (entities.Count > 0)
+            {
                 this.businessService.Delete(entities);
             }
             return models;
@@ -161,6 +161,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
             this.CollectionView = new ListCollectionView(models);
         }
+
         private TModel As(object obj)
         {
             if (obj is TModel) return (TModel)obj;
@@ -200,6 +201,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             EntitySortComparer<TEntity> comparer = new EntitySortComparer<TEntity>(entityPerception.SortProperties);
             (entities as List<TEntity>).Sort(comparer);
         }
+
         private void StartFilter()
         {
             lock (this)
@@ -218,6 +220,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 }
             }
         }
+
         private void StopFilter()
         {
             lock (this)

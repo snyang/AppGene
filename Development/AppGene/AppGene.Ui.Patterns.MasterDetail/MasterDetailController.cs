@@ -1,5 +1,4 @@
-﻿using AppGene.Business.Infrastructure;
-using AppGene.Ui.Infrastructure;
+﻿using AppGene.Ui.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -15,7 +14,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
     /// </summary>
     public class MasterDetailController<TEntity, TModel>
         where TEntity : class, new()
-        where TModel : IMasterDetailModel<TEntity>, new()        
+        where TModel : IMasterDetailModel<TEntity>, new()
     {
         private int currentIndex;
         private readonly DelegateCommand deleteCommand;
@@ -37,7 +36,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         public Button ButtonOk { get; set; }
         public Button ButtonRefresh { get; set; }
 
-        #endregion
+        #endregion Properties
 
         public MasterDetailViewModel<TEntity, TModel> ViewModel
         {
@@ -117,6 +116,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             if (item == null) return;
             ((IEditableObject)item).BeginEdit();
         }
+
         public void DoCancel()
         {
             if (ViewModel.CurrentItem == null) return;
@@ -157,7 +157,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         {
             return !ViewModel.IsChanged;
         }
-        
+
         private void DoNew()
         {
             TModel item = (TModel)ViewModel.CollectionView.AddNew();
@@ -174,6 +174,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
             return true;
         }
+
         private void DoDelete()
         {
             UiTool.HandleUiEvent(() =>
@@ -213,14 +214,14 @@ namespace AppGene.Ui.Patterns.MasterDetail
             if (e.Command == DataGrid.DeleteCommand)
             {
                 e.Handled = true;
-                string confirmDeleteMessage = grid.SelectedItems.Count > 1 
+                string confirmDeleteMessage = grid.SelectedItems.Count > 1
                     ? "Would you like to delete selected items?"
                     : String.Format("Would you like to delete '{0}'?", (grid.SelectedItem as IMasterDetailModel<TEntity>).ToDisplayString());
-                
-                if (MessageBox.Show(confirmDeleteMessage, 
-                    "Confirm Delete", 
-                    MessageBoxButton.YesNo, 
-                    MessageBoxImage.Question, 
+
+                if (MessageBox.Show(confirmDeleteMessage,
+                    "Confirm Delete",
+                    MessageBoxButton.YesNo,
+                    MessageBoxImage.Question,
                     MessageBoxResult.No) != MessageBoxResult.Yes)
                 {
                     return;
@@ -234,7 +235,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 {
                     e.Handled = true;
                 });
-
             }
         }
 

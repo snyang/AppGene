@@ -15,7 +15,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         private const string FrameworkElementErrorStyle = "FrameworkElementErrorStyle";
 
-        #endregion
+        #endregion Constants fields
 
         public MasterDetailViewConstructor(MasterDetailPatternContext<TEntity, TModel> patternContext, ContentControl owner)
         {
@@ -36,7 +36,8 @@ namespace AppGene.Ui.Patterns.MasterDetail
         private Grid GridContainer { get; set; }
         private Grid GridDetail { get; set; }
         private ContentControl Owner { get; set; }
-        #endregion
+
+        #endregion Properties
 
         public void Initialize()
         {
@@ -173,6 +174,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
             Controller.Initialize();
         }
+
         private void InitDataGrid()
         {
             try

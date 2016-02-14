@@ -57,6 +57,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         }
 
         public Type EntityType { get; set; }
+
         public IList<PropertyInfo> FilterProperties
         {
             get
@@ -73,6 +74,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 return filterProperties;
             }
         }
+
         public IList<EditPropertyInfo> GridProperties
         {
             get

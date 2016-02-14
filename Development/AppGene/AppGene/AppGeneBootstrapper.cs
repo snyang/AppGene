@@ -1,8 +1,8 @@
-﻿using Microsoft.Practices.Prism.MefExtensions;
+﻿using AppGene.Ui.Main;
+using Microsoft.Practices.Prism.Logging;
+using Microsoft.Practices.Prism.MefExtensions;
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
-using Microsoft.Practices.Prism.Logging;
-using AppGene.Ui.Main;
 
 namespace AppGene
 {
