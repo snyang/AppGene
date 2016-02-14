@@ -81,7 +81,6 @@ namespace AppGene.Ui.Infrastructure
                     column.Width = GridLength.Auto;
                 }
             }
-
         }
 
         public static void CreateCommandGridColumns(Grid grid,
@@ -101,7 +100,6 @@ namespace AppGene.Ui.Infrastructure
                 }
             }
         }
-
 
         /// <summary>
         /// Create rows for the details grid.
@@ -217,7 +215,7 @@ namespace AppGene.Ui.Infrastructure
                     Converter = new EnumToBooleanConverter(),
                     ConverterParameter = item.ToString()
                 });
-                
+
                 panel.Children.Add(control);
             }
         }

@@ -1,9 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.ComponentModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
 {
@@ -106,8 +102,8 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
         protected class EntityPropertyDescriptor :
                  TypeConverter.SimplePropertyDescriptor
         {
-            Func<object, object> getter;
-            Action<object, object> setter;
+            private Func<object, object> getter;
+            private Action<object, object> setter;
 
             public EntityPropertyDescriptor(string name,
                 Type componentType,

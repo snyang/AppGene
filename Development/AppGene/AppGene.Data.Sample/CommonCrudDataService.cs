@@ -8,6 +8,7 @@ namespace AppGene.Data.Sample
         where TEntity : class
     {
         private DbSet<TEntity> dbSet;
+
         public override DbSet<TEntity> GetDbSet(AppGeneDbContext context)
         {
             if (dbSet == null)

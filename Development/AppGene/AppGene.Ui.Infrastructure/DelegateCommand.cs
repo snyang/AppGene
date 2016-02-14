@@ -1,8 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Input;
 
 namespace AppGene.Ui.Infrastructure
@@ -24,6 +20,7 @@ namespace AppGene.Ui.Infrastructure
         }
 
         private event EventHandler canExecuteChanged;
+
         public event EventHandler CanExecuteChanged
         {
             add
@@ -49,7 +46,7 @@ namespace AppGene.Ui.Infrastructure
 
         public void Execute(object parameter)
         {
-           if (executeAction == null)
+            if (executeAction == null)
             {
                 return;
             }

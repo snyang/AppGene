@@ -1,8 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 
@@ -10,9 +7,9 @@ namespace AppGene.Ui.Infrastructure
 {
     public static class DependencyObjectValidationExtension
     {
-       public static bool IsValid(this DependencyObject obj)
+        public static bool IsValid(this DependencyObject obj)
         {
-            return !Validation.GetHasError(obj) 
+            return !Validation.GetHasError(obj)
                 && LogicalTreeHelper.GetChildren(obj)
                     .OfType<DependencyObject>()
                     .All(child => IsValid(child));
@@ -30,7 +27,7 @@ namespace AppGene.Ui.Infrastructure
             var errors = obj.GetErrors().Select(e => e.ErrorContent as string);
 
             if (distinct)
-            { 
+            {
                 errors = errors.Distinct();
             }
 

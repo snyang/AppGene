@@ -13,6 +13,7 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness
         where TEntity : class, new()
     {
         private Memento<TEntity> memento;
+
         event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
         {
             add
@@ -153,7 +154,6 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
         {
-
             IList<PropertyDescriptor> propertyDescriptors = new List<PropertyDescriptor>();
 
             var readonlyProperties = typeof(TEntity).GetProperties(BindingFlags.Public | BindingFlags.Instance)
@@ -199,8 +199,6 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness
 
             return new PropertyDescriptorCollection(propertyDescriptors.ToArray());
         }
-
-        
 
         PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
         {

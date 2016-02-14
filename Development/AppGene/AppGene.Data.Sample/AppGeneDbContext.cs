@@ -13,7 +13,6 @@ namespace AppGene.Data.Sample
 
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
-            
         }
 
         public virtual DbSet<Employee> Employees { get; set; }

@@ -1,6 +1,5 @@
-﻿using System;
+﻿using Microsoft.Practices.EnterpriseLibrary.Logging;
 using Microsoft.Practices.Prism.Logging;
-using Microsoft.Practices.EnterpriseLibrary.Logging;
 
 namespace AppGene
 {
@@ -18,6 +17,6 @@ namespace AppGene
             Logger.Write(message, category.ToString(), (int)priority);
         }
 
-        #endregion
+        #endregion ILoggerFacade Members
     }
 }

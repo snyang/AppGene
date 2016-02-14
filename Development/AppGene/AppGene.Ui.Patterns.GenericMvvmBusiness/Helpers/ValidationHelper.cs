@@ -17,9 +17,10 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
             var objectType = entity.GetType();
             var columnValue = objectType.GetProperty(propertyName).GetValue(entity, null);
 
-            var validationContext = new ValidationContext(entity, null, null) {
-                                        MemberName = propertyName
-                                    };
+            var validationContext = new ValidationContext(entity, null, null)
+            {
+                MemberName = propertyName
+            };
             var validationResults = new List<ValidationResult>();
 
             Validator.TryValidateProperty(columnValue, validationContext, validationResults);
@@ -34,7 +35,7 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
         public static string ValidateObject(Object entity)
         {
             var objectType = entity.GetType();
-            
+
             var validationContext = new ValidationContext(entity, null, null);
             var validationResults = new List<ValidationResult>();
 

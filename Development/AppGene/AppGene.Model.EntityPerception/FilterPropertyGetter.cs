@@ -1,12 +1,6 @@
 ﻿using AppGene.Model.DataAnnotations;
-using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace AppGene.Model.EntityPerception
 {
@@ -25,7 +19,7 @@ namespace AppGene.Model.EntityPerception
             var allProperties = context.EntityType.GetProperties(BindingFlags.Instance | BindingFlags.Public);
             foreach (var property in allProperties)
             {
-                if (property.GetCustomAttribute<FilterAttribute>()!= null)
+                if (property.GetCustomAttribute<FilterAttribute>() != null)
                 {
                     filterProperties.Add(property);
                 }

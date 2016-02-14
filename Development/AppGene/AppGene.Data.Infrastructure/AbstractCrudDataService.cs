@@ -1,5 +1,4 @@
-﻿using AppGene.Model.Patterns.Core.Layers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
 
@@ -25,6 +24,7 @@ namespace AppGene.Data.Infrastructure
         }
 
         public abstract DbSet<TEntity> GetDbSet(TDbContext context);
+
         public virtual void Insert(TEntity entity)
         {
             using (var context = new TDbContext())
