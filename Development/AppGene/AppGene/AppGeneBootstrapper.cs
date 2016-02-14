@@ -2,6 +2,7 @@
 using System.ComponentModel.Composition.Hosting;
 using System.Windows;
 using Microsoft.Practices.Prism.Logging;
+using AppGene.Ui.Main;
 
 namespace AppGene
 {
@@ -37,8 +38,8 @@ namespace AppGene
 
         protected override DependencyObject CreateShell()
         {
-            //return new MainWindow();
-            return this.Container.GetExportedValue<MainWindow>();
+            return new MainWindow();
+            //return null; // this.Container.GetExportedValue<MainWindow>();
         }
 
         private readonly EnterpriseLibraryLoggerAdapter _logger = new EnterpriseLibraryLoggerAdapter();

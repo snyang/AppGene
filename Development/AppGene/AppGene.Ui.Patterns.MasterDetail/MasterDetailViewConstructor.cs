@@ -1,6 +1,4 @@
-﻿using AppGene.Business.Infrastructure;
-using AppGene.Model.EntityPerception;
-using AppGene.Ui.Infrastructure;
+﻿using AppGene.Ui.Infrastructure;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,10 +7,9 @@ using System.Windows.Input;
 
 namespace AppGene.Ui.Patterns.MasterDetail
 {
-    public class MasterDetailViewConstructor<TEntity, TModel, TDataService>
+    public class MasterDetailViewConstructor<TEntity, TModel>
         where TEntity : class, new()
         where TModel : IMasterDetailModel<TEntity>, new()
-        where TDataService : AbstractCrudBusinessService<TEntity>, new()
     {
         #region Constants fields
 
@@ -20,29 +17,25 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         #endregion
 
-        public MasterDetailViewConstructor(ContentControl owner)
+        public MasterDetailViewConstructor(MasterDetailPatternContext<TEntity, TModel> patternContext, ContentControl owner)
         {
+            PatternContext = patternContext;
             Owner = owner;
         }
 
         #region Properties
 
-        private Grid GridDetail { get; set; }
-
-        private Grid GridContainer { get; set; }
-
-        public DataGrid DataGridMain { get; private set; }
-
-        private ContentControl Owner { get; set; }
-
-        private MasterDetailController<TEntity, TModel, TDataService> Controller { get; set; }
-
+        private Button buttonCancel;
         private Button buttonDelete;
-        private Button buttonRefresh;
         private Button buttonNew;
         private Button buttonOk;
-        private Button buttonCancel;
-
+        private Button buttonRefresh;
+        private MasterDetailEntityPerception entityPerception = new MasterDetailEntityPerception(typeof(TEntity));
+        public DataGrid DataGridMain { get; private set; }
+        public MasterDetailPatternContext<TEntity, TModel> PatternContext { get; set; }
+        private Grid GridContainer { get; set; }
+        private Grid GridDetail { get; set; }
+        private ContentControl Owner { get; set; }
         #endregion
 
         public void Initialize()
@@ -54,50 +47,9 @@ namespace AppGene.Ui.Patterns.MasterDetail
             initController();
         }
 
-        private void initController()
+        private Style GetResourceStyle(string resourceName)
         {
-            Controller = new MasterDetailController<TEntity, TModel, TDataService>()
-            {
-                Owner = this.Owner,
-                DataGridMain = this.DataGridMain,
-                ButtonCancel = this.buttonCancel,
-                ButtonOk = this.buttonOk,
-                ButtonDelete = this.buttonDelete,
-                ButtonNew = this.buttonNew,
-                ButtonRefresh = this.buttonRefresh
-            };
-            Controller.Initialize();
-        }
-
-        private void InitContainer()
-        {
-            this.GridContainer = new Grid();
-
-            // toolbar row
-            GridContainer.RowDefinitions.Add(new RowDefinition
-            {
-                Height = GridLength.Auto
-            });
-
-            // data grid row
-            GridContainer.RowDefinitions.Add(new RowDefinition
-            {
-                Height = new GridLength(1, GridUnitType.Star)
-            });
-
-            // detail panel row
-            GridContainer.RowDefinitions.Add(new RowDefinition
-            {
-                Height = GridLength.Auto
-            });
-
-            // detail command row
-            GridContainer.RowDefinitions.Add(new RowDefinition
-            {
-                Height = GridLength.Auto
-            });
-
-            Owner.Content = GridContainer;
+            return Application.Current.Resources[FrameworkElementErrorStyle] as Style;
         }
 
         private void InitCommandBar()
@@ -176,6 +128,51 @@ namespace AppGene.Ui.Patterns.MasterDetail
             this.GridContainer.Children.Add(tray);
         }
 
+        private void InitContainer()
+        {
+            this.GridContainer = new Grid();
+
+            // toolbar row
+            GridContainer.RowDefinitions.Add(new RowDefinition
+            {
+                Height = GridLength.Auto
+            });
+
+            // data grid row
+            GridContainer.RowDefinitions.Add(new RowDefinition
+            {
+                Height = new GridLength(1, GridUnitType.Star)
+            });
+
+            // detail panel row
+            GridContainer.RowDefinitions.Add(new RowDefinition
+            {
+                Height = GridLength.Auto
+            });
+
+            // detail command row
+            GridContainer.RowDefinitions.Add(new RowDefinition
+            {
+                Height = GridLength.Auto
+            });
+
+            Owner.Content = GridContainer;
+        }
+
+        private void initController()
+        {
+            var Controller = PatternContext.ViewController;
+
+            Controller.Owner = this.Owner;
+            Controller.DataGridMain = this.DataGridMain;
+            Controller.ButtonCancel = this.buttonCancel;
+            Controller.ButtonOk = this.buttonOk;
+            Controller.ButtonDelete = this.buttonDelete;
+            Controller.ButtonNew = this.buttonNew;
+            Controller.ButtonRefresh = this.buttonRefresh;
+
+            Controller.Initialize();
+        }
         private void InitDataGrid()
         {
             try
@@ -192,13 +189,8 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 DataGridMain.IsSynchronizedWithCurrentItem = true;
                 DataGridMain.Columns.Clear();
 
-                //TODO: distinct edit properties for grid and detail panel
                 // create data grid columns.
-                var editProperties = new EditPropertiesGetter().Get(new EntityAnalysisContext
-                {
-                    EntityType = typeof(TEntity),
-                    Source = this.GetType().FullName,
-                });
+                var editProperties = entityPerception.GridProperties;
 
                 Style style = GetResourceStyle(FrameworkElementErrorStyle);
                 foreach (var property in editProperties)
@@ -213,8 +205,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
         }
 
-
-
         private void InitDetailPanel()
         {
             GridDetail = new Grid
@@ -224,11 +214,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             Grid.SetRow(GridDetail, 2);
 
             // get edit properties
-            var editProperties = new EditPropertiesGetter().Get(new EntityAnalysisContext
-            {
-                EntityType = typeof(TEntity),
-                Source = this.GetType().FullName,
-            });
+            var editProperties = entityPerception.DetailProperties;
 
             // create columns
             UiTool.CreateGridColumns(GridDetail, 4);
@@ -279,11 +265,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
             // add to parent
             this.GridContainer.Children.Add(gridDetailsCommand);
-        }
-
-        private Style GetResourceStyle(string resourceName)
-        {
-            return Application.Current.Resources[FrameworkElementErrorStyle] as Style;
         }
     }
 }

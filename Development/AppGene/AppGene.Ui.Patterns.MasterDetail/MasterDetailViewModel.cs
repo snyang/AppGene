@@ -1,5 +1,4 @@
 ﻿using AppGene.Business.Infrastructure;
-using AppGene.Model.EntityPerception;
 using AppGene.Ui.Infrastructure;
 using AppGene.Ui.Infrastructure.Mvvm;
 using System;
@@ -21,6 +20,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         private readonly AbstractCrudBusinessService<TEntity> businessService;
         private ListCollectionView collectionView;
         private TModel currentItem;
+        private MasterDetailEntityPerception entityPerception = new MasterDetailEntityPerception(typeof(TEntity));
         private string filterString;
 
         DispatcherTimer filterTimer;
@@ -161,22 +161,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
             this.CollectionView = new ListCollectionView(models);
         }
-
-        private void Sort(IList<TEntity> entities)
-        {
-
-            var sortProperties = new SortPropertyGetter().Get(new EntityAnalysisContext
-            {
-                EntityType = typeof(TEntity),
-                Source = this.GetType().FullName,
-            });
-
-            if (sortProperties.Count == 0) return;
-
-            EntitySortComparer<TEntity> comparer = new EntitySortComparer<TEntity>(sortProperties);
-            (entities as List<TEntity>).Sort(comparer);
-        }
-
         private TModel As(object obj)
         {
             if (obj is TModel) return (TModel)obj;
@@ -209,6 +193,13 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
         }
 
+        private void Sort(IList<TEntity> entities)
+        {
+            if (entityPerception.SortProperties.Count == 0) return;
+
+            EntitySortComparer<TEntity> comparer = new EntitySortComparer<TEntity>(entityPerception.SortProperties);
+            (entities as List<TEntity>).Sort(comparer);
+        }
         private void StartFilter()
         {
             lock (this)

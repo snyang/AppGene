@@ -36,18 +36,11 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="BaseGenericMvvmBusinessPattern.cs" />
     <Compile Include="BaseGenericModel.cs" />
     <Compile Include="Helpers\Memento.cs" />
     <Compile Include="Helpers\EntityTypeConverter.cs" />
     <Compile Include="Helpers\ValidationHelper.cs" />
     <Compile Include="IGenericModel.cs" />
-    <Compile Include="IGenericMvvmBusinessPattern.cs" />
-    <Compile Include="IGenericView.cs" />
-    <Compile Include="IGenericViewConstructor.cs" />
-    <Compile Include="IGenericViewController.cs" />
-    <Compile Include="IGenericViewModel.cs" />
-    <Compile Include="IGenericLayoutDescriptor.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

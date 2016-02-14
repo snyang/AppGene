@@ -11,6 +11,8 @@
     <AssemblyName>AppGene.Ui.Patterns.MasterDetail</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
+    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -46,8 +48,12 @@
   <ItemGroup>
     <Compile Include="IMasterDetailModel.cs" />
     <Compile Include="MasterDetailController.cs" />
+    <Compile Include="MasterDetailEntityPerception.cs" />
     <Compile Include="MasterDetailModel.cs" />
-    <Compile Include="MasterDetailPattern.cs" />
+    <Compile Include="MasterDetailPatternContext.cs" />
+    <Compile Include="MasterDetailView.xaml.cs">
+      <DependentUpon>MasterDetailView.xaml</DependentUpon>
+    </Compile>
     <Compile Include="MasterDetailViewConstructor.cs" />
     <Compile Include="MasterDetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
@@ -77,6 +83,12 @@
       <Project>{8860b441-50ac-4289-8cf4-609f9fee6f95}</Project>
       <Name>AppGene.Ui.Patterns.GenericMvvmBusiness</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MasterDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

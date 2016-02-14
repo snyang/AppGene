@@ -13,11 +13,9 @@ namespace AppGene.Ui.Patterns.MasterDetail
     /// <summary>
     /// The class is used to as a controller to control MasterDetailView operations
     /// </summary>
-    public class MasterDetailController<TEntity, TModel, TBunsinessService>
+    public class MasterDetailController<TEntity, TModel>
         where TEntity : class, new()
-        where TModel : IMasterDetailModel<TEntity>, new()
-        where TBunsinessService: AbstractCrudBusinessService<TEntity>, new()
-        
+        where TModel : IMasterDetailModel<TEntity>, new()        
     {
         private int currentIndex;
         private readonly DelegateCommand deleteCommand;
@@ -55,7 +53,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         public void Initialize()
         {
-            ViewModel = new MasterDetailViewModel<TEntity, TModel>(new TBunsinessService());
             initOwner();
             HandleEvent();
             BindingData();

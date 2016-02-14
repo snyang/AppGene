@@ -1,7 +1,6 @@
 ﻿using AppGene.Model.EntityPerception;
 using AppGene.Ui.Patterns.GenericMvvmBusiness;
 using System;
-using System.Collections.Generic;
 using System.Reflection;
 
 namespace AppGene.Ui.Patterns.MasterDetail
@@ -10,8 +9,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         : BaseGenericModel<TEntity>, IMasterDetailModel<TEntity>
         where TEntity : class, new()
     {
-        private IList<PropertyInfo> displayProperties;
-        private IList<PropertyInfo> filterProperties;
+        private MasterDetailEntityPerception entityPerception = new MasterDetailEntityPerception(typeof(TEntity));
 
         public MasterDetailModel()
             : base()
@@ -20,40 +18,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             (this as IMasterDetailModel<TEntity>).IsNew = true;
             (this as IMasterDetailModel<TEntity>).SetDefault();
         }
-
-        public IList<PropertyInfo> DisplayProperties
-        {
-            get
-            {
-                if (displayProperties == null)
-                {
-                    displayProperties = new ReferencePropertyGetter().Get(new EntityAnalysisContext
-                    {
-                        EntityType = typeof(TEntity),
-                        Source = this.GetType().FullName
-                    });
-                }
-
-                return displayProperties;
-            }
-        }
-
-        public IList<PropertyInfo> FilterProperties
-        {
-            get
-            {
-                if (filterProperties == null)
-                {
-                    filterProperties = new FilterPropertyGetter().Get(new EntityAnalysisContext
-                    {
-                        EntityType = typeof(TEntity),
-                        Source = this.GetType().FullName
-                    });
-                }
-
-                return filterProperties;
-            }
-        }
+               
         bool IMasterDetailModel<TEntity>.IsNew
         {
             get; set;
@@ -61,14 +26,14 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         bool IMasterDetailModel<TEntity>.DoFilter(string filterString)
         {
-            if (FilterProperties.Count == 0)
+            if (entityPerception.FilterProperties.Count == 0)
             {
                 // Filter function not working.
                 return true;
             }
 
             // Filtering
-            foreach (var property in FilterProperties)
+            foreach (var property in entityPerception.FilterProperties)
             {
                 if (property.GetValue((this as IMasterDetailModel<TEntity>).Entity)
                     .ToString().IndexOf(filterString, StringComparison.OrdinalIgnoreCase) >= 0)
@@ -100,21 +65,21 @@ namespace AppGene.Ui.Patterns.MasterDetail
         string IMasterDetailModel<TEntity>.ToDisplayString()
         {
             string entityString = "item(s)";
-            if (DisplayProperties.Count == 0)
+            if (entityPerception.DisplayProperties.Count == 0)
             {
                 // Filter function not working.
                 return entityString;
             }
 
             // Filtering
-            object[] values = new object[DisplayProperties.Count];
+            object[] values = new object[entityPerception.DisplayProperties.Count];
             string formatString = "";
-            for (int i = 0; i < DisplayProperties.Count; i++)
+            for (int i = 0; i < entityPerception.DisplayProperties.Count; i++)
             {
                 string propertyFormatString = new DisplayFormatGetter().Get(new EntityAnalysisContext
                 {
                     EntityType = typeof(TEntity),
-                    PropertyInfo = DisplayProperties[i],
+                    PropertyInfo = entityPerception.DisplayProperties[i],
                     Source = this.GetType().FullName,
                 });
 
@@ -123,7 +88,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                     ? "{" + i + "}"
                     : "{" + i + ":" + propertyFormatString + "}";
 
-                values[i] = DisplayProperties[i].GetValue((this as IMasterDetailModel<TEntity>).Entity);
+                values[i] = entityPerception.DisplayProperties[i].GetValue((this as IMasterDetailModel<TEntity>).Entity);
             }
 
             entityString = string.Format(formatString, values);

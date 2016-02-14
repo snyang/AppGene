@@ -48,15 +48,9 @@
     <Reference Include="PresentationFramework" />
   </ItemGroup>
   <ItemGroup>
-    <Page Include="MasterDetailWindow.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
-    <Compile Include="MasterDetailWindow.xaml.cs">
-      <DependentUpon>MasterDetailWindow.xaml</DependentUpon>
+    <Compile Include="MainWindow.xaml.cs">
+      <DependentUpon>MainWindow.xaml</DependentUpon>
     </Compile>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">
       <SubType>Code</SubType>
     </Compile>
@@ -85,6 +79,10 @@
       <Project>{85fb4980-393b-4659-a962-46e75fa7feb6}</Project>
       <Name>AppGene.Business.Infrastructure</Name>
     </ProjectReference>
+    <ProjectReference Include="..\AppGene.Business.Sample\AppGene.Business.Sample.csproj">
+      <Project>{7fcb9a2e-f3d5-4766-8d94-8afdf9ea9c56}</Project>
+      <Name>AppGene.Business.Sample</Name>
+    </ProjectReference>
     <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
       <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
       <Name>AppGene.Model.Core</Name>
@@ -92,6 +90,10 @@
     <ProjectReference Include="..\AppGene.Model.DataAnnotations\AppGene.Model.DataAnnotations.csproj">
       <Project>{1769ee6c-40a5-4ce7-b33c-be809efbac82}</Project>
       <Name>AppGene.Model.DataAnnotations</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\AppGene.Model.Entities.Sample\AppGene.Model.Entities.Sample.csproj">
+      <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>
+      <Name>AppGene.Model.Entities.Sample</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Model.EntityPerception\AppGene.Model.EntityPerception.csproj">
       <Project>{b7ffe2fd-a635-4cff-ab20-aee5aa9202b4}</Project>
@@ -109,6 +111,12 @@
       <Project>{0b5927bb-8003-458c-a373-fded1f1032f3}</Project>
       <Name>AppGene.Ui.Patterns.MasterDetail</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Page Include="MainWindow.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
