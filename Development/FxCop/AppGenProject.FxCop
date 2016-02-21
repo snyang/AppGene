@@ -1,0 +1,652 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<FxCopProject Version="10.0" Name="My FxCop Project">
+ <ProjectOptions>
+  <SharedProject>True</SharedProject>
+  <Stylesheet Apply="False">$(FxCopDir)\Xml\FxCopReport.xsl</Stylesheet>
+  <SaveMessages>
+   <Project Status="Active, Excluded, Good, Noise" NewOnly="False" />
+   <Report Status="Active, Good, Noise" NewOnly="False" />
+  </SaveMessages>
+  <ProjectFile Compress="True" DefaultTargetCheck="True" DefaultRuleCheck="True" SaveByRuleGroup="" Deterministic="True" />
+  <EnableMultithreadedLoad>True</EnableMultithreadedLoad>
+  <EnableMultithreadedAnalysis>True</EnableMultithreadedAnalysis>
+  <SourceLookup>True</SourceLookup>
+  <AnalysisExceptionsThreshold>10</AnalysisExceptionsThreshold>
+  <RuleExceptionsThreshold>1</RuleExceptionsThreshold>
+  <Spelling Locale="en-US" />
+  <OverrideRuleVisibilities>False</OverrideRuleVisibilities>
+  <CustomDictionaries SearchFxCopDir="True" SearchUserProfile="True" SearchProjectDir="True" />
+  <SearchGlobalAssemblyCache>False</SearchGlobalAssemblyCache>
+  <DeadlockDetectionTimeout>120</DeadlockDetectionTimeout>
+  <IgnoreGeneratedCode>False</IgnoreGeneratedCode>
+ </ProjectOptions>
+ <Targets>
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Business.Infrastructure.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Business.Sample.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Common.Core.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Common.DataAnnotations.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Common.Entities.Sample.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Common.EntityPerception.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Data.Infrastructure.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Data.Sample.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.exe" Analyze="False" AnalyzeAllChildren="False" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Ui.Infrastructure.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Ui.Main.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Ui.Patterns.GenericMvvmBusiness.dll" Analyze="True" AnalyzeAllChildren="True" />
+  <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Ui.Patterns.MasterDetail.dll" Analyze="True" AnalyzeAllChildren="True" />
+ </Targets>
+ <Rules>
+  <RuleFiles>
+   <RuleFile Name="$(FxCopDir)\Rules\DesignRules.dll" Enabled="True" AllRulesEnabled="False">
+    <Rule Name="AbstractTypesShouldNotHaveConstructors" Enabled="True" />
+    <Rule Name="AvoidEmptyInterfaces" Enabled="True" />
+    <Rule Name="AvoidExcessiveParametersOnGenericTypes" Enabled="True" />
+    <Rule Name="AvoidNamespacesWithFewTypes" Enabled="True" />
+    <Rule Name="AvoidOutParameters" Enabled="True" />
+    <Rule Name="CollectionsShouldImplementGenericInterface" Enabled="True" />
+    <Rule Name="ConsiderPassingBaseTypesAsParameters" Enabled="True" />
+    <Rule Name="DeclareEventHandlersCorrectly" Enabled="True" />
+    <Rule Name="DeclareTypesInNamespaces" Enabled="True" />
+    <Rule Name="DefaultParametersShouldNotBeUsed" Enabled="True" />
+    <Rule Name="DefineAccessorsForAttributeArguments" Enabled="True" />
+    <Rule Name="DoNotDeclareProtectedMembersInSealedTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareStaticMembersOnGenericTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareVirtualMembersInSealedTypes" Enabled="True" />
+    <Rule Name="DoNotDeclareVisibleInstanceFields" Enabled="True" />
+    <Rule Name="DoNotExposeGenericLists" Enabled="True" />
+    <Rule Name="DoNotHideBaseClassMethods" Enabled="True" />
+    <Rule Name="DoNotNestGenericTypesInMemberSignatures" Enabled="True" />
+    <Rule Name="DoNotOverloadOperatorEqualsOnReferenceTypes" Enabled="True" />
+    <Rule Name="DoNotRaiseExceptionsInUnexpectedLocations" Enabled="True" />
+    <Rule Name="EnumeratorsShouldBeStronglyTyped" Enabled="True" />
+    <Rule Name="EnumsShouldHaveZeroValue" Enabled="True" />
+    <Rule Name="ExceptionsShouldBePublic" Enabled="True" />
+    <Rule Name="GenericMethodsShouldProvideTypeParameter" Enabled="True" />
+    <Rule Name="ICollectionImplementationsHaveStronglyTypedMembers" Enabled="True" />
+    <Rule Name="ImplementIDisposableCorrectly" Enabled="True" />
+    <Rule Name="ImplementStandardExceptionConstructors" Enabled="True" />
+    <Rule Name="IndexersShouldNotBeMultidimensional" Enabled="True" />
+    <Rule Name="InterfaceMethodsShouldBeCallableByChildTypes" Enabled="True" />
+    <Rule Name="ListsAreStronglyTyped" Enabled="True" />
+    <Rule Name="MarkAssembliesWithAssemblyVersion" Enabled="True" />
+    <Rule Name="MarkAssembliesWithComVisible" Enabled="True" />
+    <Rule Name="MarkAttributesWithAttributeUsage" Enabled="True" />
+    <Rule Name="MarkEnumsWithFlags" Enabled="True" />
+    <Rule Name="MembersShouldNotExposeCertainConcreteTypes" Enabled="True" />
+    <Rule Name="MovePInvokesToNativeMethodsClass" Enabled="True" />
+    <Rule Name="NestedTypesShouldNotBeVisible" Enabled="True" />
+    <Rule Name="OverloadOperatorEqualsOnOverloadingAddAndSubtract" Enabled="True" />
+    <Rule Name="OverrideMethodsOnComparableTypes" Enabled="True" />
+    <Rule Name="PropertiesShouldNotBeWriteOnly" Enabled="True" />
+    <Rule Name="ProvideObsoleteAttributeMessage" Enabled="True" />
+    <Rule Name="ReplaceRepetitiveArgumentsWithParamsArray" Enabled="True" />
+    <Rule Name="StaticHolderTypesShouldBeSealed" Enabled="True" />
+    <Rule Name="StaticHolderTypesShouldNotHaveConstructors" Enabled="True" />
+    <Rule Name="StringUriOverloadsCallSystemUriOverloads" Enabled="True" />
+    <Rule Name="TypesShouldNotExtendCertainBaseTypes" Enabled="True" />
+    <Rule Name="TypesThatOwnDisposableFieldsShouldBeDisposable" Enabled="True" />
+    <Rule Name="TypesThatOwnNativeResourcesShouldBeDisposable" Enabled="True" />
+    <Rule Name="UriParametersShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UriPropertiesShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UriReturnValuesShouldNotBeStrings" Enabled="True" />
+    <Rule Name="UseEventsWhereAppropriate" Enabled="True" />
+    <Rule Name="UseGenericEventHandlerInstances" Enabled="True" />
+    <Rule Name="UseGenericsWhereAppropriate" Enabled="True" />
+    <Rule Name="UseIntegralOrStringArgumentForIndexers" Enabled="True" />
+    <Rule Name="UsePropertiesWhereAppropriate" Enabled="True" />
+   </RuleFile>
+   <RuleFile Name="$(FxCopDir)\Rules\GlobalizationRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\InteroperabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\MobilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\NamingRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PerformanceRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\PortabilityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\SecurityTransparencyRules.dll" Enabled="True" AllRulesEnabled="True" />
+   <RuleFile Name="$(FxCopDir)\Rules\UsageRules.dll" Enabled="True" AllRulesEnabled="True" />
+  </RuleFiles>
+  <Groups />
+  <Settings />
+ </Rules>
+ <FxCopReport Version="10.0">
+  <Namespaces>
+   <Namespace Name="AppGene.Ui.Infrastructure.Mvvm">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2016-02-20 12:19:54Z">
+      <Issue>
+       <Item>AppGene.Ui.Infrastructure.Mvvm</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="AppGene.Ui.Patterns.GenericMvvmBusiness">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2016-02-20 12:19:54Z">
+      <Issue>
+       <Item>AppGene.Ui.Patterns.GenericMvvmBusiness</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+   <Namespace Name="AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers">
+    <Messages>
+     <Message TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020" Created="2016-02-20 12:19:54Z">
+      <Issue>
+       <Item>AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers</Item>
+      </Issue>
+     </Message>
+    </Messages>
+   </Namespace>
+  </Namespaces>
+  <Targets>
+   <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Common.EntityPerception.dll">
+    <Modules>
+     <Module Name="appgene.common.entityperception.dll">
+      <Namespaces>
+       <Namespace Name="AppGene.Common.EntityPerception">
+        <Types>
+         <Type Name="DefaultValueGetter">
+          <Members>
+           <Member Name="#GetDefaultValue(AppGene.Common.EntityPerception.EntityAnalysisContext)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2016-02-20 12:19:54Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'DefaultValueGetter.GetDefaultValue(EntityAnalysisContext)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="DisplayFormatGetter">
+          <Members>
+           <Member Name="#GetFormatString(AppGene.Common.EntityPerception.EntityAnalysisContext)">
+            <Messages>
+             <Message TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822" Created="2016-02-20 12:19:54Z" FixCategory="DependsOnFix">
+              <Issue>
+               <Item>'DisplayFormatGetter.GetFormatString(EntityAnalysisContext)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="EntityAnalysisHelper">
+          <Members>
+           <Member Name="#ConvertNameToShortName(System.Type,System.String)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'entityType'</Item>
+               <Item>'EntityAnalysisHelper.ConvertNameToShortName(Type, string)'</Item>
+               <Item>'Type'</Item>
+               <Item>'MemberInfo'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Steven">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#IsCharacteristicProperty(System.Type,System.Reflection.PropertyInfo,System.String[])">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'entityType'</Item>
+               <Item>'EntityAnalysisHelper.IsCharacteristicProperty(Type, PropertyInfo, string[])'</Item>
+               <Item>'Type'</Item>
+               <Item>'MemberInfo'</Item>
+              </Issue>
+              <Issue>
+               <Item>'property'</Item>
+               <Item>'EntityAnalysisHelper.IsCharacteristicProperty(Type, PropertyInfo, string[])'</Item>
+               <Item>'PropertyInfo'</Item>
+               <Item>'MemberInfo'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Steven">
+                <Note Id="5" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Ui.Infrastructure.dll">
+    <Modules>
+     <Module Name="appgene.ui.infrastructure.dll">
+      <Namespaces>
+       <Namespace Name="AppGene.Ui.Infrastructure">
+        <Types>
+         <Type Name="DependencyObjectValidationExtension">
+          <Members>
+           <Member Name="#GetErrors(System.Windows.DependencyObject,System.String,System.Boolean)">
+            <Messages>
+             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Excluded" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'DependencyObjectValidationExtension.GetErrors(this DependencyObject, string, bool)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Steven">
+                <Note Id="6" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="PropertyControlCreator">
+          <Members>
+           <Member Name="#CreateDateControl(AppGene.Common.EntityPerception.DisplayPropertyInfo,System.Windows.Controls.Grid,System.Int32,System.Int32,System.String,System.Windows.Style)">
+            <Messages>
+             <Message Id="style" TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801" Created="2016-02-20 12:19:54Z" FixCategory="NonBreaking">
+              <Issue>
+               <Item>'style'</Item>
+               <Item>'PropertyControlCreator.CreateDateControl(DisplayPropertyInfo, Grid, int, int, string, Style)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="UiTool">
+          <Members>
+           <Member Name="#CreateDateField(System.Windows.Controls.Grid,System.String,System.String,System.String,System.Windows.Style,System.Int32,System.Int32)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'grid'</Item>
+               <Item>'UiTool.CreateDateField(Grid, string, string, string, Style, int, int)'</Item>
+               <Item>'Grid'</Item>
+               <Item>'Panel'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Steven">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateEnumField(System.Windows.Controls.Grid,System.Type,System.String,System.String,System.String,System.Windows.Style,System.Int32,System.Int32)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'parent'</Item>
+               <Item>'UiTool.CreateEnumField(Grid, Type, string, string, string, Style, int, int)'</Item>
+               <Item>'Grid'</Item>
+               <Item>'Panel'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Steven">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateField(System.Windows.Controls.Grid,System.String,System.String,System.String,System.Windows.Style,System.Int32,System.Int32)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'grid'</Item>
+               <Item>'UiTool.CreateField(Grid, string, string, string, Style, int, int)'</Item>
+               <Item>'Grid'</Item>
+               <Item>'Panel'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Steven">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#CreateGridCommand(System.Windows.Controls.Grid,System.String,System.String,System.Int32)">
+            <Messages>
+             <Message TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011" Status="Excluded" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'grid'</Item>
+               <Item>'UiTool.CreateGridCommand(Grid, string, string, int)'</Item>
+               <Item>'Grid'</Item>
+               <Item>'Panel'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Steven">
+                <Note Id="4" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+       <Namespace Name="AppGene.Ui.Infrastructure.Mvvm">
+        <Types>
+         <Type Name="BaseViewModel">
+          <Members>
+           <Member Name="#SetProperty`1(!!0&amp;,!!0,System.String)">
+            <Messages>
+             <Message TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026" Status="Excluded" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'BaseViewModel.SetProperty&lt;T&gt;(ref T, T, string)'</Item>
+              </Issue>
+              <Notes>
+               <User Name="Steven">
+                <Note Id="6" />
+               </User>
+              </Notes>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Ui.Main.dll">
+    <Modules>
+     <Module Name="appgene.ui.main.dll">
+      <Namespaces>
+       <Namespace Name="AppGene.Ui.Main">
+        <Types>
+         <Type Name="MainWindow">
+          <Members>
+           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'MainWindow'</Item>
+               <Item>'IComponentConnector.Connect(int, object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Ui.Patterns.GenericMvvmBusiness.dll">
+    <Modules>
+     <Module Name="appgene.ui.patterns.genericmvvmbusiness.dll">
+      <Namespaces>
+       <Namespace Name="AppGene.Ui.Patterns.GenericMvvmBusiness">
+        <Types>
+         <Type Name="BaseGenericModel`1">
+          <Members>
+           <Member Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.Entity">
+            <Accessors>
+             <Accessor Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.get_Entity()">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'BaseGenericModel&lt;TEntity&gt;'</Item>
+                 <Item>'IGenericModel&lt;TEntity&gt;.Entity.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.set_Entity(!0)">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'BaseGenericModel&lt;TEntity&gt;'</Item>
+                 <Item>'IGenericModel&lt;TEntity&gt;.Entity.set(TEntity)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.IsChanged">
+            <Accessors>
+             <Accessor Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.get_IsChanged()">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'BaseGenericModel&lt;TEntity&gt;'</Item>
+                 <Item>'IGenericModel&lt;TEntity&gt;.IsChanged.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.set_IsChanged(System.Boolean)">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'BaseGenericModel&lt;TEntity&gt;'</Item>
+                 <Item>'IGenericModel&lt;TEntity&gt;.IsChanged.set(bool)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.TraceChanges">
+            <Accessors>
+             <Accessor Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.get_TraceChanges()">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'BaseGenericModel&lt;TEntity&gt;'</Item>
+                 <Item>'IGenericModel&lt;TEntity&gt;.TraceChanges.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="#AppGene.Ui.Patterns.GenericMvvmBusiness.IGenericModel`1&lt;!0&gt;.set_TraceChanges(System.Boolean)">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'BaseGenericModel&lt;TEntity&gt;'</Item>
+                 <Item>'IGenericModel&lt;TEntity&gt;.TraceChanges.set(bool)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#IsInterfaceProperty(System.Type,System.Type,System.Reflection.PropertyInfo)">
+            <Messages>
+             <Message Id="interfaceProperty" TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804" Created="2016-02-20 14:27:53Z">
+              <Issue>
+               <Item>'BaseGenericModel&lt;TEntity&gt;.IsInterfaceProperty(Type, Type, PropertyInfo)'</Item>
+               <Item>'interfaceProperty'</Item>
+               <Item>'PropertyInfo'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#System.ComponentModel.IDataErrorInfo.Error">
+            <Accessors>
+             <Accessor Name="#System.ComponentModel.IDataErrorInfo.get_Error()">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'BaseGenericModel&lt;TEntity&gt;'</Item>
+                 <Item>'IDataErrorInfo.Error.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#System.ComponentModel.IDataErrorInfo.Item[System.String]">
+            <Accessors>
+             <Accessor Name="#System.ComponentModel.IDataErrorInfo.get_Item(System.String)">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'BaseGenericModel&lt;TEntity&gt;'</Item>
+                 <Item>'IDataErrorInfo.this.get(string)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+   <Target Name="$(ProjectDir)/../AppGene/AppGene/bin/Debug/AppGene.Ui.Patterns.MasterDetail.dll">
+    <Modules>
+     <Module Name="appgene.ui.patterns.masterdetail.dll">
+      <Namespaces>
+       <Namespace Name="AppGene.Ui.Patterns.MasterDetail">
+        <Types>
+         <Type Name="MasterDetailModel`1">
+          <Members>
+           <Member Name="#.ctor()">
+            <Messages>
+             <Message TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'MasterDetailModel&lt;TEntity&gt;.MasterDetailModel()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;MasterDetailModel&lt;TEntity&gt;..ctor()&#xD;&#xA;IGenericModel&lt;TEntity&gt;.set_Entity(TEntity):Void</Item>
+              </Issue>
+              <Issue>
+               <Item>'MasterDetailModel&lt;TEntity&gt;.MasterDetailModel()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;MasterDetailModel&lt;TEntity&gt;..ctor()&#xD;&#xA;IGenericModel&lt;TEntity&gt;.set_Entity(TEntity):Void&#xD;&#xA;IMasterDetailModel&lt;TEntity&gt;.set_IsNew(Boolean):Void</Item>
+              </Issue>
+              <Issue>
+               <Item>'MasterDetailModel&lt;TEntity&gt;.MasterDetailModel()'</Item>
+               <Item>&#xD;&#xA;&#xD;&#xA;MasterDetailModel&lt;TEntity&gt;..ctor()&#xD;&#xA;IGenericModel&lt;TEntity&gt;.set_Entity(TEntity):Void&#xD;&#xA;IMasterDetailModel&lt;TEntity&gt;.set_IsNew(Boolean):Void&#xD;&#xA;IMasterDetailModel&lt;TEntity&gt;.SetDefault():Void</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AppGene.Ui.Patterns.MasterDetail.IMasterDetailModel`1&lt;!0&gt;.DoFilter(System.String)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'MasterDetailModel&lt;TEntity&gt;'</Item>
+               <Item>'IMasterDetailModel&lt;TEntity&gt;.DoFilter(string)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AppGene.Ui.Patterns.MasterDetail.IMasterDetailModel`1&lt;!0&gt;.IsNew">
+            <Accessors>
+             <Accessor Name="#AppGene.Ui.Patterns.MasterDetail.IMasterDetailModel`1&lt;!0&gt;.get_IsNew()">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'MasterDetailModel&lt;TEntity&gt;'</Item>
+                 <Item>'IMasterDetailModel&lt;TEntity&gt;.IsNew.get()'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+             <Accessor Name="#AppGene.Ui.Patterns.MasterDetail.IMasterDetailModel`1&lt;!0&gt;.set_IsNew(System.Boolean)">
+              <Messages>
+               <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+                <Issue>
+                 <Item>'MasterDetailModel&lt;TEntity&gt;'</Item>
+                 <Item>'IMasterDetailModel&lt;TEntity&gt;.IsNew.set(bool)'</Item>
+                </Issue>
+               </Message>
+              </Messages>
+             </Accessor>
+            </Accessors>
+           </Member>
+           <Member Name="#AppGene.Ui.Patterns.MasterDetail.IMasterDetailModel`1&lt;!0&gt;.SetDefault()">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'MasterDetailModel&lt;TEntity&gt;'</Item>
+               <Item>'IMasterDetailModel&lt;TEntity&gt;.SetDefault()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+           <Member Name="#AppGene.Ui.Patterns.MasterDetail.IMasterDetailModel`1&lt;!0&gt;.ToDisplayString()">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'MasterDetailModel&lt;TEntity&gt;'</Item>
+               <Item>'IMasterDetailModel&lt;TEntity&gt;.ToDisplayString()'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+         <Type Name="MasterDetailView">
+          <Members>
+           <Member Name="#System.Windows.Markup.IComponentConnector.Connect(System.Int32,System.Object)">
+            <Messages>
+             <Message TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033" Created="2016-02-20 12:19:54Z">
+              <Issue>
+               <Item>'MasterDetailView'</Item>
+               <Item>'IComponentConnector.Connect(int, object)'</Item>
+              </Issue>
+             </Message>
+            </Messages>
+           </Member>
+          </Members>
+         </Type>
+        </Types>
+       </Namespace>
+      </Namespaces>
+     </Module>
+    </Modules>
+   </Target>
+  </Targets>
+  <Notes>
+   <User Name="Steven">
+    <Note Id="4" Modified="2016-02-20 12:20:15Z">Grid is good.</Note>
+    <Note Id="5" Modified="2016-02-20 12:20:44Z">Type is good.</Note>
+    <Note Id="6" Modified="2016-02-20 12:20:57Z">Default is helpful.</Note>
+   </User>
+  </Notes>
+  <Rules>
+   <Rule TypeName="AvoidNamespacesWithFewTypes" Category="Microsoft.Design" CheckId="CA1020">
+    <Resolution Name="Default">Consider merging the types defined in '{0}' with another namespace.</Resolution>
+   </Rule>
+   <Rule TypeName="ConsiderPassingBaseTypesAsParameters" Category="Microsoft.Design" CheckId="CA1011">
+    <Resolution Name="Default">Consider changing the type of parameter {0} in {1} from {2} to its base type {3}. This method appears to only require base class members in its implementation. Suppress this violation if there is a compelling reason to require the more derived type in the method signature.</Resolution>
+   </Rule>
+   <Rule TypeName="DefaultParametersShouldNotBeUsed" Category="Microsoft.Design" CheckId="CA1026">
+    <Resolution Name="Default">Replace method {0} with an overload that supplies all default arguments.</Resolution>
+   </Rule>
+   <Rule TypeName="DoNotCallOverridableMethodsInConstructors" Category="Microsoft.Usage" CheckId="CA2214">
+    <Resolution Name="Default">{0} contains a call chain that results in a call to a virtual method defined by the class. Review the following call stack for unintended consequences: {1}</Resolution>
+   </Rule>
+   <Rule TypeName="InterfaceMethodsShouldBeCallableByChildTypes" Category="Microsoft.Design" CheckId="CA1033">
+    <Resolution Name="Default">Make {0} sealed (a breaking change if this class has previously shipped), implement the method non-explicitly, or implement a new method that exposes the functionality of {1} and is visible to derived classes.</Resolution>
+   </Rule>
+   <Rule TypeName="MarkMembersAsStatic" Category="Microsoft.Performance" CheckId="CA1822">
+    <Resolution Name="Default">The 'this' parameter (or 'Me' in Visual Basic) of {0} is never used. Mark the member as static (or Shared in Visual Basic) or use 'this'/'Me' in the method body or at least one property accessor, if appropriate.</Resolution>
+   </Rule>
+   <Rule TypeName="RemoveUnusedLocals" Category="Microsoft.Performance" CheckId="CA1804">
+    <Resolution Name="Default">{0} declares a variable, {1}, of type {2}, which is never used or is only assigned to. Use this variable or remove it.</Resolution>
+   </Rule>
+   <Rule TypeName="ReviewUnusedParameters" Category="Microsoft.Usage" CheckId="CA1801">
+    <Resolution Name="Default">Parameter {0} of {1} is never used. Remove the parameter or use it in the method body.</Resolution>
+   </Rule>
+  </Rules>
+ </FxCopReport>
+</FxCopProject>
