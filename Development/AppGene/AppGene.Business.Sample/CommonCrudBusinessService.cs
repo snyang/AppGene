@@ -1,4 +1,5 @@
-﻿using AppGene.Business.Infrastructure;
+﻿using System;
+using AppGene.Business.Infrastructure;
 using AppGene.Data.Infrastructure;
 using AppGene.Data.Sample;
 
@@ -8,9 +9,17 @@ namespace AppGene.Business.Sample
         : AbstractCrudBusinessService<TEntity>
         where TEntity : class
     {
-        public override ICrudDataService<TEntity> GetDataService()
+        private ICrudDataService<TEntity> dataService;
+        public override ICrudDataService<TEntity> DataService
         {
-            return new CommonCrudDataService<TEntity>();
+            get
+            {
+                if (dataService==null)
+                {
+                    dataService = new CommonCrudDataService<TEntity>();
+                }
+                return dataService;
+            }
         }
     }
 }

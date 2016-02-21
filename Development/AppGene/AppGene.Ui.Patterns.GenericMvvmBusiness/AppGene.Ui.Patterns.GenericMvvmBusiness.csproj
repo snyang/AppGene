@@ -44,13 +44,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
+    <ProjectReference Include="..\AppGene.Common.Core\AppGene.Common.Core.csproj">
       <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
-      <Name>AppGene.Model.Core</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AppGene.Model.Patterns.Core\AppGene.Model.Patterns.Core.csproj">
-      <Project>{5665ead1-0cd0-49a8-b75c-e486aa58f08e}</Project>
-      <Name>AppGene.Model.Patterns.Core</Name>
+      <Name>AppGene.Common.Core</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
       <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>

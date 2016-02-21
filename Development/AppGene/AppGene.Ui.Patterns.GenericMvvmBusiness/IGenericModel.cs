@@ -3,8 +3,7 @@
 namespace AppGene.Ui.Patterns.GenericMvvmBusiness
 {
     public interface IGenericModel<TEntity>
-        : ICustomTypeDescriptor,
-        IEditableObject,
+        : IEditableObject,
         IDataErrorInfo,
         INotifyPropertyChanged
         where TEntity : class, new()

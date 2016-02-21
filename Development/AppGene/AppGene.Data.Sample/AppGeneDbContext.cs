@@ -1,4 +1,4 @@
-﻿using AppGene.Model.Entities;
+﻿using AppGene.Common.Entities;
 using System.Data.Entity;
 
 namespace AppGene.Data.Sample

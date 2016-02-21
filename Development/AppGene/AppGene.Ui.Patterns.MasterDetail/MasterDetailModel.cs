@@ -1,6 +1,7 @@
-﻿using AppGene.Model.EntityPerception;
+﻿using AppGene.Common.EntityPerception;
 using AppGene.Ui.Patterns.GenericMvvmBusiness;
 using System;
+using System.Globalization;
 using System.Reflection;
 
 namespace AppGene.Ui.Patterns.MasterDetail
@@ -24,7 +25,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             get; set;
         }
 
-        bool IMasterDetailModel<TEntity>.DoFilter(string filterString)
+        bool IMasterDetailModel<TEntity>.DoFilter(string keyword)
         {
             if (entityPerception.FilterProperties.Count == 0)
             {
@@ -36,7 +37,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             foreach (var property in entityPerception.FilterProperties)
             {
                 if (property.GetValue((this as IMasterDetailModel<TEntity>).Entity)
-                    .ToString().IndexOf(filterString, StringComparison.OrdinalIgnoreCase) >= 0)
+                    .ToString().IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     return true;
                 }
@@ -49,12 +50,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         {
             foreach (var property in typeof(TEntity).GetProperties(BindingFlags.Instance | BindingFlags.Public))
             {
-                object value = new DefaultValueGetter().Get(new EntityAnalysisContext
-                {
-                    EntityType = typeof(TEntity),
-                    PropertyInfo = property,
-                    Source = this.GetType().FullName
-                });
+                object value = entityPerception.GetPropertyDefaultValue(property);
                 if (value != null)
                 {
                     property.SetValue((this as IMasterDetailModel<TEntity>).Entity, value);
@@ -65,33 +61,28 @@ namespace AppGene.Ui.Patterns.MasterDetail
         string IMasterDetailModel<TEntity>.ToDisplayString()
         {
             string entityString = "item(s)";
-            if (entityPerception.DisplayProperties.Count == 0)
+            if (entityPerception.ReferenceProperties.Count == 0)
             {
                 // Filter function not working.
                 return entityString;
             }
 
             // Filtering
-            object[] values = new object[entityPerception.DisplayProperties.Count];
+            object[] values = new object[entityPerception.ReferenceProperties.Count];
             string formatString = "";
-            for (int i = 0; i < entityPerception.DisplayProperties.Count; i++)
+            for (int i = 0; i < entityPerception.ReferenceProperties.Count; i++)
             {
-                string propertyFormatString = new DisplayFormatGetter().Get(new EntityAnalysisContext
-                {
-                    EntityType = typeof(TEntity),
-                    PropertyInfo = entityPerception.DisplayProperties[i],
-                    Source = this.GetType().FullName,
-                });
+                string propertyFormatString = entityPerception.GetPropertyFormatString(entityPerception.ReferenceProperties[i]);
 
                 if (i != 0) formatString += " - ";
                 formatString += string.IsNullOrEmpty(propertyFormatString)
                     ? "{" + i + "}"
                     : "{" + i + ":" + propertyFormatString + "}";
 
-                values[i] = entityPerception.DisplayProperties[i].GetValue((this as IMasterDetailModel<TEntity>).Entity);
+                values[i] = entityPerception.ReferenceProperties[i].GetValue((this as IMasterDetailModel<TEntity>).Entity);
             }
 
-            entityString = string.Format(formatString, values);
+            entityString = string.Format(CultureInfo.CurrentCulture, formatString, values);
 
             return entityString;
         }

@@ -1,5 +1,4 @@
-﻿using AppGene.Model.Patterns.Core.Layers;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 
 namespace AppGene.Data.Infrastructure
 {
@@ -9,7 +8,6 @@ namespace AppGene.Data.Infrastructure
     /// </summary>
     /// <typeparam name="TEntity"></typeparam>
     public interface ICrudDataService<TEntity>
-        : IDataLayerService
         where TEntity : class
     {
         void Delete(IList<TEntity> entities);

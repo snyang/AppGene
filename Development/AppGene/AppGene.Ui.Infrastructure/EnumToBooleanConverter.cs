@@ -13,7 +13,7 @@ namespace AppGene.Ui.Infrastructure
 
             string checkValue = value.ToString();
             string targetValue = parameter.ToString();
-            return checkValue.Equals(targetValue, StringComparison.InvariantCultureIgnoreCase);
+            return checkValue.Equals(targetValue, StringComparison.OrdinalIgnoreCase);
         }
 
         public object ConvertBack(object value, Type targetType, object parameter, CultureInfo culture)

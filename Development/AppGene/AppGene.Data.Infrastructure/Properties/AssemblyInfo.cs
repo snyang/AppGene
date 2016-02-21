@@ -1,4 +1,4 @@
-﻿using AppGene.Model.Core;
+﻿using AppGene.Common.Core;
 using System.Reflection;
 using System.Runtime.InteropServices;
 

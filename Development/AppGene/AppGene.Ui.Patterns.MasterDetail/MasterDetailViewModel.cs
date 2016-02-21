@@ -162,7 +162,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             this.CollectionView = new ListCollectionView(models);
         }
 
-        private TModel As(object obj)
+        private static TModel As(object obj)
         {
             if (obj is TModel) return (TModel)obj;
             return default(TModel);

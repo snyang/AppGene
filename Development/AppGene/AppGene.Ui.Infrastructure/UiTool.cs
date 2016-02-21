@@ -29,9 +29,10 @@ namespace AppGene.Ui.Infrastructure
             catch (Exception ex)
             {
                 string errorMessage = "";
-                if (ex is DbEntityValidationException)
+                DbEntityValidationException dbEx = ex as DbEntityValidationException;
+                if (dbEx != null)
                 {
-                    foreach (var errorResult in ((DbEntityValidationException)ex).EntityValidationErrors)
+                    foreach (var errorResult in dbEx.EntityValidationErrors)
                     {
                         foreach (var error in errorResult.ValidationErrors)
                         {
@@ -158,7 +159,7 @@ namespace AppGene.Ui.Infrastructure
             });
 
             Grid.SetRow(textBox, row);
-            Grid.SetColumn(textBox, column + 1);
+            Grid.SetColumn(textBox, checked(column + 1));
 
             grid.Children.Add(labelElement);
             grid.Children.Add(textBox);
@@ -191,7 +192,7 @@ namespace AppGene.Ui.Infrastructure
                 Margin = new Thickness(4),
             };
             Grid.SetRow(panel, row);
-            Grid.SetColumn(panel, column + 1);
+            Grid.SetColumn(panel, checked(column + 1));
             parent.Children.Add(panel);
 
             Array enumValues = Enum.GetValues(enumType);
@@ -255,7 +256,7 @@ namespace AppGene.Ui.Infrastructure
             });
 
             Grid.SetRow(control, row);
-            Grid.SetColumn(control, column + 1);
+            Grid.SetColumn(control, checked(column + 1));
 
             grid.Children.Add(labelElement);
             grid.Children.Add(control);

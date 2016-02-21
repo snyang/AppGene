@@ -1,4 +1,4 @@
-﻿using AppGene.Model.EntityPerception;
+﻿using AppGene.Common.EntityPerception;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -7,13 +7,13 @@ namespace AppGene.Ui.Patterns.MasterDetail
 {
     public class MasterDetailEntityPerception
     {
-        private IList<EditPropertyInfo> detailProperties;
+        private IList<DisplayPropertyInfo> displayProperties;
 
-        private IList<PropertyInfo> displayProperties;
+        private IList<PropertyInfo> referenceProperties;
 
         private IList<PropertyInfo> filterProperties;
 
-        private IList<EditPropertyInfo> gridProperties;
+        private IList<DisplayPropertyInfo> gridDisplayProperties;
 
         private IList<SortPropertyInfo> sortProperties;
 
@@ -22,37 +22,37 @@ namespace AppGene.Ui.Patterns.MasterDetail
             EntityType = entityType;
         }
 
-        public IList<EditPropertyInfo> DetailProperties
+        public IList<DisplayPropertyInfo> DisplayProperties
         {
             get
             {
-                if (detailProperties == null)
+                if (displayProperties == null)
                 {
-                    detailProperties = new EditPropertiesGetter().Get(new EntityAnalysisContext
+                    displayProperties = new DisplayPropertiesGetter().GetProperties(new EntityAnalysisContext
                     {
                         EntityType = EntityType,
                         Source = this.GetType().FullName,
                     });
                 }
 
-                return detailProperties;
+                return displayProperties;
             }
         }
 
-        public IList<PropertyInfo> DisplayProperties
+        public IList<PropertyInfo> ReferenceProperties
         {
             get
             {
-                if (displayProperties == null)
+                if (referenceProperties == null)
                 {
-                    displayProperties = new ReferencePropertyGetter().Get(new EntityAnalysisContext
+                    referenceProperties = new ReferencePropertyGetter().GetProperties(new EntityAnalysisContext
                     {
                         EntityType = EntityType,
                         Source = this.GetType().FullName
                     });
                 }
 
-                return displayProperties;
+                return referenceProperties;
             }
         }
 
@@ -64,7 +64,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             {
                 if (filterProperties == null)
                 {
-                    filterProperties = new FilterPropertyGetter().Get(new EntityAnalysisContext
+                    filterProperties = new FilterPropertyGetter().GetProperties(new EntityAnalysisContext
                     {
                         EntityType = EntityType,
                         Source = this.GetType().FullName
@@ -75,21 +75,21 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
         }
 
-        public IList<EditPropertyInfo> GridProperties
+        public IList<DisplayPropertyInfo> GridDisplayProperties
         {
             get
             {
                 //TODO: distinct edit properties for grid and detail panel
-                if (gridProperties == null)
+                if (gridDisplayProperties == null)
                 {
-                    gridProperties = new EditPropertiesGetter().Get(new EntityAnalysisContext
+                    gridDisplayProperties = new DisplayPropertiesGetter().GetProperties(new EntityAnalysisContext
                     {
                         EntityType = EntityType,
                         Source = this.GetType().FullName,
                     });
                 }
 
-                return gridProperties;
+                return gridDisplayProperties;
             }
         }
 
@@ -99,7 +99,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             {
                 if (sortProperties == null)
                 {
-                    sortProperties = new SortPropertyGetter().Get(new EntityAnalysisContext
+                    sortProperties = new SortPropertyGetter().GetProperties(new EntityAnalysisContext
                     {
                         EntityType = EntityType,
                         Source = this.GetType().FullName,
@@ -108,6 +108,26 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
                 return sortProperties;
             }
+        }
+
+        public object GetPropertyDefaultValue(PropertyInfo property)
+        {
+            return new DefaultValueGetter().GetDefaultValue(new EntityAnalysisContext
+            {
+                EntityType = EntityType,
+                PropertyInfo = property,
+                Source = this.GetType().FullName
+            });
+        }
+
+        public string GetPropertyFormatString(PropertyInfo property)
+        {
+            return new DisplayFormatGetter().GetFormatString(new EntityAnalysisContext
+            {
+                EntityType = EntityType,
+                PropertyInfo = property,
+                Source = this.GetType().FullName,
+            });
         }
     }
 }

@@ -34,8 +34,6 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
 
         public static string ValidateObject(Object entity)
         {
-            var objectType = entity.GetType();
-
             var validationContext = new ValidationContext(entity, null, null);
             var validationResults = new List<ValidationResult>();
 

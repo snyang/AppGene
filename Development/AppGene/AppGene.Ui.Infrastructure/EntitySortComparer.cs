@@ -1,4 +1,4 @@
-﻿using AppGene.Model.EntityPerception;
+﻿using AppGene.Common.EntityPerception;
 using System;
 using System.Collections.Generic;
 
@@ -15,14 +15,14 @@ namespace AppGene.Ui.Infrastructure
             this.sortProperties = sortProperties;
         }
 
-        public virtual int Compare(TEntity object1, TEntity object2)
+        public virtual int Compare(TEntity x, TEntity y)
         {
             int result = 0;
             foreach (var sortProperty in sortProperties)
             {
                 result = Compare(sortProperty.PropertyInfo.PropertyType,
-                            sortProperty.PropertyInfo.GetValue(object1),
-                            sortProperty.PropertyInfo.GetValue(object2));
+                            sortProperty.PropertyInfo.GetValue(x),
+                            sortProperty.PropertyInfo.GetValue(y));
                 if (sortProperty.SortDescending)
                 {
                     result = 0 - result;
@@ -37,7 +37,7 @@ namespace AppGene.Ui.Infrastructure
         {
             if (dataType == typeof(string))
             {
-                return String.Compare(value1 as string, value2 as string);
+                return String.Compare(value1 as string, value2 as string, StringComparison.CurrentCulture);
             }
             if (dataType == typeof(int))
             {

@@ -83,21 +83,21 @@
       <Project>{7fcb9a2e-f3d5-4766-8d94-8afdf9ea9c56}</Project>
       <Name>AppGene.Business.Sample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
+    <ProjectReference Include="..\AppGene.Common.Core\AppGene.Common.Core.csproj">
       <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
-      <Name>AppGene.Model.Core</Name>
+      <Name>AppGene.Common.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Model.DataAnnotations\AppGene.Model.DataAnnotations.csproj">
+    <ProjectReference Include="..\AppGene.Common.DataAnnotations\AppGene.Common.DataAnnotations.csproj">
       <Project>{1769ee6c-40a5-4ce7-b33c-be809efbac82}</Project>
-      <Name>AppGene.Model.DataAnnotations</Name>
+      <Name>AppGene.Common.DataAnnotations</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Model.Entities.Sample\AppGene.Model.Entities.Sample.csproj">
+    <ProjectReference Include="..\AppGene.Common.Entities.Sample\AppGene.Common.Entities.Sample.csproj">
       <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>
-      <Name>AppGene.Model.Entities.Sample</Name>
+      <Name>AppGene.Common.Entities.Sample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Model.EntityPerception\AppGene.Model.EntityPerception.csproj">
+    <ProjectReference Include="..\AppGene.Common.EntityPerception\AppGene.Common.EntityPerception.csproj">
       <Project>{b7ffe2fd-a635-4cff-ab20-aee5aa9202b4}</Project>
-      <Name>AppGene.Model.EntityPerception</Name>
+      <Name>AppGene.Common.EntityPerception</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
       <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>

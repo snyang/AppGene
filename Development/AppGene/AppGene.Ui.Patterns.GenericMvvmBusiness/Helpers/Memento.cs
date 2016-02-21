@@ -7,7 +7,7 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
     //http://www.codeproject.com/Articles/35066/Generic-implementation-of-IEditableObject-via-Type
     public class Memento<T>
     {
-        public Dictionary<PropertyInfo, object> StoredProperties { get; set; } = new Dictionary<PropertyInfo, object>();
+        public Dictionary<PropertyInfo, object> StoredProperties { get; } = new Dictionary<PropertyInfo, object>();
 
         public Memento(T originator)
         {

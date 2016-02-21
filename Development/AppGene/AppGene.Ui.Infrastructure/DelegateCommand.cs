@@ -54,7 +54,7 @@ namespace AppGene.Ui.Infrastructure
             executeAction.Invoke();
         }
 
-        public void RaiseCanExecuteChanged()
+        public void OnCanExecuteChanged()
         {
             if (this.canExecuteChanged == null) return;
             this.canExecuteChanged.Invoke(this, new EventArgs());

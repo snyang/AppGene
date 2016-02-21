@@ -6,19 +6,19 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
     internal class EntityTypeConverter
         : TypeConverter
     {
-        public static PropertyDescriptor CreatePropertyDescriptor<TComponent, TProperty>(
-            string name,
-            Func<TComponent, TProperty> getter,
-            Action<TComponent, TProperty> setter)
-        {
-            return new EntityPropertyDescriptor<TComponent, TProperty>(name, getter, setter);
-        }
+        //public static PropertyDescriptor CreatePropertyDescriptor<TComponent, TProperty>(
+        //    string name,
+        //    Func<TComponent, TProperty> getter,
+        //    Action<TComponent, TProperty> setter)
+        //{
+        //    return new EntityPropertyDescriptor<TComponent, TProperty>(name, getter, setter);
+        //}
 
-        public static PropertyDescriptor CreatePropertyDescriptor<TComponent, TProperty>(
-            string name, Func<TComponent, TProperty> getter)
-        {
-            return new EntityPropertyDescriptor<TComponent, TProperty>(name, getter);
-        }
+        //public static PropertyDescriptor CreatePropertyDescriptor<TComponent, TProperty>(
+        //    string name, Func<TComponent, TProperty> getter)
+        //{
+        //    return new EntityPropertyDescriptor<TComponent, TProperty>(name, getter);
+        //}
 
         public static PropertyDescriptor CreatePropertyDescriptor(string name,
             Type componentType,
@@ -37,67 +37,67 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
                                                  propertyType, getter);
         }
 
-        protected class EntityPropertyDescriptor<TComponent, TProperty>
-            : SimplePropertyDescriptor
-        {
-            private Func<TComponent, TProperty> getter;
-            private Action<TComponent, TProperty> setter;
+        //protected class EntityPropertyDescriptor<TComponent, TProperty>
+        //    : SimplePropertyDescriptor
+        //{
+        //    private Func<TComponent, TProperty> getter;
+        //    private Action<TComponent, TProperty> setter;
 
-            public EntityPropertyDescriptor(string name,
-                Func<TComponent, TProperty> getter,
-                Action<TComponent, TProperty> setter)
-                 : base(typeof(TComponent), name, typeof(TProperty))
-            {
-                if (getter == null)
-                {
-                    throw new ArgumentNullException("getter");
-                }
-                if (setter == null)
-                {
-                    throw new ArgumentNullException("setter");
-                }
+        //    public EntityPropertyDescriptor(string name,
+        //        Func<TComponent, TProperty> getter,
+        //        Action<TComponent, TProperty> setter)
+        //         : base(typeof(TComponent), name, typeof(TProperty))
+        //    {
+        //        if (getter == null)
+        //        {
+        //            throw new ArgumentNullException("getter");
+        //        }
+        //        if (setter == null)
+        //        {
+        //            throw new ArgumentNullException("setter");
+        //        }
 
-                this.getter = getter;
-                this.setter = setter;
-            }
+        //        this.getter = getter;
+        //        this.setter = setter;
+        //    }
 
-            public EntityPropertyDescriptor(string name,
-                   Func<TComponent, TProperty> getter)
-                 : base(typeof(TComponent), name, typeof(TProperty))
-            {
-                if (getter == null)
-                {
-                    throw new ArgumentNullException("getter");
-                }
+        //    public EntityPropertyDescriptor(string name,
+        //           Func<TComponent, TProperty> getter)
+        //         : base(typeof(TComponent), name, typeof(TProperty))
+        //    {
+        //        if (getter == null)
+        //        {
+        //            throw new ArgumentNullException("getter");
+        //        }
 
-                this.getter = getter;
-            }
+        //        this.getter = getter;
+        //    }
 
-            public override bool IsReadOnly
-            {
-                get
-                {
-                    return this.setter == null;
-                }
-            }
+        //    public override bool IsReadOnly
+        //    {
+        //        get
+        //        {
+        //            return this.setter == null;
+        //        }
+        //    }
 
-            public override object GetValue(object target)
-            {
-                TComponent component = (TComponent)target;
-                TProperty value = this.getter(component);
-                return value;
-            }
+        //    public override object GetValue(object target)
+        //    {
+        //        TComponent component = (TComponent)target;
+        //        TProperty value = this.getter(component);
+        //        return value;
+        //    }
 
-            public override void SetValue(object target, object value)
-            {
-                if (!this.IsReadOnly)
-                {
-                    TComponent component = (TComponent)target;
-                    TProperty newValue = (TProperty)value;
-                    this.setter(component, newValue);
-                }
-            }
-        }
+        //    public override void SetValue(object target, object value)
+        //    {
+        //        if (!this.IsReadOnly)
+        //        {
+        //            TComponent component = (TComponent)target;
+        //            TProperty newValue = (TProperty)value;
+        //            this.setter(component, newValue);
+        //        }
+        //    }
+        //}
 
         protected class EntityPropertyDescriptor :
                  TypeConverter.SimplePropertyDescriptor

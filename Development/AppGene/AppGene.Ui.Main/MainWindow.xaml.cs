@@ -1,5 +1,5 @@
 ﻿using AppGene.Business.Sample;
-using AppGene.Model.Entities;
+using AppGene.Common.Entities;
 using AppGene.Ui.Patterns.MasterDetail;
 using System.Windows;
 

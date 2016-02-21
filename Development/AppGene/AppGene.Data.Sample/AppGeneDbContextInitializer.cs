@@ -1,4 +1,4 @@
-﻿using AppGene.Model.Entities;
+﻿using AppGene.Common.Entities;
 using System;
 using System.Data.Entity;
 
@@ -12,7 +12,7 @@ namespace AppGene.Data.Sample
             Employee employee = new Employee();
             employee.EmployeeCode = 1;
             employee.EmployeeName = "Test User 1";
-            employee.Gender = Genders.Male;
+            employee.Gender = Gender.Male;
             employee.Birthday = new DateTime(1975, 5, 1);
 
             context.Employees.Add(employee);

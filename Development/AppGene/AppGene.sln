@@ -11,15 +11,13 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Ui", "Ui", "{A79F58DD-01B9-
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Ui.Infrastructure", "AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj", "{A50296EF-F245-4462-A9F0-623EB3223DAE}"
 EndProject
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Model", "Model", "{6E65EF92-09C3-439F-89FC-F6A9435456CD}"
-EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Model.Patterns.Core", "AppGene.Model.Patterns.Core\AppGene.Model.Patterns.Core.csproj", "{5665EAD1-0CD0-49A8-B75C-E486AA58F08E}"
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6E65EF92-09C3-439F-89FC-F6A9435456CD}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Ui.Patterns.MasterDetail", "AppGene.Ui.Patterns.MasterDetail\AppGene.Ui.Patterns.MasterDetail.csproj", "{0B5927BB-8003-458C-A373-FDED1F1032F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Business.Sample", "AppGene.Business.Sample\AppGene.Business.Sample.csproj", "{7FCB9A2E-F3D5-4766-8D94-8AFDF9EA9C56}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Model.Entities.Sample", "AppGene.Model.Entities.Sample\AppGene.Model.Entities.Sample.csproj", "{7AB88800-CF46-4B27-BBAC-8E7B95CE5925}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Common.Entities.Sample", "AppGene.Common.Entities.Sample\AppGene.Common.Entities.Sample.csproj", "{7AB88800-CF46-4B27-BBAC-8E7B95CE5925}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Data.Sample", "AppGene.Data.Sample\AppGene.Data.Sample.csproj", "{11A1B6ED-7A7F-499D-82AD-EAB03662C289}"
 EndProject
@@ -33,13 +31,13 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Business.Infrastruc
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Ui.Patterns.GenericMvvmBusiness", "AppGene.Ui.Patterns.GenericMvvmBusiness\AppGene.Ui.Patterns.GenericMvvmBusiness.csproj", "{8860B441-50AC-4289-8CF4-609F9FEE6F95}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Model.Core", "AppGene.Model.Core\AppGene.Model.Core.csproj", "{8BB9FE7C-AB90-4691-8B59-285B96699DD2}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Common.Core", "AppGene.Common.Core\AppGene.Common.Core.csproj", "{8BB9FE7C-AB90-4691-8B59-285B96699DD2}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Model.EntityPerception", "AppGene.Model.EntityPerception\AppGene.Model.EntityPerception.csproj", "{B7FFE2FD-A635-4CFF-AB20-AEE5AA9202B4}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Common.EntityPerception", "AppGene.Common.EntityPerception\AppGene.Common.EntityPerception.csproj", "{B7FFE2FD-A635-4CFF-AB20-AEE5AA9202B4}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{A153D7F7-12ED-47E3-8DA4-94AFECB00543}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Model.DataAnnotations", "AppGene.Model.DataAnnotations\AppGene.Model.DataAnnotations.csproj", "{1769EE6C-40A5-4CE7-B33C-BE809EFBAC82}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Common.DataAnnotations", "AppGene.Common.DataAnnotations\AppGene.Common.DataAnnotations.csproj", "{1769EE6C-40A5-4CE7-B33C-BE809EFBAC82}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Ui.Main", "AppGene.Ui.Main\AppGene.Ui.Main.csproj", "{7D06F608-881E-445A-8DA2-386FB921B105}"
 EndProject
@@ -57,10 +55,6 @@ Global
 		{A50296EF-F245-4462-A9F0-623EB3223DAE}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{A50296EF-F245-4462-A9F0-623EB3223DAE}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{A50296EF-F245-4462-A9F0-623EB3223DAE}.Release|Any CPU.Build.0 = Release|Any CPU
-		{5665EAD1-0CD0-49A8-B75C-E486AA58F08E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{5665EAD1-0CD0-49A8-B75C-E486AA58F08E}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{5665EAD1-0CD0-49A8-B75C-E486AA58F08E}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{5665EAD1-0CD0-49A8-B75C-E486AA58F08E}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0B5927BB-8003-458C-A373-FDED1F1032F3}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0B5927BB-8003-458C-A373-FDED1F1032F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0B5927BB-8003-458C-A373-FDED1F1032F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
@@ -111,7 +105,6 @@ Global
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 		{A50296EF-F245-4462-A9F0-623EB3223DAE} = {A79F58DD-01B9-4306-814F-39E585F1E529}
-		{5665EAD1-0CD0-49A8-B75C-E486AA58F08E} = {6E65EF92-09C3-439F-89FC-F6A9435456CD}
 		{0B5927BB-8003-458C-A373-FDED1F1032F3} = {A79F58DD-01B9-4306-814F-39E585F1E529}
 		{7FCB9A2E-F3D5-4766-8D94-8AFDF9EA9C56} = {0445581F-618D-4147-A8CA-83220B6E0174}
 		{7AB88800-CF46-4B27-BBAC-8E7B95CE5925} = {0445581F-618D-4147-A8CA-83220B6E0174}

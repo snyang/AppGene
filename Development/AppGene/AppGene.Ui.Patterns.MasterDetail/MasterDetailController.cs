@@ -2,6 +2,7 @@
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
+using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -77,7 +78,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             ButtonNew.Command = newCommand;
             ButtonDelete.Command = deleteCommand;
             ButtonRefresh.Command = new DelegateCommand(this.DoRefresh);
-            ButtonOk.Command = new DelegateCommand(this.DoOK);
+            ButtonOk.Command = new DelegateCommand(this.DoOk);
             ButtonCancel.Command = new DelegateCommand(this.DoCancel);
         }
 
@@ -109,8 +110,8 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         private void CollectionView_CurrentChanged(object sender, EventArgs e)
         {
-            newCommand.RaiseCanExecuteChanged();
-            deleteCommand.RaiseCanExecuteChanged();
+            newCommand.OnCanExecuteChanged();
+            deleteCommand.OnCanExecuteChanged();
             if (ViewModel.CurrentItem == null) return;
             TModel item = (TModel)ViewModel.CurrentItem;
             if (item == null) return;
@@ -134,7 +135,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
         }
 
-        public void DoOK()
+        public void DoOk()
         {
             UiTool.HandleUiEvent(() =>
             {
@@ -216,7 +217,9 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 e.Handled = true;
                 string confirmDeleteMessage = grid.SelectedItems.Count > 1
                     ? "Would you like to delete selected items?"
-                    : String.Format("Would you like to delete '{0}'?", (grid.SelectedItem as IMasterDetailModel<TEntity>).ToDisplayString());
+                    : String.Format(CultureInfo.CurrentCulture,
+                        "Would you like to delete '{0}'?", 
+                        (grid.SelectedItem as IMasterDetailModel<TEntity>).ToDisplayString());
 
                 if (MessageBox.Show(confirmDeleteMessage,
                     "Confirm Delete",

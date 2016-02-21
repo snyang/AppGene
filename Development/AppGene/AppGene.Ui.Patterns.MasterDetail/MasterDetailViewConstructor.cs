@@ -48,9 +48,9 @@ namespace AppGene.Ui.Patterns.MasterDetail
             initController();
         }
 
-        private Style GetResourceStyle(string resourceName)
+        private static Style GetResourceStyle(string resourceName)
         {
-            return Application.Current.Resources[FrameworkElementErrorStyle] as Style;
+            return Application.Current.Resources[resourceName] as Style;
         }
 
         private void InitCommandBar()
@@ -192,7 +192,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 DataGridMain.Columns.Clear();
 
                 // create data grid columns.
-                var editProperties = entityPerception.GridProperties;
+                var editProperties = entityPerception.GridDisplayProperties;
 
                 Style style = GetResourceStyle(FrameworkElementErrorStyle);
                 foreach (var property in editProperties)
@@ -216,7 +216,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             Grid.SetRow(GridDetail, 2);
 
             // get edit properties
-            var editProperties = entityPerception.DetailProperties;
+            var editProperties = entityPerception.DisplayProperties;
 
             // create columns
             UiTool.CreateGridColumns(GridDetail, 4);

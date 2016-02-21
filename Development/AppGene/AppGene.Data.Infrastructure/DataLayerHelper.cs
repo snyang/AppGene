@@ -3,7 +3,7 @@ using System.Reflection;
 
 namespace AppGene.Data.Infrastructure
 {
-    public class DataLayerHelper
+    public static class DataLayerHelper
     {
         public static DbSet<TEntity> FindDbSet<TEntity>(DbContext context)
             where TEntity : class

@@ -1,5 +1,6 @@
-﻿using AppGene.Model.Core;
+﻿using AppGene.Common.Core;
 using System.Reflection;
+using System.Resources;
 using System.Runtime.InteropServices;
 
 // General Information about an assembly is controlled through the following
@@ -23,6 +24,7 @@ using System.Runtime.InteropServices;
 [assembly: AssemblyProduct(ProductInfo.ProductName)]
 [assembly: AssemblyCopyright(ProductInfo.ProductCopyright)]
 [assembly: AssemblyTrademark(ProductInfo.ProductTrademark)]
+[assembly: NeutralResourcesLanguage(ProductInfo.NeutralCultureName)]
 
 // Version information for an assembly consists of the following four values:
 //

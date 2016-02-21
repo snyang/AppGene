@@ -1,4 +1,4 @@
-﻿using AppGene.Model.EntityPerception;
+﻿using AppGene.Common.EntityPerception;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -9,7 +9,7 @@ namespace AppGene.Ui.Infrastructure
     public static class PropertyDataGridColumnCreator
     {
         // TODO: Enrich the class PropertyDataGridColumnCreator
-        public static DataGridColumn Create(EditPropertyInfo property, Style style)
+        public static DataGridColumn Create(DisplayPropertyInfo property, Style style)
         {
             if (property.PropertyInfo.PropertyType.IsEnum)
             {
@@ -23,7 +23,7 @@ namespace AppGene.Ui.Infrastructure
             return CreateTextColumn(property, style);
         }
 
-        private static DataGridColumn CreateTextColumn(EditPropertyInfo property, Style style)
+        private static DataGridColumn CreateTextColumn(DisplayPropertyInfo property, Style style)
         {
             var column = new DataGridTextColumn
             {
@@ -48,7 +48,7 @@ namespace AppGene.Ui.Infrastructure
             return column;
         }
 
-        private static DataGridColumn CreateEnumColumn(EditPropertyInfo property, Style style)
+        private static DataGridColumn CreateEnumColumn(DisplayPropertyInfo property, Style style)
         {
             // Gender
             // https://msdn.microsoft.com/zh-cn/library/system.windows.controls.datagridcomboboxcolumn.aspx
@@ -83,7 +83,7 @@ namespace AppGene.Ui.Infrastructure
             return column;
         }
 
-        private static DataGridColumn CreateDateColumn(EditPropertyInfo property, Style style)
+        private static DataGridColumn CreateDateColumn(DisplayPropertyInfo property, Style style)
         {
             // Column Birthday Binding
             Binding binding = new Binding(property.PropertyName)

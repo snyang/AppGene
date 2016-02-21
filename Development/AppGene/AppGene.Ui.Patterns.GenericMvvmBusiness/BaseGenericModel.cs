@@ -9,38 +9,35 @@ using System.Runtime.CompilerServices;
 namespace AppGene.Ui.Patterns.GenericMvvmBusiness
 {
     public class BaseGenericModel<TEntity>
-        : IGenericModel<TEntity>
+        : IGenericModel<TEntity>,
+        ICustomTypeDescriptor
         where TEntity : class, new()
     {
         private Memento<TEntity> memento;
 
-        event PropertyChangedEventHandler INotifyPropertyChanged.PropertyChanged
+        public virtual event PropertyChangedEventHandler PropertyChanged
         {
             add
             {
-                if (this is INotifyPropertyChanged)
-                {
-                    this.PropertyChanged += value;
-                    //((INotifyPropertyChanged)this).PropertyChanged +=
-                    //                              this.NotifyPropertyChanged;
-                }
+                this.propertyChanged += value;
             }
 
             remove
             {
-                if (this is INotifyPropertyChanged)
-                {
-                    this.PropertyChanged -= value;
-                    //((INotifyPropertyChanged)this).PropertyChanged -=
-                    //                             this.NotifyPropertyChanged;
-                }
+                this.propertyChanged -= value;
             }
         }
+
+        private event PropertyChangedEventHandler propertyChanged;
 
         string IDataErrorInfo.Error
         {
             get
             {
+                if (typeof(IDataErrorInfo).IsAssignableFrom(typeof(TEntity)))
+                {
+                    return ((this as IGenericModel<TEntity>).Entity as IDataErrorInfo).Error;
+                }
                 return ValidationHelper.ValidateObject((this as IGenericModel<TEntity>).Entity);
             }
         }
@@ -59,7 +56,8 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness
             }
         }
 
-        void IEditableObject.BeginEdit()
+        #region Implements IEditableObject
+        public virtual void BeginEdit()
         {
             if (this.memento == null)
             {
@@ -68,7 +66,7 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness
             }
         }
 
-        void IEditableObject.CancelEdit()
+        public virtual void CancelEdit()
         {
             if (this.memento != null)
             {
@@ -76,14 +74,14 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness
                 this.memento.Restore((this as IGenericModel<TEntity>).Entity);
                 foreach (var pair in this.memento.StoredProperties)
                 {
-                    this.NotifyPropertyChanged(this, new PropertyChangedEventArgs(pair.Key.Name));
+                    this.OnPropertyChanged(this, new PropertyChangedEventArgs(pair.Key.Name));
                 }
 
                 this.memento = null;
             }
         }
 
-        void IEditableObject.EndEdit()
+        public virtual void EndEdit()
         {
             if (this.memento != null)
             {
@@ -91,68 +89,87 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness
                 this.memento = null;
             }
         }
+        #endregion
 
         private void HandleSet(Action setAction, [CallerMemberName] String propertyName = null)
         {
             setAction.Invoke();
-            this.NotifyPropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            this.OnPropertyChanged(this, new PropertyChangedEventArgs(propertyName));
             if ((this as IGenericModel<TEntity>).TraceChanges) (this as IGenericModel<TEntity>).IsChanged = true;
         }
 
-        private void NotifyPropertyChanged(object sender, PropertyChangedEventArgs e)
+        private void OnPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
-            if (this.PropertyChanged != null)
+            if (this.propertyChanged != null)
             {
-                this.PropertyChanged(this, e);
+                this.propertyChanged(this, e);
             }
         }
 
-        AttributeCollection ICustomTypeDescriptor.GetAttributes()
+        private static bool IsInterfaceProperty(Type interfaceType, Type classType, PropertyInfo propertyInfo)
+        {
+            PropertyInfo interfaceProperty = interfaceType.GetProperty(propertyInfo.Name);
+            MethodInfo getterMethod = propertyInfo.GetGetMethod();
+            InterfaceMapping mapping = classType.GetInterfaceMap(interfaceType);
+
+            for (int i = 0; i < mapping.InterfaceMethods.Length; i++)
+            {
+                if (mapping.InterfaceMethods[i] == getterMethod)
+                {
+                    return true;
+                }
+            }
+
+            return false;
+        }
+
+        #region Implements ICustomTypeDescriptor
+        public virtual AttributeCollection GetAttributes()
         {
             throw new NotImplementedException();
         }
 
-        string ICustomTypeDescriptor.GetClassName()
+        public virtual string GetClassName()
         {
             throw new NotImplementedException();
         }
 
-        string ICustomTypeDescriptor.GetComponentName()
+        public virtual string GetComponentName()
         {
             throw new NotImplementedException();
         }
 
-        TypeConverter ICustomTypeDescriptor.GetConverter()
+        public virtual TypeConverter GetConverter()
         {
             throw new NotImplementedException();
         }
 
-        EventDescriptor ICustomTypeDescriptor.GetDefaultEvent()
+        public virtual EventDescriptor GetDefaultEvent()
         {
             throw new NotImplementedException();
         }
 
-        PropertyDescriptor ICustomTypeDescriptor.GetDefaultProperty()
+        public virtual PropertyDescriptor GetDefaultProperty()
         {
             throw new NotImplementedException();
         }
 
-        object ICustomTypeDescriptor.GetEditor(Type editorBaseType)
+        public virtual object GetEditor(Type editorBaseType)
         {
             throw new NotImplementedException();
         }
 
-        EventDescriptorCollection ICustomTypeDescriptor.GetEvents()
+        public virtual EventDescriptorCollection GetEvents()
         {
             throw new NotImplementedException();
         }
 
-        EventDescriptorCollection ICustomTypeDescriptor.GetEvents(Attribute[] attributes)
+        public virtual EventDescriptorCollection GetEvents(Attribute[] attributes)
         {
             throw new NotImplementedException();
         }
 
-        PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties()
+        public virtual PropertyDescriptorCollection GetProperties()
         {
             IList<PropertyDescriptor> propertyDescriptors = new List<PropertyDescriptor>();
 
@@ -200,16 +217,15 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness
             return new PropertyDescriptorCollection(propertyDescriptors.ToArray());
         }
 
-        PropertyDescriptorCollection ICustomTypeDescriptor.GetProperties(Attribute[] attributes)
+        public virtual PropertyDescriptorCollection GetProperties(Attribute[] attributes)
         {
             throw new NotImplementedException();
         }
 
-        object ICustomTypeDescriptor.GetPropertyOwner(PropertyDescriptor pd)
+        public virtual object GetPropertyOwner(PropertyDescriptor pd)
         {
             throw new NotImplementedException();
         }
-
-        private event PropertyChangedEventHandler PropertyChanged;
+        #endregion
     }
 }

@@ -54,20 +54,20 @@
     <Compile Include="DelegateParameterCommand.cs" />
     <Compile Include="DependencyObjectValidationExtension.cs" />
     <Compile Include="EnumToBooleanConverter.cs" />
-    <Compile Include="Mvvm\ViewModelBase.cs" />
+    <Compile Include="Mvvm\BaseViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="PropertyControlCreator.cs" />
     <Compile Include="UiTool.cs" />
   </ItemGroup>
   <ItemGroup />
   <ItemGroup>
-    <ProjectReference Include="..\AppGene.Model.Core\AppGene.Model.Core.csproj">
+    <ProjectReference Include="..\AppGene.Common.Core\AppGene.Common.Core.csproj">
       <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
-      <Name>AppGene.Model.Core</Name>
+      <Name>AppGene.Common.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Model.EntityPerception\AppGene.Model.EntityPerception.csproj">
+    <ProjectReference Include="..\AppGene.Common.EntityPerception\AppGene.Common.EntityPerception.csproj">
       <Project>{b7ffe2fd-a635-4cff-ab20-aee5aa9202b4}</Project>
-      <Name>AppGene.Model.EntityPerception</Name>
+      <Name>AppGene.Common.EntityPerception</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

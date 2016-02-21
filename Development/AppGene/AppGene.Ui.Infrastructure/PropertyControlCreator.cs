@@ -1,4 +1,4 @@
-﻿using AppGene.Model.EntityPerception;
+﻿using AppGene.Common.EntityPerception;
 using System;
 using System.Windows;
 using System.Windows.Controls;
@@ -8,7 +8,7 @@ namespace AppGene.Ui.Infrastructure
     public static class PropertyControlCreator
     {
         // TODO: Enrich the class PropertyControlCreator
-        public static void Create(EditPropertyInfo property,
+        public static void Create(DisplayPropertyInfo property,
             Grid parent,
             int row,
             int column,
@@ -30,7 +30,7 @@ namespace AppGene.Ui.Infrastructure
             return;
         }
 
-        private static void CreateTextControl(EditPropertyInfo property, Grid parent, int row, int column, string bindingPathPrefix, Style style)
+        private static void CreateTextControl(DisplayPropertyInfo property, Grid parent, int row, int column, string bindingPathPrefix, Style style)
         {
             UiTool.CreateField(parent,
                 property.PropertyName,
@@ -41,7 +41,7 @@ namespace AppGene.Ui.Infrastructure
                 column);
         }
 
-        private static void CreateDateControl(EditPropertyInfo property, Grid parent, int row, int column, string bindingPathPrefix, Style style)
+        private static void CreateDateControl(DisplayPropertyInfo property, Grid parent, int row, int column, string bindingPathPrefix, Style style)
         {
             UiTool.CreateDateField(parent,
                 property.PropertyName,
@@ -52,7 +52,7 @@ namespace AppGene.Ui.Infrastructure
                 column);
         }
 
-        private static void CreateEnumControl(EditPropertyInfo property, Grid parent, int row, int column, string bindingPathPrefix, Style style)
+        private static void CreateEnumControl(DisplayPropertyInfo property, Grid parent, int row, int column, string bindingPathPrefix, Style style)
         {
             UiTool.CreateEnumField(parent,
                 property.PropertyInfo.PropertyType,

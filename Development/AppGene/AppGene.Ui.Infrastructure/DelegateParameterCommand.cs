@@ -54,10 +54,10 @@ namespace AppGene.Ui.Infrastructure
             executeAction.Invoke(parameter);
         }
 
-        public void RaiseCanExecuteChanged()
+        public void OnCanExecuteChanged()
         {
-            if (this.canExecuteChanged == null) return;
-            this.canExecuteChanged.Invoke(this, new EventArgs());
+            if (canExecuteChanged == null) return;
+            canExecuteChanged.Invoke(this, new EventArgs());
         }
     }
 }

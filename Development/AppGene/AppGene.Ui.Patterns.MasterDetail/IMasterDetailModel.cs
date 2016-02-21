@@ -14,9 +14,9 @@ namespace AppGene.Ui.Patterns.MasterDetail
         /// <summary>
         /// Do filter.
         /// </summary>
-        /// <param name="filterString"></param>
+        /// <param name="keyword"></param>
         /// <returns></returns>
-        bool DoFilter(string filterString);
+        bool DoFilter(string keyword);
 
         /// <summary>
         /// Set default value to the instance.
