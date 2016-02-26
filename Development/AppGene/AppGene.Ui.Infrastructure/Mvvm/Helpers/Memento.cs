@@ -2,7 +2,7 @@
 using System.Linq;
 using System.Reflection;
 
-namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
+namespace AppGene.Ui.Infrastructure.Mvvm.Helpers
 {
     //http://www.codeproject.com/Articles/35066/Generic-implementation-of-IEditableObject-via-Type
     public class Memento<T>

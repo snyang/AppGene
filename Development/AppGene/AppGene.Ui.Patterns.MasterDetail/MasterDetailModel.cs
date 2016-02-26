@@ -1,5 +1,5 @@
 ﻿using AppGene.Common.EntityPerception;
-using AppGene.Ui.Patterns.GenericMvvmBusiness;
+using AppGene.Ui.Infrastructure.Mvvm;
 using System;
 using System.Globalization;
 using System.Reflection;
@@ -7,7 +7,7 @@ using System.Reflection;
 namespace AppGene.Ui.Patterns.MasterDetail
 {
     public class MasterDetailModel<TEntity>
-        : BaseGenericModel<TEntity>, IMasterDetailModel<TEntity>
+        : DefaultEditableModel<TEntity, TEntity>, IMasterDetailModel<TEntity>
         where TEntity : class, new()
     {
         private MasterDetailEntityPerception entityPerception = new MasterDetailEntityPerception(typeof(TEntity));
@@ -15,14 +15,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         public MasterDetailModel()
             : base()
         {
-            (this as IMasterDetailModel<TEntity>).Entity = new TEntity();
-            (this as IMasterDetailModel<TEntity>).IsNew = true;
-            (this as IMasterDetailModel<TEntity>).SetDefault();
-        }
-
-        bool IMasterDetailModel<TEntity>.IsNew
-        {
-            get; set;
+            //(this as IMasterDetailModel<TEntity>).Model = new TEntity();
         }
 
         bool IMasterDetailModel<TEntity>.DoFilter(string keyword)
@@ -36,7 +29,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             // Filtering
             foreach (var property in entityPerception.FilterProperties)
             {
-                if (property.GetValue((this as IMasterDetailModel<TEntity>).Entity)
+                if (property.GetValue((this as IMasterDetailModel<TEntity>).Model)
                     .ToString().IndexOf(keyword, StringComparison.OrdinalIgnoreCase) >= 0)
                 {
                     return true;
@@ -53,7 +46,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 object value = entityPerception.GetPropertyDefaultValue(property);
                 if (value != null)
                 {
-                    property.SetValue((this as IMasterDetailModel<TEntity>).Entity, value);
+                    property.SetValue((this as IMasterDetailModel<TEntity>).Model, value);
                 }
             }
         }
@@ -79,7 +72,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                     ? "{" + i + "}"
                     : "{" + i + ":" + propertyFormatString + "}";
 
-                values[i] = entityPerception.ReferenceProperties[i].GetValue((this as IMasterDetailModel<TEntity>).Entity);
+                values[i] = entityPerception.ReferenceProperties[i].GetValue((this as IMasterDetailModel<TEntity>).Model);
             }
 
             entityString = string.Format(CultureInfo.CurrentCulture, formatString, values);

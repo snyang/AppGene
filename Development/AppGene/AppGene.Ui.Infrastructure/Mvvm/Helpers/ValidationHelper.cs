@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 
-namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
+namespace AppGene.Ui.Infrastructure.Mvvm.Helpers
 {
     public static class ValidationHelper
     {

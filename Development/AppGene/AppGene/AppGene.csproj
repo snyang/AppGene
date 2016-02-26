@@ -164,10 +164,6 @@
       <Project>{7d06f608-881e-445a-8da2-386fb921b105}</Project>
       <Name>AppGene.Ui.Main</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Ui.Patterns.GenericMvvmBusiness\AppGene.Ui.Patterns.GenericMvvmBusiness.csproj">
-      <Project>{8860b441-50ac-4289-8cf4-609f9fee6f95}</Project>
-      <Name>AppGene.Ui.Patterns.GenericMvvmBusiness</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AppGene.Ui.Patterns.MasterDetail\AppGene.Ui.Patterns.MasterDetail.csproj">
       <Project>{0b5927bb-8003-458c-a373-fded1f1032f3}</Project>
       <Name>AppGene.Ui.Patterns.MasterDetail</Name>

@@ -9,16 +9,16 @@ namespace AppGene.Business.Sample
         : AbstractCrudBusinessService<TEntity>
         where TEntity : class
     {
-        private ICrudDataService<TEntity> dataService;
+        //private ICrudDataService<TEntity> dataService;
         public override ICrudDataService<TEntity> DataService
         {
             get
             {
-                if (dataService==null)
-                {
-                    dataService = new CommonCrudDataService<TEntity>();
-                }
-                return dataService;
+                //if (dataService==null)
+                //{
+                //    dataService = new CommonCrudDataService<TEntity>();
+                //}
+                return new CommonCrudDataService<TEntity>();
             }
         }
     }

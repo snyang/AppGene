@@ -160,7 +160,17 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 models.Add(model);
             }
             this.CollectionView = new ListCollectionView(models);
+            //CollectionView.CurrentChanging += CollectionView_CurrentChanging;
         }
+
+        //private void CollectionView_CurrentChanging(object sender, CurrentChangingEventArgs e)
+        //{
+        //    TModel currentAddItem = As(CollectionView.CurrentAddItem);
+        //    if (currentAddItem == null) return;
+        //    (currentAddItem as IMasterDetailModel<TEntity>).Entity = new TEntity();
+        //    (currentAddItem as IMasterDetailModel<TEntity>).SetDefault();
+        //    (currentAddItem as IMasterDetailModel<TEntity>).IsNew = true;
+        //}
 
         private static TModel As(object obj)
         {

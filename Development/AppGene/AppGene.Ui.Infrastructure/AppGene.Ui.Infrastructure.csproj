@@ -36,6 +36,7 @@
     <Reference Include="PresentationCore" />
     <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="System.Windows" />
     <Reference Include="System.Xaml" />
@@ -48,6 +49,13 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Mvvm\AbstractEditableModel.cs" />
+    <Compile Include="Mvvm\BaseEntityModel.cs" />
+    <Compile Include="Mvvm\DefaultEditableModel.cs" />
+    <Compile Include="Mvvm\Helpers\EntityTypeConverter.cs" />
+    <Compile Include="Mvvm\Helpers\Memento.cs" />
+    <Compile Include="Mvvm\Helpers\ValidationHelper.cs" />
+    <Compile Include="Mvvm\IEditableModel.cs" />
     <Compile Include="PropertyDataGridColumnCreator.cs" />
     <Compile Include="EntitySortComparer.cs" />
     <Compile Include="DelegateCommand.cs" />

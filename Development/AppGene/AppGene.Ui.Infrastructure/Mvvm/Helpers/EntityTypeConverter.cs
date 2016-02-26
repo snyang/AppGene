@@ -1,7 +1,7 @@
 ﻿using System;
 using System.ComponentModel;
 
-namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
+namespace AppGene.Ui.Infrastructure.Mvvm.Helpers
 {
     internal class EntityTypeConverter
         : TypeConverter
@@ -112,15 +112,6 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
                 Action<object, object> setter)
                 : base(componentType, name, propertyType)
             {
-                if (getter == null)
-                {
-                    throw new ArgumentNullException("getter");
-                }
-                if (setter == null)
-                {
-                    throw new ArgumentNullException("setter");
-                }
-
                 this.getter = getter;
                 this.setter = setter;
             }
@@ -129,11 +120,6 @@ namespace AppGene.Ui.Patterns.GenericMvvmBusiness.Helpers
                    Type propertyType, Func<object, object> getter)
                  : base(componentType, name, propertyType)
             {
-                if (getter == null)
-                {
-                    throw new ArgumentNullException("getter");
-                }
-
                 this.getter = getter;
             }
 

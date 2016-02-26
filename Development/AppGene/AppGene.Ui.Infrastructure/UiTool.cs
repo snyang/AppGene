@@ -246,7 +246,7 @@ namespace AppGene.Ui.Infrastructure
                 control.Style = style;
             }
 
-            control.SetBinding(DatePicker.TextProperty, new Binding(bindingPath)
+            control.SetBinding(DatePicker.SelectedDateProperty, new Binding(bindingPath)
             {
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
                 Mode = BindingMode.TwoWay,

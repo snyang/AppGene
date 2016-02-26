@@ -1,16 +1,11 @@
-﻿using AppGene.Ui.Patterns.GenericMvvmBusiness;
+﻿using AppGene.Ui.Infrastructure.Mvvm;
 
 namespace AppGene.Ui.Patterns.MasterDetail
 {
     public interface IMasterDetailModel<TEntity>
-        : IGenericModel<TEntity>
+        : IEditableModel<TEntity, TEntity>
         where TEntity : class, new()
     {
-        /// <summary>
-        /// Gets if the instance is a new instance which have not been stored.
-        /// </summary>
-        bool IsNew { get; set; }
-
         /// <summary>
         /// Do filter.
         /// </summary>

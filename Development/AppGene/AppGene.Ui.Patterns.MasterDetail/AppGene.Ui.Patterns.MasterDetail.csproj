@@ -75,10 +75,6 @@
       <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>
       <Name>AppGene.Ui.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Ui.Patterns.GenericMvvmBusiness\AppGene.Ui.Patterns.GenericMvvmBusiness.csproj">
-      <Project>{8860b441-50ac-4289-8cf4-609f9fee6f95}</Project>
-      <Name>AppGene.Ui.Patterns.GenericMvvmBusiness</Name>
-    </ProjectReference>
   </ItemGroup>
   <ItemGroup>
     <Page Include="MasterDetailView.xaml">

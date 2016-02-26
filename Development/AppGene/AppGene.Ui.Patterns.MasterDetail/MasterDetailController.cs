@@ -287,6 +287,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         private static TModel SetNewItem(TModel item)
         {
             (item as IEditableObject).BeginEdit();
+            item.IsNew = true;
             item.SetDefault();
             return item;
         }
