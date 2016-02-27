@@ -73,9 +73,9 @@
       <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
       <Name>AppGene.Common.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Common.EntityPerception\AppGene.Common.EntityPerception.csproj">
-      <Project>{b7ffe2fd-a635-4cff-ab20-aee5aa9202b4}</Project>
-      <Name>AppGene.Common.EntityPerception</Name>
+    <ProjectReference Include="..\AppGene.Common.Entities.Infrastructure\AppGene.Common.Entities.Infrastructure.csproj">
+      <Project>{1769ee6c-40a5-4ce7-b33c-be809efbac82}</Project>
+      <Name>AppGene.Common.Entities.Infrastructure</Name>
     </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

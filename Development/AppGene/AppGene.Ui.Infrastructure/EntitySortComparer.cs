@@ -1,4 +1,4 @@
-﻿using AppGene.Common.EntityPerception;
+﻿using AppGene.Common.Entities.Infrastructure.Inferences;
 using System;
 using System.Collections.Generic;
 

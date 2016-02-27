@@ -61,10 +61,6 @@
       <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>
       <Name>AppGene.Common.Entities.Sample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Common.EntityPerception\AppGene.Common.EntityPerception.csproj">
-      <Project>{b7ffe2fd-a635-4cff-ab20-aee5aa9202b4}</Project>
-      <Name>AppGene.Common.EntityPerception</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

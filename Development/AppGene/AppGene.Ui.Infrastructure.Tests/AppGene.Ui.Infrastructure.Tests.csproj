@@ -55,9 +55,9 @@
       <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
       <Name>AppGene.Common.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Common.DataAnnotations\AppGene.Common.DataAnnotations.csproj">
+    <ProjectReference Include="..\AppGene.Common.Entities.Infrastructure\AppGene.Common.Entities.Infrastructure.csproj">
       <Project>{1769ee6c-40a5-4ce7-b33c-be809efbac82}</Project>
-      <Name>AppGene.Common.DataAnnotations</Name>
+      <Name>AppGene.Common.Entities.Infrastructure</Name>
     </ProjectReference>
     <ProjectReference Include="..\AppGene.Common.Entities.Sample\AppGene.Common.Entities.Sample.csproj">
       <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>

@@ -1,4 +1,5 @@
 ﻿using AppGene.Common.Core;
+using AppGene.Common.Entities.Infrastructure.EntityModels;
 using System.ComponentModel;
 
 namespace AppGene.Ui.Infrastructure.Mvvm

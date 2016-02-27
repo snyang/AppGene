@@ -7,7 +7,7 @@ using System.ComponentModel;
 using NUnit.Framework;
 using System.Threading;
 using AppGene.Ui.Infrastructure.Tests.TestData;
-using AppGene.Common.Core;
+using AppGene.Common.Entities.Infrastructure.EntityModels;
 
 namespace AppGene.Ui.Infrastructure.Tests
 {

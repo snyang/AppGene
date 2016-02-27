@@ -1,5 +1,5 @@
 ﻿using AppGene.Business.Infrastructure;
-using AppGene.Ui.Infrastructure;
+using AppGene.Common.Entities.Infrastructure.EntityModels;
 using AppGene.Ui.Infrastructure.Mvvm;
 using System;
 using System.Collections;
@@ -12,23 +12,25 @@ using System.Windows.Threading;
 
 namespace AppGene.Ui.Patterns.MasterDetail
 {
-    public class MasterDetailViewModel<TEntity, TModel> : BaseViewModel
+    public class MasterDetailViewModel<TModel, TEntity, TModelAdapter> : BaseViewModel
+        where TModel : class, new()
         where TEntity : class, new()
-        where TModel : IMasterDetailModel<TEntity>, new()
+        where TModelAdapter: DefaultEditableModel<TModel, TEntity>, new()
     {
         private readonly AbstractCrudBusinessService<TEntity> businessService;
         private ListCollectionView collectionView;
-        private TModel currentItem;
-        private MasterDetailEntityPerception entityPerception = new MasterDetailEntityPerception(typeof(TEntity));
+        private MasterDetailPatternContext<TModel, TEntity> context;
+        private TModelAdapter currentItem;
         private string filterString;
 
         private DispatcherTimer filterTimer;
 
-        public MasterDetailViewModel(AbstractCrudBusinessService<TEntity> service)
+        public MasterDetailViewModel(MasterDetailPatternContext<TModel, TEntity> context)
         {
-            this.businessService = service;
+            this.context = context;
+            this.businessService = context.BusinessService;
 
-            this.CollectionView = new ListCollectionView(new List<TModel>());
+            this.CollectionView = new ListCollectionView(new List<TModelAdapter>());
         }
 
         public ListCollectionView CollectionView
@@ -50,7 +52,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             set
             {
                 LastItem = currentItem;
-                SetProperty(ref currentItem, As(value));
+                SetProperty(ref currentItem, AsModelAdapter(value));
             }
         }
 
@@ -76,7 +78,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             get
             {
                 if (this.CurrentItem == null
-                    || this.currentItem.IsNew)
+                    || this.currentItem.ToIEditableModel().IsNew)
                 {
                     return true;
                 }
@@ -91,7 +93,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             {
                 try
                 {
-                    var firstChangedItem = this.CollectionView.OfType<TModel>().First(item => item.IsChanged == true);
+                    var firstChangedItem = this.CollectionView.OfType<TModelAdapter>().First(item => item.ToIEditableModel().IsChanged == true);
                     return !(firstChangedItem == null);
                 }
                 catch
@@ -101,9 +103,9 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
         }
 
-        public TModel LastItem { get; private set; }
+        public TModelAdapter LastItem { get; private set; }
 
-        public void DataSave(TModel item)
+        public void DataSave(TModelAdapter item)
         {
             // validation
             String validateErrors = ((IDataErrorInfo)item).Error;
@@ -113,28 +115,28 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 return;
             }
             // save data
-            if (item.IsNew)
+            if (item.ToIEditableModel().IsNew)
             {
                 this.businessService.Insert(item.Entity);
-                item.IsNew = false;
+                item.ToIEditableModel().IsNew = false;
             }
             else
             {
                 this.businessService.Update(item.Entity);
             }
-            item.IsChanged = false;
+            item.ToIEditableModel().IsChanged = false;
             ((IEditableObject)item).EndEdit();
         }
 
-        public IList<TModel> Delete(IList deleteItems)
+        public IList<TModelAdapter> Delete(IList deleteItems)
         {
             IList<TEntity> entities = new List<TEntity>();
-            IList<TModel> models = new List<TModel>();
+            IList<TModelAdapter> models = new List<TModelAdapter>();
 
             foreach (var deleteItem in deleteItems)
             {
-                TModel item = As(deleteItem);
-                if (item != null && !item.IsNew)
+                TModelAdapter item = AsModelAdapter(deleteItem);
+                if (item != null && !item.ToIEditableModel().IsNew)
                 {
                     entities.Add(item.Entity);
                     models.Add(item);
@@ -149,42 +151,31 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         public void GetData()
         {
-            List<TModel> models = new List<TModel>();
             IList<TEntity> entities = this.businessService.Query();
-            Sort(entities);
+            context.UiService.Sort(entities);
+
+            List<TModelAdapter> models = new List<TModelAdapter>();
             foreach (var entity in entities)
             {
-                TModel model = new TModel();
-                model.Entity = entity;
-                (model as IMasterDetailModel<TEntity>).IsNew = false;
+                TModelAdapter model = EntityModelHelper.TryDynamicCreateModel<TModelAdapter, TEntity>(entity);
                 models.Add(model);
             }
             this.CollectionView = new ListCollectionView(models);
-            //CollectionView.CurrentChanging += CollectionView_CurrentChanging;
         }
 
-        //private void CollectionView_CurrentChanging(object sender, CurrentChangingEventArgs e)
-        //{
-        //    TModel currentAddItem = As(CollectionView.CurrentAddItem);
-        //    if (currentAddItem == null) return;
-        //    (currentAddItem as IMasterDetailModel<TEntity>).Entity = new TEntity();
-        //    (currentAddItem as IMasterDetailModel<TEntity>).SetDefault();
-        //    (currentAddItem as IMasterDetailModel<TEntity>).IsNew = true;
-        //}
-
-        private static TModel As(object obj)
+        private static TModelAdapter AsModelAdapter(object obj)
         {
-            if (obj is TModel) return (TModel)obj;
-            return default(TModel);
+            if (obj is TModelAdapter) return (TModelAdapter)obj;
+            return default(TModelAdapter);
         }
 
         private bool DoFilter(object filteredItem)
         {
             if (string.IsNullOrWhiteSpace(filterString)) return true;
 
-            TModel item = As(filteredItem);
+            TModelAdapter item = AsModelAdapter(filteredItem);
             if (item == null) return true;
-            return item.DoFilter(filterString);
+            return context.UiService.DoFilter(item.ToIEditableModel().Model, filterString);
         }
 
         private void filterTimer_Tick(object sender, EventArgs e)
@@ -202,14 +193,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 }
                 CollectionView.Refresh();
             }
-        }
-
-        private void Sort(IList<TEntity> entities)
-        {
-            if (entityPerception.SortProperties.Count == 0) return;
-
-            EntitySortComparer<TEntity> comparer = new EntitySortComparer<TEntity>(entityPerception.SortProperties);
-            (entities as List<TEntity>).Sort(comparer);
         }
 
         private void StartFilter()

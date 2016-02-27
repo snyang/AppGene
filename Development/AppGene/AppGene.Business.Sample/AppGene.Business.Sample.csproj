@@ -59,10 +59,6 @@
       <Project>{7ab88800-cf46-4b27-bbac-8e7b95ce5925}</Project>
       <Name>AppGene.Common.Entities.Sample</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
-      <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>
-      <Name>AppGene.Ui.Infrastructure</Name>
-    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

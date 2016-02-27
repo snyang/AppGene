@@ -1,4 +1,5 @@
 ﻿using AppGene.Ui.Infrastructure;
+using AppGene.Ui.Infrastructure.Mvvm;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -13,42 +14,77 @@ namespace AppGene.Ui.Patterns.MasterDetail
     /// <summary>
     /// The class is used to as a controller to control MasterDetailView operations
     /// </summary>
-    public class MasterDetailController<TEntity, TModel>
+    public class MasterDetailController<TModel, TEntity, TModelAdapter>
+        where TModel : class, new()
         where TEntity : class, new()
-        where TModel : IMasterDetailModel<TEntity>, new()
+        where TModelAdapter : DefaultEditableModel<TModel, TEntity>, new()
     {
-        private int currentIndex;
+        private readonly MasterDetailPatternContext<TModel, TEntity> context;
         private readonly DelegateCommand deleteCommand;
         private readonly DelegateCommand newCommand;
-
-        public MasterDetailController()
+        private int currentIndex;
+        public MasterDetailController(MasterDetailPatternContext<TModel, TEntity> context)
         {
+            this.context = context;
             newCommand = new DelegateCommand(this.DoNew, this.CanExecuteNew);
             deleteCommand = new DelegateCommand(this.DoDelete, this.CanExecuteDelete);
         }
 
         #region Properties
 
-        public ContentControl Owner { get; set; }
-        public DataGrid DataGridMain { get; set; }
         public Button ButtonCancel { get; set; }
         public Button ButtonDelete { get; set; }
         public Button ButtonNew { get; set; }
         public Button ButtonOk { get; set; }
         public Button ButtonRefresh { get; set; }
-
+        public DataGrid DataGridMain { get; set; }
+        public ContentControl Owner { get; set; }
         #endregion Properties
 
-        public MasterDetailViewModel<TEntity, TModel> ViewModel
+        public MasterDetailViewModel<TModel, TEntity, TModelAdapter> ViewModel
         {
             get
             {
-                return this.Owner.DataContext as MasterDetailViewModel<TEntity, TModel>;
+                return this.Owner.DataContext as MasterDetailViewModel<TModel, TEntity, TModelAdapter>;
             }
             set
             {
                 this.Owner.DataContext = value;
             }
+        }
+
+        public void DoCancel()
+        {
+            if (ViewModel.CurrentItem == null) return;
+            DefaultEditableModel<TModel, TEntity> item = AsModelAdapter(ViewModel.CurrentItem);
+            if (item == null) return;
+
+            if (ViewModel.IsAddingNew)
+            {
+                ViewModel.CollectionView.Remove(item);
+            }
+            else
+            {
+                ((IEditableObject)item).CancelEdit();
+                ((IEditableObject)item).BeginEdit();
+            }
+        }
+
+        public void DoOk()
+        {
+            UiTool.HandleUiEvent(() =>
+            {
+                if (ViewModel.CurrentItem == null) return;
+                TModelAdapter item = AsModelAdapter(ViewModel.CurrentItem);
+                ViewModel.DataSave(item);
+                ((IEditableObject)item).BeginEdit();
+            });
+        }
+
+        public void GetData()
+        {
+            ViewModel.GetData();
+            ViewModel.CollectionView.CurrentChanged += CollectionView_CurrentChanged;
         }
 
         public void Initialize()
@@ -57,6 +93,19 @@ namespace AppGene.Ui.Patterns.MasterDetail
             HandleEvent();
             BindingData();
             BindingCommands();
+        }
+
+        private static TModelAdapter AsModelAdapter(object obj)
+        {
+            return obj as TModelAdapter;
+        }
+        private void BindingCommands()
+        {
+            ButtonNew.Command = newCommand;
+            ButtonDelete.Command = deleteCommand;
+            ButtonRefresh.Command = new DelegateCommand(this.DoRefresh);
+            ButtonOk.Command = new DelegateCommand(this.DoOk);
+            ButtonCancel.Command = new DelegateCommand(this.DoCancel);
         }
 
         private void BindingData()
@@ -72,14 +121,135 @@ namespace AppGene.Ui.Patterns.MasterDetail
                     Mode = BindingMode.TwoWay,
                 });
         }
-
-        private void BindingCommands()
+        private bool CanExecuteDelete()
         {
-            ButtonNew.Command = newCommand;
-            ButtonDelete.Command = deleteCommand;
-            ButtonRefresh.Command = new DelegateCommand(this.DoRefresh);
-            ButtonOk.Command = new DelegateCommand(this.DoOk);
-            ButtonCancel.Command = new DelegateCommand(this.DoCancel);
+            if (DataGridMain.SelectedItems.Count == 0)
+            {
+                return false;
+            }
+
+            return true;
+        }
+
+        private bool CanExecuteNew()
+        {
+            return !ViewModel.IsChanged;
+        }
+
+        private void CollectionView_CurrentChanged(object sender, EventArgs e)
+        {
+            newCommand.OnCanExecuteChanged();
+            deleteCommand.OnCanExecuteChanged();
+            if (ViewModel.CurrentItem == null) return;
+            TModelAdapter item = AsModelAdapter(ViewModel.CurrentItem);
+            if (item == null) return;
+            ((IEditableObject)item).BeginEdit();
+        }
+
+        private void DataGrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
+        {
+            UiTool.HandleUiEvent(() =>
+           {
+               if (e.NewItem == null)
+               {
+                   e.NewItem = SetNewItem(new TModelAdapter());
+               }
+           });
+        }
+
+        private void DataGrid_PreviewCanExecuteHandler(object sender, CanExecuteRoutedEventArgs e)
+        {
+            DataGrid grid = (DataGrid)sender;
+            if (e.Command == DataGrid.DeleteCommand)
+            {
+                e.Handled = true;
+
+                UiTool.HandleUiEvent(() =>
+                {
+                    DeleteItems();
+                });
+            }
+        }
+
+        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            UiTool.HandleUiEvent(() =>
+            {
+                TModelAdapter model = this.ViewModel.LastItem;
+                if (model != null && (model.ToIEditableModel().IsChanged))
+                {
+                    ViewModel.DataSave(model);
+                }
+
+                this.currentIndex = DataGridMain.SelectedIndex;
+            },
+            () =>
+            {
+                SetSelectedIndex(currentIndex);
+                return;
+            });
+        }
+
+        private void DeleteItems()
+        {
+            if (DataGridMain.SelectedItems.Count == 0)
+            {
+                return;
+            }
+
+            string confirmDeleteMessage = this.DataGridMain.SelectedItems.Count > 1
+                    ? "Would you like to delete selected items?"
+                    : String.Format(CultureInfo.CurrentCulture,
+                        "Would you like to delete '{0}'?",
+                        context.UiService.ToDisplayString(AsModelAdapter(DataGridMain.SelectedItem).ToIEditableModel().Model));
+
+            if (MessageBox.Show(confirmDeleteMessage,
+                "Confirm Delete",
+                MessageBoxButton.YesNo,
+                MessageBoxImage.Question,
+                MessageBoxResult.No) != MessageBoxResult.Yes)
+            {
+                return;
+            }
+
+            int selectedIndex = DataGridMain.SelectedIndex;
+            IList<TModelAdapter> models = ViewModel.Delete(DataGridMain.SelectedItems);
+            foreach (var item in models)
+            {
+                ViewModel.CollectionView.Remove(item);
+            }
+
+            if (selectedIndex < DataGridMain.Items.Count)
+            {
+                DataGridMain.SelectedIndex = selectedIndex;
+            }
+            else
+            {
+                DataGridMain.SelectedIndex = DataGridMain.Items.Count - 1;
+            }
+        }
+
+        private void DoDelete()
+        {
+            UiTool.HandleUiEvent(() =>
+            {
+                DeleteItems();
+            });
+        }
+
+        private void DoNew()
+        {
+            TModelAdapter item = AsModelAdapter(ViewModel.CollectionView.AddNew());
+            SetNewItem(item);
+            ViewModel.CollectionView.CommitNew();
+        }
+
+        private void DoRefresh()
+        {
+            UiTool.HandleUiEvent(() =>
+                {
+                    GetData();
+                });
         }
 
         private void HandleEvent()
@@ -101,163 +271,12 @@ namespace AppGene.Ui.Patterns.MasterDetail
                     GetData();
                 });
         }
-
-        public void GetData()
+        private TModelAdapter SetNewItem(TModelAdapter item)
         {
-            ViewModel.GetData();
-            ViewModel.CollectionView.CurrentChanged += CollectionView_CurrentChanged;
-        }
-
-        private void CollectionView_CurrentChanged(object sender, EventArgs e)
-        {
-            newCommand.OnCanExecuteChanged();
-            deleteCommand.OnCanExecuteChanged();
-            if (ViewModel.CurrentItem == null) return;
-            TModel item = (TModel)ViewModel.CurrentItem;
-            if (item == null) return;
-            ((IEditableObject)item).BeginEdit();
-        }
-
-        public void DoCancel()
-        {
-            if (ViewModel.CurrentItem == null) return;
-            TModel item = (TModel)ViewModel.CurrentItem;
-            if (item == null) return;
-
-            if (ViewModel.IsAddingNew)
-            {
-                ViewModel.CollectionView.Remove(item);
-            }
-            else
-            {
-                ((IEditableObject)item).CancelEdit();
-                ((IEditableObject)item).BeginEdit();
-            }
-        }
-
-        public void DoOk()
-        {
-            UiTool.HandleUiEvent(() =>
-            {
-                if (ViewModel.CurrentItem == null) return;
-                TModel item = (TModel)ViewModel.CurrentItem;
-                ViewModel.DataSave(item);
-                ((IEditableObject)item).BeginEdit();
-            });
-        }
-
-        private void DoRefresh()
-        {
-            UiTool.HandleUiEvent(() =>
-                {
-                    GetData();
-                });
-        }
-
-        private bool CanExecuteNew()
-        {
-            return !ViewModel.IsChanged;
-        }
-
-        private void DoNew()
-        {
-            TModel item = (TModel)ViewModel.CollectionView.AddNew();
-            SetNewItem(item);
-            ViewModel.CollectionView.CommitNew();
-        }
-
-        private bool CanExecuteDelete()
-        {
-            if (DataGridMain.SelectedItems.Count == 0)
-            {
-                return false;
-            }
-
-            return true;
-        }
-
-        private void DoDelete()
-        {
-            UiTool.HandleUiEvent(() =>
-            {
-                DeleteItems();
-            });
-        }
-
-        private void DeleteItems()
-        {
-            if (DataGridMain.SelectedItems.Count == 0)
-            {
-                return;
-            }
-
-            int selectedIndex = DataGridMain.SelectedIndex;
-            IList<TModel> models = ViewModel.Delete(DataGridMain.SelectedItems);
-            foreach (var item in models)
-            {
-                ViewModel.CollectionView.Remove(item);
-            }
-
-            if (selectedIndex < DataGridMain.Items.Count)
-            {
-                DataGridMain.SelectedIndex = selectedIndex;
-            }
-            else
-            {
-                DataGridMain.SelectedIndex = DataGridMain.Items.Count - 1;
-            }
-        }
-
-        private void DataGrid_PreviewCanExecuteHandler(object sender, CanExecuteRoutedEventArgs e)
-        {
-            //https://social.msdn.microsoft.com/Forums/vstudio/en-US/04cb454b-fd58-4b6d-8c67-550657dda8a0/datagrid-delete-row-handling-with-delete-keydown-event-problem?forum=wpf
-            DataGrid grid = (DataGrid)sender;
-            if (e.Command == DataGrid.DeleteCommand)
-            {
-                e.Handled = true;
-                string confirmDeleteMessage = grid.SelectedItems.Count > 1
-                    ? "Would you like to delete selected items?"
-                    : String.Format(CultureInfo.CurrentCulture,
-                        "Would you like to delete '{0}'?", 
-                        (grid.SelectedItem as IMasterDetailModel<TEntity>).ToDisplayString());
-
-                if (MessageBox.Show(confirmDeleteMessage,
-                    "Confirm Delete",
-                    MessageBoxButton.YesNo,
-                    MessageBoxImage.Question,
-                    MessageBoxResult.No) != MessageBoxResult.Yes)
-                {
-                    return;
-                }
-
-                UiTool.HandleUiEvent(() =>
-                {
-                    DeleteItems();
-                },
-                () =>
-                {
-                    e.Handled = true;
-                });
-            }
-        }
-
-        private void DataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
-        {
-            UiTool.HandleUiEvent(() =>
-            {
-                TModel model = this.ViewModel.LastItem;
-                if (model != null && (model as IMasterDetailModel<TEntity>).IsChanged)
-                {
-                    ViewModel.DataSave(model);
-                }
-
-                this.currentIndex = DataGridMain.SelectedIndex;
-            },
-            () =>
-            {
-                SetSelectedIndex(currentIndex);
-                return;
-            });
+            (item as IEditableObject).BeginEdit();
+            item.ToIEditableModel().IsNew = true;
+            context.UiService.SetDefault(item.ToIEditableModel().Model);
+            return item;
         }
 
         private void SetSelectedIndex(int selectedIndex)
@@ -271,25 +290,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
                     DataGridMain.Focus();
                 }),
                 System.Windows.Threading.DispatcherPriority.Send);
-        }
-
-        private void DataGrid_AddingNewItem(object sender, AddingNewItemEventArgs e)
-        {
-            UiTool.HandleUiEvent(() =>
-           {
-               if (e.NewItem == null)
-               {
-                   e.NewItem = SetNewItem(new TModel());
-               }
-           });
-        }
-
-        private static TModel SetNewItem(TModel item)
-        {
-            (item as IEditableObject).BeginEdit();
-            item.IsNew = true;
-            item.SetDefault();
-            return item;
         }
     }
 }

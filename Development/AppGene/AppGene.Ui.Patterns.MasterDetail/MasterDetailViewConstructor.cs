@@ -7,9 +7,9 @@ using System.Windows.Input;
 
 namespace AppGene.Ui.Patterns.MasterDetail
 {
-    public class MasterDetailViewConstructor<TEntity, TModel>
+    public class MasterDetailViewConstructor<TModel, TEntity>
+        where TModel : class, new()
         where TEntity : class, new()
-        where TModel : IMasterDetailModel<TEntity>, new()
     {
         #region Constants fields
 
@@ -17,7 +17,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         #endregion Constants fields
 
-        public MasterDetailViewConstructor(MasterDetailPatternContext<TEntity, TModel> patternContext, ContentControl owner)
+        public MasterDetailViewConstructor(MasterDetailPatternContext<TModel, TEntity> patternContext, ContentControl owner)
         {
             PatternContext = patternContext;
             Owner = owner;
@@ -30,9 +30,8 @@ namespace AppGene.Ui.Patterns.MasterDetail
         private Button buttonNew;
         private Button buttonOk;
         private Button buttonRefresh;
-        private MasterDetailEntityPerception entityPerception = new MasterDetailEntityPerception(typeof(TEntity));
         public DataGrid DataGridMain { get; private set; }
-        public MasterDetailPatternContext<TEntity, TModel> PatternContext { get; set; }
+        public MasterDetailPatternContext<TModel, TEntity> PatternContext { get; set; }
         private Grid GridContainer { get; set; }
         private Grid GridDetail { get; set; }
         private ContentControl Owner { get; set; }
@@ -192,7 +191,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 DataGridMain.Columns.Clear();
 
                 // create data grid columns.
-                var editProperties = entityPerception.GridDisplayProperties;
+                var editProperties = PatternContext.UiService.GetGridDisplayProperties();
 
                 Style style = GetResourceStyle(FrameworkElementErrorStyle);
                 foreach (var property in editProperties)
@@ -216,7 +215,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             Grid.SetRow(GridDetail, 2);
 
             // get edit properties
-            var editProperties = entityPerception.DisplayProperties;
+            var editProperties = PatternContext.UiService.GetDisplayProperties();
 
             // create columns
             UiTool.CreateGridColumns(GridDetail, 4);

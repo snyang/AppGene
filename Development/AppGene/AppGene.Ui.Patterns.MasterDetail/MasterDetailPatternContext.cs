@@ -1,16 +1,19 @@
 ﻿using AppGene.Business.Infrastructure;
+using AppGene.Ui.Infrastructure.Mvvm;
 using System;
 using System.Windows.Controls;
 
 namespace AppGene.Ui.Patterns.MasterDetail
 {
-    public class MasterDetailPatternContext<TEntity, TModel>
+    public class MasterDetailPatternContext<TModel, TEntity>
+        where TModel : class, new()
         where TEntity : class, new()
-        where TModel : IMasterDetailModel<TEntity>, new()
     {
-        private MasterDetailController<TEntity, TModel> viewController;
+        private MasterDetailController<TModel, TEntity, DefaultEditableModel<TModel, TEntity>> viewController;
 
-        private MasterDetailViewModel<TEntity, TModel> viewModel;
+        private MasterDetailViewModel<TModel, TEntity, DefaultEditableModel<TModel, TEntity>> viewModel;
+
+        private Type TModelType;
 
         public MasterDetailPatternContext(AbstractCrudBusinessService<TEntity> businessService)
         {
@@ -24,13 +27,13 @@ namespace AppGene.Ui.Patterns.MasterDetail
         public AbstractCrudBusinessService<TEntity> BusinessService { get; set; }
         public ContentControl View { get; set; }
 
-        public MasterDetailController<TEntity, TModel> ViewController
+        public MasterDetailController<TModel, TEntity, DefaultEditableModel<TModel, TEntity>> ViewController
         {
             get
             {
                 if (viewController == null)
                 {
-                    viewController = new MasterDetailController<TEntity, TModel>();
+                    viewController = new MasterDetailController<TModel, TEntity, DefaultEditableModel<TModel, TEntity>>(this);
                     InitializeViewController();
                 }
                 return viewController;
@@ -42,19 +45,36 @@ namespace AppGene.Ui.Patterns.MasterDetail
             }
         }
 
-        public MasterDetailViewModel<TEntity, TModel> ViewModel
+        public MasterDetailViewModel<TModel, TEntity, DefaultEditableModel<TModel, TEntity>> ViewModel
         {
             get
             {
                 if (viewModel == null)
                 {
-                    viewModel = new MasterDetailViewModel<TEntity, TModel>(BusinessService);
+                    viewModel = new MasterDetailViewModel<TModel, TEntity, DefaultEditableModel<TModel, TEntity>>(this);
                 }
                 return viewModel;
             }
             set
             {
                 viewModel = value;
+            }
+        }
+
+        MasterDetailUiService<TModel, TEntity> uiService;
+        public MasterDetailUiService<TModel, TEntity> UiService
+        {
+            get
+            {
+                if (uiService == null)
+                {
+                    uiService = new MasterDetailUiService<TModel, TEntity>();
+                }
+                return uiService;
+            }
+            set
+            {
+                uiService = value;
             }
         }
 

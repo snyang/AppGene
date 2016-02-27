@@ -17,8 +17,8 @@ namespace AppGene.Ui.Main
 
         private void employeeButton_Click(object sender, RoutedEventArgs e)
         {
-            var patterContext = new MasterDetailPatternContext<Employee, MasterDetailModel<Employee>>(new CommonCrudBusinessService<Employee>());
-            var employee = new MasterDetailView<Employee, MasterDetailModel<Employee>>(patterContext);
+            var patterContext = new MasterDetailPatternContext<Employee, Employee>(new CommonCrudBusinessService<Employee>());
+            var employee = new MasterDetailView<Employee, Employee>(patterContext);
             employee.ShowDialog();
         }
     }

@@ -4,15 +4,13 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{0B5927BB-8003-458C-A373-FDED1F1032F3}</ProjectGuid>
+    <ProjectGuid>{1769EE6C-40A5-4CE7-B33C-BE809EFBAC82}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>AppGene.Ui.Patterns.MasterDetail</RootNamespace>
-    <AssemblyName>AppGene.Ui.Patterns.MasterDetail</AssemblyName>
+    <RootNamespace>AppGene.Common.Entities.Infrastructure</RootNamespace>
+    <AssemblyName>AppGene.Common.Entities.Infrastructure</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
-    <ProjectTypeGuids>{60dc8134-eba5-43b8-bcc9-bb4bc16c2548};{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}</ProjectTypeGuids>
-    <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -32,54 +30,37 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="PresentationCore" />
-    <Reference Include="PresentationFramework" />
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
-    <Reference Include="System.Xaml" />
-    <Reference Include="System.Xml.Linq" />
-    <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="System.Data" />
-    <Reference Include="System.Net.Http" />
-    <Reference Include="System.Xml" />
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="MasterDetailUiService.cs" />
-    <Compile Include="MasterDetailController.cs" />
-    <Compile Include="MasterDetailModelInference.cs" />
-    <Compile Include="MasterDetailPatternContext.cs" />
-    <Compile Include="MasterDetailView.xaml.cs">
-      <DependentUpon>MasterDetailView.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="MasterDetailViewConstructor.cs" />
-    <Compile Include="MasterDetailViewModel.cs" />
+    <Compile Include="Annotations\ComputedColumnAttribute.cs" />
+    <Compile Include="Annotations\DependencyColumnAttribute.cs" />
+    <Compile Include="Annotations\FilterAttribute.cs" />
+    <Compile Include="Annotations\LogicalDependencyProperty.cs" />
+    <Compile Include="EntityModels\AbstractEntityModel.cs" />
+    <Compile Include="EntityModels\EntityModelHelper.cs" />
+    <Compile Include="EntityModels\IEntityModel.cs" />
+    <Compile Include="Inferences\DefaultValueGetter.cs" />
+    <Compile Include="Inferences\DisplayFormatGetter.cs" />
+    <Compile Include="Inferences\DisplayPropertiesGetter.cs" />
+    <Compile Include="Inferences\DisplayPropertyInfo.cs" />
+    <Compile Include="Inferences\EntityAnalysisContext.cs" />
+    <Compile Include="Inferences\EntityAnalysisHelper.cs" />
+    <Compile Include="Inferences\FilterPropertyGetter.cs" />
+    <Compile Include="Inferences\ReferencePropertyGetter.cs" />
+    <Compile Include="Inferences\SortPropertyGetter.cs" />
+    <Compile Include="Inferences\SortPropertyInfo.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\AppGene.Business.Infrastructure\AppGene.Business.Infrastructure.csproj">
-      <Project>{85fb4980-393b-4659-a962-46e75fa7feb6}</Project>
-      <Name>AppGene.Business.Infrastructure</Name>
-    </ProjectReference>
     <ProjectReference Include="..\AppGene.Common.Core\AppGene.Common.Core.csproj">
       <Project>{8bb9fe7c-ab90-4691-8b59-285b96699dd2}</Project>
       <Name>AppGene.Common.Core</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Common.Entities.Infrastructure\AppGene.Common.Entities.Infrastructure.csproj">
-      <Project>{1769ee6c-40a5-4ce7-b33c-be809efbac82}</Project>
-      <Name>AppGene.Common.Entities.Infrastructure</Name>
-    </ProjectReference>
-    <ProjectReference Include="..\AppGene.Ui.Infrastructure\AppGene.Ui.Infrastructure.csproj">
-      <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>
-      <Name>AppGene.Ui.Infrastructure</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
-    <Page Include="MasterDetailView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

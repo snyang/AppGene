@@ -1,4 +1,5 @@
-﻿using AppGene.Common.Core;
+﻿using AppGene.Common.Entities.Infrastructure.Annotations;
+using AppGene.Common.Entities.Infrastructure.EntityModels;
 using AppGene.Ui.Infrastructure.Mvvm.Helpers;
 using System;
 using System.Collections.Generic;
@@ -26,8 +27,8 @@ namespace AppGene.Ui.Infrastructure.Mvvm
     ///   is the class that is used in the business layer.
     /// The relationships of <typeparamref name="TModel"/> and <typeparamref name="TEntity"/>
     /// * They are same, it means that the same class be used among the presentation layer and the business layer.
-    /// * They are different, <typeparamref name="TModel"/> inherits TEntity.
-    /// * They are different, <typeparamref name="TModel"/> implements IEntityModel.
+    /// * They are different, <typeparamref name="TModel"/> inherits <typeparamref name="TEntity"/>.
+    /// * They are different, <typeparamref name="TModel"/> implements <see cref="Common.Entities.Infrastructure.EntityModels.IEntityModel"/>.
     /// * They are different, no relationship between <typeparamref name="TModel"/> and <typeparamref name="TEntity"/>.
     /// </remarks>
     public abstract class AbstractEditableModel<TModel, TEntity>
@@ -37,16 +38,13 @@ namespace AppGene.Ui.Infrastructure.Mvvm
         where TEntity : class, new()
     {
         private bool? doesModelImplementIDataErrorInfo;
-
         private bool? doesModelImplementINotifyPropertyChanged;
-
         private TEntity entity;
-        private bool isChanged;
         private bool generateModelCustomProperties = false;
-
+        private bool isChanged;
         private Memento<TModel> memento;
-
-        TModel model;
+        private TModel model;
+        private Dictionary<string, List<string>> computedRelationShip = new Dictionary<string, List<string>>();
 
         public AbstractEditableModel()
             : this(null, false)
@@ -84,17 +82,6 @@ namespace AppGene.Ui.Infrastructure.Mvvm
 
         private event PropertyChangedEventHandler propertyChanged;
 
-        string IDataErrorInfo.Error
-        {
-            get
-            {
-                if (DoesModelImplementIDataErrorInfo)
-                {
-                    return (this.ToIEditableModel().Model as IDataErrorInfo).Error;
-                }
-                return ValidationHelper.ValidateObject(this.ToIEditableModel().Model);
-            }
-        }
         public virtual TEntity Entity
         {
             get
@@ -112,12 +99,17 @@ namespace AppGene.Ui.Infrastructure.Mvvm
             }
         }
 
-        bool AreEntityAndModelSame
+        string IDataErrorInfo.Error
         {
-            get { 
-                return typeof(TEntity) == typeof(TModel);
+            get
+            {
+                if (DoesModelImplementIDataErrorInfo)
+                {
+                    return (this.ToIEditableModel().Model as IDataErrorInfo).Error;
+                }
+                return ValidationHelper.ValidateObject(this.ToIEditableModel().Model);
             }
-        } 
+        }
         bool IEditableModel<TModel, TEntity>.IsChanged
         {
             get
@@ -131,6 +123,7 @@ namespace AppGene.Ui.Infrastructure.Mvvm
         }
 
         bool IEditableModel<TModel, TEntity>.IsNew { get; set; }
+
         TModel IEditableModel<TModel, TEntity>.Model
         {
             get
@@ -153,6 +146,12 @@ namespace AppGene.Ui.Infrastructure.Mvvm
 
         bool IEditableModel<TModel, TEntity>.TraceChanges { get; set; }
 
+        bool AreEntityAndModelSame
+        {
+            get { 
+                return typeof(TEntity) == typeof(TModel);
+            }
+        } 
         private bool DoesModelImplementIDataErrorInfo
         {
             get
@@ -281,10 +280,24 @@ namespace AppGene.Ui.Infrastructure.Mvvm
             }
         }
         #endregion
-        private void HandleSet(Action setAction, [CallerMemberName] String propertyName = null)
+        private void HandleSetPropertyValue(PropertyInfo property, object component, object value)
         {
-            setAction.Invoke();
-            this.OnPropertyChanged(this, new PropertyChangedEventArgs(propertyName));
+            if (property.CanRead && object.Equals(value, (property.GetValue(AsIEditableModel(component).Model))))
+            {
+                return;
+            }
+            property.SetValue(AsIEditableModel(component).Model, value, null);
+            this.OnPropertyChanged(this, new PropertyChangedEventArgs(property.Name));
+
+            // Raise event for related computed properties.
+            List<string> computedProperties;
+            if (computedRelationShip.TryGetValue(property.Name, out computedProperties))
+            {
+                foreach (var computedProperty in computedProperties)
+                {
+                    this.OnPropertyChanged(this, new PropertyChangedEventArgs(computedProperty));
+                }
+            }
             if (this.ToIEditableModel().TraceChanges) this.ToIEditableModel().IsChanged = true;
         }
 
@@ -369,10 +382,7 @@ namespace AppGene.Ui.Infrastructure.Mvvm
                 {
                     setter = (component, value) =>
                     {
-                        HandleSet(() =>
-                        {
-                            propertyCopy.SetValue(AsIEditableModel(component).Model, value, null);
-                        }, property.Name);
+                        HandleSetPropertyValue(propertyCopy, component, value);
                     };
                 }
 
@@ -386,12 +396,35 @@ namespace AppGene.Ui.Infrastructure.Mvvm
                 propertyDescriptors.Add(propertyDescriptor);
             }
 
+            // Build Computed relationships
+            BuildComputedRelationship(properties);
+
             return new PropertyDescriptorCollection(propertyDescriptors.ToArray());
         }
 
-        private static IEditableModel<TModel, TEntity> AsIEditableModel(object component)
+        private void BuildComputedRelationship(PropertyInfo[] properties)
         {
-            return component as IEditableModel<TModel, TEntity>;
+            foreach (var property in properties)
+            {
+                var attribute = property.GetCustomAttribute<ComputedColumnAttribute>();
+                if (attribute == null) continue;
+
+                string[] referenceColumns = attribute.ReferenceColumns;
+                foreach (var referenceColumn in referenceColumns)
+                {
+                    List<string> computedColumns;
+                    if (computedRelationShip.TryGetValue(referenceColumn, out computedColumns))
+                    {
+                        computedColumns.Add(property.Name);
+                    }
+                    else
+                    {
+                        computedColumns = new List<string>();
+                        computedColumns.Add(property.Name);
+                        computedRelationShip.Add(referenceColumn, computedColumns);
+                    }
+                }
+            }
         }
 
         public virtual PropertyDescriptorCollection GetProperties(Attribute[] attributes)
@@ -407,6 +440,11 @@ namespace AppGene.Ui.Infrastructure.Mvvm
         public IEditableModel<TModel, TEntity> ToIEditableModel()
         {
             return this as IEditableModel<TModel, TEntity>;
+        }
+
+        private static IEditableModel<TModel, TEntity> AsIEditableModel(object component)
+        {
+            return component as IEditableModel<TModel, TEntity>;
         }
         #endregion
     }
