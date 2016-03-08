@@ -176,80 +176,26 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         private void InitDataGrid()
         {
-            try
-            {
-                DataGridMain = new DataGrid
-                {
-                    Margin = new Thickness(2)
-                };
-                this.GridContainer.Children.Add(DataGridMain);
-                Grid.SetRow(DataGridMain, 1);
-
-                DataGridMain.BeginInit();
-                DataGridMain.AutoGenerateColumns = false;
-                DataGridMain.IsSynchronizedWithCurrentItem = true;
-                DataGridMain.Columns.Clear();
-
-                // create data grid columns.
-                var editProperties = PatternContext.UiService.GetGridDisplayProperties();
-
-                Style style = GetResourceStyle(FrameworkElementErrorStyle);
-                foreach (var property in editProperties)
-                {
-                    DataGridColumn column = PropertyDataGridColumnCreator.Create(property, style);
-                    DataGridMain.Columns.Add(column);
-                }
-            }
-            finally
-            {
-                DataGridMain.EndInit();
-            }
+            var editProperties = PatternContext.UiService.GetGridDisplayProperties();
+            Style style = GetResourceStyle(FrameworkElementErrorStyle);
+            DataGridMain = new ModelDataGridCreator().Create(editProperties, style);
+            this.GridContainer.Children.Add(DataGridMain);
         }
 
         private void InitDetailPanel()
         {
-            GridDetail = new Grid
-            {
-                Margin = new Thickness(4)
-            };
-            Grid.SetRow(GridDetail, 2);
-
             // get edit properties
             var editProperties = PatternContext.UiService.GetDisplayProperties();
-
-            // create columns
-            UiTool.CreateGridColumns(GridDetail, 4);
-
-            // create rows
-            UiTool.CreateGridRows(GridDetail, (int)Math.Ceiling((decimal)(editProperties.Count / 2)));
-
-            // Create Fields
             Style style = GetResourceStyle(FrameworkElementErrorStyle);
-            int row = 0;
-            int column = 0;
-            foreach (var property in editProperties)
-            {
-                PropertyControlCreator.Create(property,
-                    GridDetail,
-                    row,
-                    column,
-                    "CollectionView",
-                    style);
+            string bindingPathPrefix = "CollectionView";
 
-                if (column == 2)
-                {
-                    row++;
-                    column = 0;
-                }
-                else
-                {
-                    column += 2;
-                }
-            }
+            // create detail panel.
+            GridDetail = new ModelPanelCreator().CreateGrid(editProperties, 2, style, bindingPathPrefix);
 
             // add to parent
             this.GridContainer.Children.Add(GridDetail);
 
+            // TODO: move it to a new layout manager class
             // For details commands
             Grid gridDetailsCommand = new Grid
             {

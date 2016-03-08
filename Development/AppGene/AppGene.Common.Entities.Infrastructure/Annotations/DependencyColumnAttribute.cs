@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Windows;
 
 namespace AppGene.Common.Entities.Infrastructure.Annotations
 {
@@ -9,7 +8,10 @@ namespace AppGene.Common.Entities.Infrastructure.Annotations
     {
         public String HostColumn { get; set; }
         public LogicalDependencyProperty LogicalProperty { get; set; }
-        // TODO:  Should move the class to another place, as it need windowsbase.dll
-        public DependencyProperty DependencyProperty { get; set; }
+
+        /// <summary>
+        /// Gets or sets the fully qualified type name of the dependency property type.
+        /// </summary>
+        public string DependencyPropertyTypeName { get; set; }
     }
 }

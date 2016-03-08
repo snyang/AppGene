@@ -1,4 +1,5 @@
-﻿using AppGene.Ui.Infrastructure;
+﻿using AppGene.Common.Entities.Infrastructure.Inferences;
+using AppGene.Ui.Infrastructure;
 using System;
 using System.Collections.Generic;
 using System.Globalization;
@@ -91,12 +92,12 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         public virtual IList<DisplayPropertyInfo> GetDisplayProperties()
         {
-            return entityInference.DisplayProperties;
+            return modelInference.DisplayProperties;
         }
 
         public virtual IList<DisplayPropertyInfo> GetGridDisplayProperties()
         {
-            return entityInference.GridDisplayProperties;
+            return modelInference.GridDisplayProperties;
         }
     }
 }

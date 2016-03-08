@@ -1,4 +1,5 @@
-﻿using AppGene.Common.Entities.Sample;
+﻿using AppGene.Common.Entities.Infrastructure.Annotations;
+using AppGene.Common.Entities.Sample;
 using System;
 using System.ComponentModel;
 using System.ComponentModel.DataAnnotations;
@@ -16,11 +17,14 @@ namespace AppGene.Common.Entities
 
         [StringLength(50, ErrorMessage = "Employee name is too long.")]
         [Required(AllowEmptyStrings = false, ErrorMessage = "Employee name is required")]
-        [Display(ResourceType = typeof(EntityResource),
+        [Display(
+            ResourceType = typeof(EntityResource),
             Name = "Employee_EmployeeName_Name",
             ShortName = "Employee_EmployeeName_ShortName",
             Description = "Employee_EmployeeName_Description",
-            Prompt = "Employee_EmployeeName_Prompt")]
+            Prompt = "Employee_EmployeeName_Prompt"
+            )
+        ]
         [DefaultValue("New Employee")]
         public string EmployeeName { get; set; }
 
@@ -29,5 +33,16 @@ namespace AppGene.Common.Entities
 
         [Column(TypeName = "date")]
         public DateTime Birthday { get; set; }
+
+        [ColumnType(
+            ConverterTypeName = "AppGene.Ui.Infrastructure.Converters.Int32ToDateConverter",
+            CustomType = typeof(DateTime),
+            LogicalDataType = LogicalDataType.Date
+            )]
+        public int OnBoardDate { get; set; }
+
+        [DefaultValue("New Employee")]
+        [DisplayFormat(DataFormatString = "#,##0.00")]
+        public double FemaleBenefit { get; set; }
     }
 }

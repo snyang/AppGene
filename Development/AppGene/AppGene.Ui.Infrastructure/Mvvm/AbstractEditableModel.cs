@@ -397,31 +397,48 @@ namespace AppGene.Ui.Infrastructure.Mvvm
             }
 
             // Build Computed relationships
-            BuildComputedRelationship(properties);
+            BuildComputeRelationship(properties);
 
             return new PropertyDescriptorCollection(propertyDescriptors.ToArray());
         }
 
-        private void BuildComputedRelationship(PropertyInfo[] properties)
+        private void BuildComputeRelationship(PropertyInfo[] properties)
         {
             foreach (var property in properties)
             {
-                var attribute = property.GetCustomAttribute<ComputedColumnAttribute>();
+                var attribute = property.GetCustomAttribute<ComputeRelationshipAttribute>();
                 if (attribute == null) continue;
 
                 string[] referenceColumns = attribute.ReferenceColumns;
                 foreach (var referenceColumn in referenceColumns)
                 {
-                    List<string> computedColumns;
-                    if (computedRelationShip.TryGetValue(referenceColumn, out computedColumns))
+                    List<string> referenceComputedColumns;
+                    if (computedRelationShip.TryGetValue(referenceColumn, out referenceComputedColumns))
                     {
-                        computedColumns.Add(property.Name);
+                        referenceComputedColumns.Add(property.Name);
+                    }
+                    else
+                    {
+                        referenceComputedColumns = new List<string>();
+                        referenceComputedColumns.Add(property.Name);
+                        computedRelationShip.Add(referenceColumn, referenceComputedColumns);
+                    }
+                }
+
+                // 
+                string[] arrtributCcomputedColumns = attribute.ComputedColumns;
+                foreach (var computedColumn in arrtributCcomputedColumns)
+                {
+                    List<string> computedColumns;
+                    if (computedRelationShip.TryGetValue(property.Name, out computedColumns))
+                    {
+                        computedColumns.Add(computedColumn);
                     }
                     else
                     {
                         computedColumns = new List<string>();
-                        computedColumns.Add(property.Name);
-                        computedRelationShip.Add(referenceColumn, computedColumns);
+                        computedColumns.Add(computedColumn);
+                        computedRelationShip.Add(property.Name, computedColumns);
                     }
                 }
             }

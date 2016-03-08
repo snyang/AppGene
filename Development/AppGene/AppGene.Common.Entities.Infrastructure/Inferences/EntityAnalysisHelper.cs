@@ -19,10 +19,11 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
         /// <param name="name"></param>
         /// <param name="entityType"></param>
         /// <returns></returns>
-        public static string ConvertNameToShortName(Type entityType, string name)
+        public static string ConvertNameToShortName(PropertyInfo property, string name)
         {
-            string shortName = name.StartsWith(entityType.Name, StringComparison.OrdinalIgnoreCase)
-                ? name.Substring(entityType.Name.Length)
+            string className = property.DeclaringType.Name;
+            string shortName = name.StartsWith(className, StringComparison.OrdinalIgnoreCase)
+                ? name.Substring(className.Length).Trim()
                 : name;
 
             return shortName;
@@ -86,6 +87,7 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
         /// EmployeeName => Employee Name
         /// EmployeeXMLName => Employee XML Name
         /// EmployeeXML => Employee XML
+        /// Employee_XML => Employee XML
         /// </summary>
         /// <param name="propertyName">The property name.</param>
         /// <returns>Display name</returns>
@@ -97,10 +99,12 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
 
             StringInfo propertyNameInfo = new StringInfo(propertyName);
             StringBuilder nameBuilder = new StringBuilder();
+            bool alreadyPutASpace = false;
             for (int i = 0; i < propertyNameInfo.LengthInTextElements; i++)
             {
                 string current = propertyNameInfo.SubstringByTextElements(i, 1);
                 if (i > 0
+                    && !alreadyPutASpace
                     && Char.IsUpper(current, 0)
                     && i + 1 < propertyNameInfo.LengthInTextElements)
                 {
@@ -109,6 +113,16 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
                     {
                         nameBuilder.Append(" ");
                     }
+                }
+
+                if (string.Equals(current, "_", StringComparison.OrdinalIgnoreCase))
+                {
+                    current = " ";
+                    alreadyPutASpace = true;
+                }
+                else
+                {
+                    alreadyPutASpace = false;
                 }
                 nameBuilder.Append(current);
             }
@@ -151,7 +165,7 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
             PropertyInfo property,
             string[] characteristic)
         {
-            string entityName = entityType.Name.ToUpperInvariant();
+            string entityName = property.DeclaringType.Name.ToUpperInvariant();
             foreach (var character in characteristic)
             {
                 if (property.Name.ToUpperInvariant() == character.ToUpperInvariant())

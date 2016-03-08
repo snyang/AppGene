@@ -1,4 +1,5 @@
-﻿using System;
+﻿using AppGene.Ui.Infrastructure.Converters;
+using System;
 using System.Data.Entity.Validation;
 using System.Diagnostics;
 using System.Linq;
@@ -65,25 +66,6 @@ namespace AppGene.Ui.Infrastructure
             return true;
         }
 
-        /// <summary>
-        /// Create columns for the details grid.
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="columnCount"></param>
-        public static void CreateGridColumns(Grid grid,
-            int columnCount)
-        {
-            for (int i = 0; i < columnCount; i++)
-            {
-                ColumnDefinition column = new ColumnDefinition();
-                grid.ColumnDefinitions.Add(column);
-                if (i % 2 == 0)
-                {
-                    column.Width = GridLength.Auto;
-                }
-            }
-        }
-
         public static void CreateCommandGridColumns(Grid grid,
             int columnCount)
         {
@@ -100,166 +82,6 @@ namespace AppGene.Ui.Infrastructure
                     column.Width = GridLength.Auto;
                 }
             }
-        }
-
-        /// <summary>
-        /// Create rows for the details grid.
-        /// </summary>
-        /// <param name="grid"></param>
-        /// <param name="rowCount"></param>
-        public static void CreateGridRows(Grid grid,
-            int rowCount)
-        {
-            for (int i = 0; i < rowCount; i++)
-            {
-                grid.RowDefinitions.Add(new RowDefinition());
-            }
-        }
-
-        /// <summary>
-        /// Create fields for the details grid.
-        /// </summary>
-        /// <param name="name"></param>
-        /// <param name="label"></param>
-        /// <param name="bindingPath"></param>
-        /// <param name="row"></param>
-        /// <param name="column"></param>
-        public static void CreateField(Grid grid,
-            String name,
-            String label,
-            String bindingPath,
-            Style style,
-            int row,
-            int column)
-        {
-            Label labelElement = new Label
-            {
-                Name = "label" + name,
-                //TODO: localization ":"
-                Content = label + ":"
-            };
-            Grid.SetRow(labelElement, row);
-            Grid.SetColumn(labelElement, column);
-
-            TextBox textBox = new TextBox
-            {
-                Name = "textBox" + name,
-            };
-            if (style != null)
-            {
-                textBox.Style = style;
-            }
-            textBox.SetBinding(TextBox.TextProperty, new Binding(bindingPath)
-            {
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = BindingMode.TwoWay,
-                ValidatesOnDataErrors = true,
-                NotifyOnValidationError = true,
-                ValidatesOnExceptions = true,
-            });
-
-            Grid.SetRow(textBox, row);
-            Grid.SetColumn(textBox, checked(column + 1));
-
-            grid.Children.Add(labelElement);
-            grid.Children.Add(textBox);
-        }
-
-        public static void CreateEnumField(Grid parent,
-            Type enumType,
-            String name,
-            String label,
-            String bindingPath,
-            Style style,
-            int row,
-            int column)
-        {
-            // create label
-            Label labelElement = new Label
-            {
-                Name = "label" + name,
-                Content = label + ":"
-            };
-            Grid.SetRow(labelElement, row);
-            Grid.SetColumn(labelElement, column);
-            parent.Children.Add(labelElement);
-
-            // create inputs
-            if (!enumType.IsEnum) return;
-            StackPanel panel = new StackPanel()
-            {
-                Orientation = Orientation.Horizontal,
-                Margin = new Thickness(4),
-            };
-            Grid.SetRow(panel, row);
-            Grid.SetColumn(panel, checked(column + 1));
-            parent.Children.Add(panel);
-
-            Array enumValues = Enum.GetValues(enumType);
-            foreach (var item in enumValues)
-            {
-                RadioButton control = new RadioButton
-                {
-                    Name = "radioButton" + name + "_" + item.ToString(),
-                    Content = item.ToString(),
-                    GroupName = name,
-                    Margin = new Thickness(4),
-                };
-                if (style != null)
-                {
-                    control.Style = style;
-                }
-                control.SetBinding(RadioButton.IsCheckedProperty, new Binding(bindingPath)
-                {
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    Mode = BindingMode.TwoWay,
-                    Converter = new EnumToBooleanConverter(),
-                    ConverterParameter = item.ToString()
-                });
-
-                panel.Children.Add(control);
-            }
-        }
-
-        public static void CreateDateField(Grid grid,
-            String name,
-            String label,
-            String bindingPath,
-            Style style,
-            int row,
-            int column)
-        {
-            Label labelElement = new Label
-            {
-                Name = "label" + name,
-                Content = label + ":"
-            };
-            Grid.SetRow(labelElement, row);
-            Grid.SetColumn(labelElement, column);
-
-            DatePicker control = new DatePicker
-            {
-                Name = "datePicker" + name
-            };
-            if (style != null)
-            {
-                control.Style = style;
-            }
-
-            control.SetBinding(DatePicker.SelectedDateProperty, new Binding(bindingPath)
-            {
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = BindingMode.TwoWay,
-                ValidatesOnDataErrors = true,
-                NotifyOnValidationError = true,
-                ValidatesOnExceptions = true,
-            });
-
-            Grid.SetRow(control, row);
-            Grid.SetColumn(control, checked(column + 1));
-
-            grid.Children.Add(labelElement);
-            grid.Children.Add(control);
         }
 
         public static Button CreateGridCommand(Grid grid,

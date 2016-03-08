@@ -8,5 +8,6 @@
         Title="Main Window" Height="300" Width="300">
     <Grid>
         <Button x:Name="employeeButton" Content="Employee" HorizontalAlignment="Left" Margin="43,21,0,0" VerticalAlignment="Top" Width="75" Click="employeeButton_Click" />
+        <StackPanel HorizontalAlignment="Left" Height="100" Margin="122,106,0,0" VerticalAlignment="Top" Width="100" Orientation="Horizontal"/>
     </Grid>
 </Window>

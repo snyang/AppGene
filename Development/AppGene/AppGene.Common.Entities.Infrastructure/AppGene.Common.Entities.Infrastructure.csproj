@@ -34,17 +34,22 @@
     <Reference Include="System.ComponentModel.DataAnnotations" />
     <Reference Include="System.Core" />
     <Reference Include="Microsoft.CSharp" />
-    <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Annotations\ComputedColumnAttribute.cs" />
+    <Compile Include="Annotations\ColumnTypeAttribute.cs" />
+    <Compile Include="Annotations\HiddenColumnAttribute.cs" />
+    <Compile Include="Annotations\ComputeRelationshipAttribute.cs" />
     <Compile Include="Annotations\DependencyColumnAttribute.cs" />
     <Compile Include="Annotations\FilterAttribute.cs" />
+    <Compile Include="Annotations\LogicalDataType.cs" />
     <Compile Include="Annotations\LogicalDependencyProperty.cs" />
     <Compile Include="EntityModels\AbstractEntityModel.cs" />
     <Compile Include="EntityModels\EntityModelHelper.cs" />
     <Compile Include="EntityModels\IEntityModel.cs" />
     <Compile Include="Inferences\DefaultValueGetter.cs" />
+    <Compile Include="Inferences\DateTypeConvention.cs" />
+    <Compile Include="Inferences\HiddenPropertyConvention.cs" />
+    <Compile Include="Inferences\DependencyPropertyConvention.cs" />
     <Compile Include="Inferences\DisplayFormatGetter.cs" />
     <Compile Include="Inferences\DisplayPropertiesGetter.cs" />
     <Compile Include="Inferences\DisplayPropertyInfo.cs" />

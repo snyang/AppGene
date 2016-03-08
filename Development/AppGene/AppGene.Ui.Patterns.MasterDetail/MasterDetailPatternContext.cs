@@ -13,8 +13,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         private MasterDetailViewModel<TModel, TEntity, DefaultEditableModel<TModel, TEntity>> viewModel;
 
-        private Type TModelType;
-
         public MasterDetailPatternContext(AbstractCrudBusinessService<TEntity> businessService)
         {
             if (businessService == null)
