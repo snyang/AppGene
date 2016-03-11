@@ -53,9 +53,12 @@
     <Compile Include="Converters\EnumToBooleanConverter.cs" />
     <Compile Include="Converters\Int32ToDateConverter.cs" />
     <Compile Include="Converters\StringToDateConverter.cs" />
+    <Compile Include="LogicalUiElementType.cs" />
     <Compile Include="ModelDataGridCreator.cs" />
     <Compile Include="ModelPanelCreator.cs" />
-    <Compile Include="ModelPropertyUiElementsInfo.cs" />
+    <Compile Include="ModelUiInfo.cs" />
+    <Compile Include="ModelPropertyUiInfo.cs" />
+    <Compile Include="ModelUiCreatorHelper.cs" />
     <Compile Include="Mvvm\AbstractEditableModel.cs" />
     <Compile Include="Mvvm\BaseEntityModel.cs" />
     <Compile Include="Mvvm\DefaultEditableModel.cs" />

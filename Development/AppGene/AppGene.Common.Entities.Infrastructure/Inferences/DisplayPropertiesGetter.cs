@@ -102,7 +102,7 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
             }
             displayPropertyInfo.IsDependencyProperty = true;
             displayPropertyInfo.LogicalProperty = dependencyColumnAttribute.LogicalProperty;
-            displayPropertyInfo.DependencyPropertyTypeName = dependencyColumnAttribute.DependencyPropertyTypeName;
+            displayPropertyInfo.DependencyPropertyName = dependencyColumnAttribute.DependencyPropertyTypeName;
         }
 
         private void ConfigurePropertyInfo(DisplayPropertyInfo displayPropertyInfo, HiddenColumnAttribute hiddenColumnAttribute)

@@ -11,13 +11,14 @@ namespace AppGene.Ui.Infrastructure
         // TODO: Enrich the class PropertyDataGridColumnCreator
         public static DataGridColumn Create(DisplayPropertyInfo property, Style style)
         {
-            if (property.PropertyInfo.PropertyType.IsEnum)
-            {
-                return CreateEnumColumn(property, style);
-            }
-            if (property.PropertyInfo.PropertyType == typeof(DateTime))
+            LogicalUiElementType elementType = ModelUiCreatorHelper.DetermineElementType(property);
+            if (elementType == LogicalUiElementType.Date)
             {
                 return CreateDateColumn(property, style);
+            }
+            else if (elementType == LogicalUiElementType.Options)
+            {
+                return CreateEnumColumn(property, style);
             }
 
             return CreateTextColumn(property, style);
@@ -33,7 +34,7 @@ namespace AppGene.Ui.Infrastructure
                 Binding = new Binding(property.PropertyName)
                 {
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    Mode = BindingMode.TwoWay,
+                    Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
                     ValidatesOnDataErrors = true,
                     NotifyOnValidationError = true,
                     ValidatesOnExceptions = true,
@@ -48,10 +49,25 @@ namespace AppGene.Ui.Infrastructure
             return column;
         }
 
+        internal static void CreateDependencyProperty(DataGridColumn column, DisplayPropertyInfo property)
+        {
+            DependencyProperty dp = ModelUiCreatorHelper.GetDataGridColumnDependencyProperty(property, column);
+
+            if (dp == null) return;
+
+            BindingOperations.SetBinding(column, dp, new Binding(property.PropertyName)
+            {
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
+                ValidatesOnDataErrors = true,
+                NotifyOnValidationError = true,
+                ValidatesOnExceptions = true,
+            });
+        }
+
         private static DataGridColumn CreateEnumColumn(DisplayPropertyInfo property, Style style)
         {
             // Gender
-            // https://msdn.microsoft.com/zh-cn/library/system.windows.controls.datagridcomboboxcolumn.aspx
             ObjectDataProvider provider = new ObjectDataProvider()
             {
                 ObjectType = typeof(Enum),
@@ -67,14 +83,13 @@ namespace AppGene.Ui.Infrastructure
                 SelectedItemBinding = new Binding(property.PropertyName)
                 {
                     UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    Mode = BindingMode.TwoWay,
+                    Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
                     ValidatesOnDataErrors = true,
                     NotifyOnValidationError = true,
                     ValidatesOnExceptions = true,
                 },
             };
 
-            //http://stackoverflow.com/questions/25644003/wpf-datagridcomboboxcolumn-binding
             BindingOperations.SetBinding(column, DataGridComboBoxColumn.ItemsSourceProperty, new Binding()
             {
                 Source = provider
@@ -89,7 +104,7 @@ namespace AppGene.Ui.Infrastructure
             Binding binding = new Binding(property.PropertyName)
             {
                 UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = BindingMode.TwoWay,
+                Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
                 ValidatesOnDataErrors = true,
                 NotifyOnValidationError = true,
                 ValidatesOnExceptions = true,

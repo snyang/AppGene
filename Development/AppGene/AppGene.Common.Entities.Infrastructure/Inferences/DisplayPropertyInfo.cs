@@ -41,10 +41,10 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
         public string DependencyHostPropertyName { get; set; }
 
         /// <summary>
-        /// Gets or sets the fully qualified type name of the dependency property type
-        /// when the property is a dependency property.
+        /// Gets or sets the name of the dependency property when the property is a dependency property.
+        /// For example: "IsVisibleProperty"
         /// </summary>
-        public string DependencyPropertyTypeName { get; set; }
+        public string DependencyPropertyName { get; set; }
 
         /// <summary>
         /// Gets or sets a value that is used to display a description in the UI.

@@ -99,9 +99,9 @@
       <Project>{a50296ef-f245-4462-a9f0-623eb3223dae}</Project>
       <Name>AppGene.Ui.Infrastructure</Name>
     </ProjectReference>
-    <ProjectReference Include="..\AppGene.Ui.Patterns.MasterDetail\AppGene.Ui.Patterns.MasterDetail.csproj">
+    <ProjectReference Include="..\AppGene.Ui.Patterns\AppGene.Ui.Patterns.csproj">
       <Project>{0b5927bb-8003-458c-a373-fded1f1032f3}</Project>
-      <Name>AppGene.Ui.Patterns.MasterDetail</Name>
+      <Name>AppGene.Ui.Patterns</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

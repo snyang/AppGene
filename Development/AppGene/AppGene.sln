@@ -13,7 +13,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Ui.Infrastructure",
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Common", "Common", "{6E65EF92-09C3-439F-89FC-F6A9435456CD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Ui.Patterns.MasterDetail", "AppGene.Ui.Patterns.MasterDetail\AppGene.Ui.Patterns.MasterDetail.csproj", "{0B5927BB-8003-458C-A373-FDED1F1032F3}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Ui.Patterns", "AppGene.Ui.Patterns\AppGene.Ui.Patterns.csproj", "{0B5927BB-8003-458C-A373-FDED1F1032F3}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AppGene.Business.Sample", "AppGene.Business.Sample\AppGene.Business.Sample.csproj", "{7FCB9A2E-F3D5-4766-8D94-8AFDF9EA9C56}"
 EndProject

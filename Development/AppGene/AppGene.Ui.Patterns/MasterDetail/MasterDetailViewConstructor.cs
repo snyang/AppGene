@@ -190,7 +190,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
             string bindingPathPrefix = "CollectionView";
 
             // create detail panel.
-            GridDetail = new ModelPanelCreator().CreateGrid(editProperties, 2, style, bindingPathPrefix);
+            GridDetail = new ModelPanelCreator().Create(editProperties, 2, style, bindingPathPrefix).Grid;
 
             // add to parent
             this.GridContainer.Children.Add(GridDetail);
