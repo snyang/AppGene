@@ -1,6 +1,9 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -17,14 +20,29 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
         /// <param name="context"></param>
         public void Apply(EntityAnalysisContext context, DisplayPropertyInfo property)
         {
-            if (!EntityAnalysisHelper.IsCharacteristicProperty(context.EntityType,
+            if (EntityAnalysisHelper.IsCharacteristicProperty(context.EntityType,
                 context.PropertyInfo,
                 "id"))
             {
+                property.IsHidden = true;
                 return;
             }
 
-            property.IsHidden = true;
+            // TODO: refatory it as a plugin
+            var databaseGeneratedAttribute = context.PropertyInfo.GetCustomAttribute<DatabaseGeneratedAttribute>();
+            if (databaseGeneratedAttribute != null
+                && databaseGeneratedAttribute.DatabaseGeneratedOption == DatabaseGeneratedOption.Identity)
+            {
+                property.IsHidden = true;
+                return;
+            }
+
+            var timestampAttribute = context.PropertyInfo.GetCustomAttribute<TimestampAttribute>();
+            if (timestampAttribute != null)
+            {
+                property.IsHidden = true;
+                return;
+            }
         }
     }
 }

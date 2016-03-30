@@ -61,14 +61,8 @@ namespace AppGene.Ui.Infrastructure
                 return;
             }
 
-            (uiElementsInfo.Content as FrameworkElement).SetBinding(dp, new Binding(bindingPathPrefix + "/" + property.PropertyName)
-            {
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
-                ValidatesOnDataErrors = true,
-                NotifyOnValidationError = true,
-                ValidatesOnExceptions = true,
-            });
+            (uiElementsInfo.Content as FrameworkElement).SetBinding(dp,
+                ModelUiCreatorHelper.CreateBinding(property, bindingPathPrefix + "/" + property.PropertyName));
         }
 
         /// <summary>
@@ -105,14 +99,7 @@ namespace AppGene.Ui.Infrastructure
             {
                 textBox.Style = style;
             }
-            textBox.SetBinding(TextBox.TextProperty, new Binding(bindingPath)
-            {
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
-                ValidatesOnDataErrors = true,
-                NotifyOnValidationError = true,
-                ValidatesOnExceptions = true,
-            });
+            textBox.SetBinding(TextBox.TextProperty, ModelUiCreatorHelper.CreateBinding(property, bindingPath));
 
             if (property.IsReadOnly)
             {
@@ -205,7 +192,7 @@ namespace AppGene.Ui.Infrastructure
             elememtsInfo.Label = labelElement;
 
             // create inputs
-            StackPanel panel = new StackPanel()
+            var panel = new WrapPanel()
             {
                 Orientation = Orientation.Horizontal,
                 Margin = new Thickness(4),
@@ -231,13 +218,8 @@ namespace AppGene.Ui.Infrastructure
                 {
                     control.Style = style;
                 }
-                control.SetBinding(RadioButton.IsCheckedProperty, new Binding(bindingPath)
-                {
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
-                    Converter = new EnumToBooleanConverter(),
-                    ConverterParameter = item.ToString()
-                });
+                control.SetBinding(ToggleButton.IsCheckedProperty,
+                    ModelUiCreatorHelper.CreateBinding(property, bindingPath, new EnumToBooleanConverter(), item.ToString()));
 
                 if (property.IsReadOnly)
                 {
@@ -274,19 +256,7 @@ namespace AppGene.Ui.Infrastructure
                 control.Style = style;
             }
 
-            var binding = new Binding(bindingPath)
-            {
-                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
-                ValidatesOnDataErrors = true,
-                NotifyOnValidationError = true,
-                ValidatesOnExceptions = true,
-            };
-
-            if (!string.IsNullOrEmpty(property.ConverterTypeName))
-            {
-                binding.Converter = Activator.CreateInstance(Type.GetType(property.ConverterTypeName)) as IValueConverter;
-            }
+            Binding binding = ModelUiCreatorHelper.CreateBinding(property, bindingPath);
             control.SetBinding(DatePicker.SelectedDateProperty, binding);
 
             if (property.IsReadOnly)

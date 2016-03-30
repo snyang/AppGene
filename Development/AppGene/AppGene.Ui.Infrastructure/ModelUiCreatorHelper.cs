@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using System.Windows.Data;
 
 namespace AppGene.Ui.Infrastructure
 {
@@ -113,6 +114,47 @@ namespace AppGene.Ui.Infrastructure
             }
 
             return dp;
+        }
+
+        internal static Binding CreateBinding(DisplayPropertyInfo property, string bindingPath)
+        {
+            IValueConverter converter = null;
+            if (!string.IsNullOrEmpty(property.ConverterTypeName))
+            {
+                converter = Activator.CreateInstance(Type.GetType(property.ConverterTypeName)) as IValueConverter;
+            }
+
+            return CreateBinding(property, bindingPath, converter, null);
+        }
+
+        internal static Binding CreateBinding(DisplayPropertyInfo property)
+        {
+            return CreateBinding(property, property.PropertyName);
+        }
+
+        internal static Binding CreateBinding(DisplayPropertyInfo property, string bindingPath, IValueConverter converter, string convertParameter)
+        {
+            var binding = new Binding(bindingPath)
+            {
+                UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
+                Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
+                ValidatesOnDataErrors = true,
+                NotifyOnValidationError = true,
+                ValidatesOnExceptions = true,
+            };
+
+            if (converter != null)
+            {
+                binding.Converter = converter;
+                binding.ConverterParameter = convertParameter;
+            }
+
+            if (!string.IsNullOrEmpty(property.DisplayFormat))
+            {
+                binding.StringFormat = property.DisplayFormat;
+            }
+
+            return binding;
         }
     }
 }

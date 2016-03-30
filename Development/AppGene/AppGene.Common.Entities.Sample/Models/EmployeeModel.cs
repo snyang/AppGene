@@ -1,10 +1,9 @@
-﻿using AppGene.Common.Entities;
-using AppGene.Common.Entities.Infrastructure.Annotations;
+﻿using AppGene.Common.Entities.Infrastructure.Annotations;
 using System;
-using System.ComponentModel.DataAnnotations;
 
 namespace AppGene.Common.Entities.Models
 {
+    [Model(Name = "Employee")]
     public class EmployeeModel
         : Employee
     {
@@ -13,7 +12,7 @@ namespace AppGene.Common.Entities.Models
         {
             get
             {
-                int age = DateTime.Today.Year - base.Birthday.Year;
+                int age = DateTime.Today.Year - Birthday.Year;
                 return age > 0 ? age : 0;
             }
         }

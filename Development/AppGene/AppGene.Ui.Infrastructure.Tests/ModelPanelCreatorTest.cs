@@ -9,11 +9,14 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
+using AppGene.Common.Entities;
+using System.Windows.Controls.Primitives;
 
 namespace AppGene.Ui.Infrastructure.Tests
 {
     [Apartment(ApartmentState.STA)]
     [TestFixture(typeof(EmployeeModel))]
+    [TestFixture(typeof(DataTypeGroupA))]
     public class ModelPanelCreatorTest<TModel>
     {
         private string bindingPrefixPath = "CollectionView";
@@ -32,19 +35,25 @@ namespace AppGene.Ui.Infrastructure.Tests
 
         private void ValidateCreateGrid(ModelPanelCreator creator, ModelUiInfo modelUiInfo, IList<DisplayPropertyInfo> properties)
         {
+            ValidationUiElements(creator, modelUiInfo, properties);
+
+            ValidateDependencyProperties(modelUiInfo, properties);
+        }
+
+        private void ValidationUiElements(ModelPanelCreator creator, ModelUiInfo modelUiInfo, IList<DisplayPropertyInfo> properties)
+        {
             Grid grid = modelUiInfo.Grid;
             int propertiesCount = properties.Count<DisplayPropertyInfo>(p => p.IsHidden == false);
             Assert.AreEqual(propertiesCount * 2, grid.Children.Count);
 
-            var columnProperties = from p in properties
-                                   where p.IsHidden == false
-                                   select p;
-
+            var elementProperties = from p in properties
+                                    where p.IsHidden == false
+                                    select p;
             int index = 0;
             int row = 0;
             int column = 0;
             int rowsCount = (int)Math.Ceiling(((decimal)propertiesCount) / 2);
-            foreach (var property in columnProperties)
+            foreach (var property in elementProperties)
             {
                 ValidateUiElementLabel(grid.Children[index], property.Name + ":", row, column);
 
@@ -55,7 +64,7 @@ namespace AppGene.Ui.Infrastructure.Tests
                 }
                 else if (elementType == LogicalUiElementType.Options)
                 {
-                    // TODO validate enum
+                    ValidateUiElementEnum(grid.Children[index + 1], property.PropertyName, row, column + 1);
                 }
                 else if (elementType == LogicalUiElementType.Textbox)
                 {
@@ -63,13 +72,16 @@ namespace AppGene.Ui.Infrastructure.Tests
                 }
                 else
                 {
-                    Assert.Fail("Unhandled test case! ");
+                    Assert.Fail("Unhandled test case!");
                 }
 
                 ModelUiCreatorHelper.CalculatePanelNextPosition(creator.Orientation, rowsCount, creator.ColumnsCount, ref column, ref row);
                 index += 2;
             }
+        }
 
+        private void ValidateDependencyProperties(ModelUiInfo modelUiInfo, IList<DisplayPropertyInfo> properties)
+        {
             var dependencyProperties = from p in properties
                                        where p.IsDependencyProperty == true
                                        select p;
@@ -90,30 +102,52 @@ namespace AppGene.Ui.Infrastructure.Tests
 
         private void ValidateUiElementDate(UIElement uiElement, string propertyName, int row, int column)
         {
-            Assert.IsTrue(uiElement is DatePicker);
+            Assert.IsTrue(uiElement is DatePicker, $"propertyName = '{propertyName}'");
             DatePicker datePicker = (DatePicker)uiElement;
             Assert.AreEqual(bindingPrefixPath + "/" + propertyName,
-                datePicker.GetBindingExpression(DatePicker.SelectedDateProperty).ParentBinding.Path.Path);
-            Assert.AreEqual(row, datePicker.GetValue(Grid.RowProperty));
-            Assert.AreEqual(column, datePicker.GetValue(Grid.ColumnProperty));
+                datePicker.GetBindingExpression(DatePicker.SelectedDateProperty).ParentBinding.Path.Path,
+                $"propertyName = '{propertyName}'");
+            Assert.AreEqual(row, datePicker.GetValue(Grid.RowProperty),
+                $"propertyName = '{propertyName}'");
+            Assert.AreEqual(column, datePicker.GetValue(Grid.ColumnProperty),
+                $"propertyName = '{propertyName}'");
+        }
+
+        private void ValidateUiElementEnum(UIElement uiElement, string propertyName, int row, int column)
+        {
+            Assert.IsTrue(uiElement is WrapPanel, $"propertyName = '{propertyName}'");
+            var enumPanel = (WrapPanel)uiElement;
+            foreach (var item in enumPanel.Children)
+            {
+                Assert.IsTrue(item is RadioButton, $"propertyName = '{propertyName}'");
+                var itemRadio = (RadioButton)item;
+                Assert.AreEqual(bindingPrefixPath + "/" + propertyName,
+                        itemRadio.GetBindingExpression(ToggleButton.IsCheckedProperty).ParentBinding.Path.Path,
+                        $"propertyName = '{propertyName}'");
+            }
+
+            Assert.AreEqual(row, enumPanel.GetValue(Grid.RowProperty), $"propertyName = '{propertyName}'");
+            Assert.AreEqual(column, enumPanel.GetValue(Grid.ColumnProperty), $"propertyName = '{propertyName}'");
         }
 
         private void ValidateUiElementLabel(UIElement uiElement, string labelContent, int row, int column)
         {
-            Assert.IsTrue(uiElement is Label);
+            Assert.IsTrue(uiElement is Label, $"labelContent = '{labelContent}'");
             Label label = (Label)uiElement;
-            Assert.AreEqual(labelContent, label.Content);
-            Assert.AreEqual(row, label.GetValue(Grid.RowProperty));
-            Assert.AreEqual(column, label.GetValue(Grid.ColumnProperty));
+            Assert.AreEqual(labelContent, label.Content, $"labelContent = '{labelContent}'");
+            Assert.AreEqual(row, label.GetValue(Grid.RowProperty), $"labelContent = '{labelContent}'");
+            Assert.AreEqual(column, label.GetValue(Grid.ColumnProperty), $"labelContent = '{labelContent}'");
         }
 
         private void ValidateUiElementTextBox(UIElement uiElement, string propertyName, int row, int column)
         {
-            Assert.IsTrue(uiElement is TextBox);
+            Assert.IsTrue(uiElement is TextBox, $"propertyName = '{propertyName}'");
             TextBox textBox = (TextBox)uiElement;
-            Assert.AreEqual(bindingPrefixPath + "/" + propertyName, textBox.GetBindingExpression(TextBox.TextProperty).ParentBinding.Path.Path);
-            Assert.AreEqual(row, textBox.GetValue(Grid.RowProperty));
-            Assert.AreEqual(column, textBox.GetValue(Grid.ColumnProperty));
+            Assert.AreEqual(bindingPrefixPath + "/" + propertyName,
+                textBox.GetBindingExpression(TextBox.TextProperty).ParentBinding.Path.Path,
+                $"propertyName = '{propertyName}'");
+            Assert.AreEqual(row, textBox.GetValue(Grid.RowProperty), $"propertyName = '{propertyName}'");
+            Assert.AreEqual(column, textBox.GetValue(Grid.ColumnProperty), $"propertyName = '{propertyName}'");
         }
     }
 }

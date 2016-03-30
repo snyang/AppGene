@@ -5,7 +5,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
     /// <summary>
     /// Interaction logic for MasterDetailView.xaml
     /// </summary>
-    public partial class MasterDetailView<TModel, TEntity> : Window
+    public class MasterDetailView<TModel, TEntity> : Window
           where TModel : class, new()
           where TEntity :class, new()
     {

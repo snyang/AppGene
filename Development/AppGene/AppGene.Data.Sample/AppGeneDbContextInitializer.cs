@@ -9,7 +9,7 @@ namespace AppGene.Data.Sample
     {
         protected override void Seed(AppGeneDbContext context)
         {
-            Employee employee = new Employee();
+            var employee = new Employee();
             employee.EmployeeCode = 1;
             employee.EmployeeName = "Test User 1";
             employee.Gender = Gender.Male;

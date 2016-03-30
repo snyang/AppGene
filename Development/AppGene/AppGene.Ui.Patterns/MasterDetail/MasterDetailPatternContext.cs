@@ -17,7 +17,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         {
             if (businessService == null)
             {
-                throw new ArgumentNullException("businessService");
+                throw new ArgumentNullException(nameof(businessService));
             }
             BusinessService = businessService;
         }

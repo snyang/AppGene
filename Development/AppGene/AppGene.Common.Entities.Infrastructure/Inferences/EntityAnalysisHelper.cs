@@ -99,32 +99,50 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
 
             StringInfo propertyNameInfo = new StringInfo(propertyName);
             StringBuilder nameBuilder = new StringBuilder();
-            bool alreadyPutASpace = false;
+            string currentUpperCaseSection = "";
             for (int i = 0; i < propertyNameInfo.LengthInTextElements; i++)
             {
+                bool hasContentBefore = nameBuilder.Length > 0;
                 string current = propertyNameInfo.SubstringByTextElements(i, 1);
-                if (i > 0
-                    && !alreadyPutASpace
-                    && Char.IsUpper(current, 0)
-                    && i + 1 < propertyNameInfo.LengthInTextElements)
+                bool currentIsUpper = Char.IsUpper(current, 0);
+                if (currentIsUpper)
                 {
-                    string next = propertyNameInfo.SubstringByTextElements(i + 1, 1);
-                    if (Char.IsLower(next, 0))
+                    if (hasContentBefore && currentUpperCaseSection.Length == 0)
                     {
-                        nameBuilder.Append(" ");
+                        currentUpperCaseSection = " ";
                     }
+                    currentUpperCaseSection = currentUpperCaseSection + current;
+                    continue;
+                }
+                else if (currentUpperCaseSection.Length > 0)
+                {
+                    currentUpperCaseSection = currentUpperCaseSection.TrimEnd();
+                    if (currentUpperCaseSection.Length > 2)
+                    {
+                        nameBuilder.Append(currentUpperCaseSection.Substring(0, currentUpperCaseSection.Length - 1));
+                        nameBuilder.Append(" ");
+                        currentUpperCaseSection = currentUpperCaseSection.Substring(currentUpperCaseSection.Length - 1);
+                    }
+                    nameBuilder.Append(currentUpperCaseSection);
+                    currentUpperCaseSection = "";
                 }
 
                 if (string.Equals(current, "_", StringComparison.OrdinalIgnoreCase))
                 {
-                    current = " ";
-                    alreadyPutASpace = true;
+                    // Convert "_" as " "
+                    if (hasContentBefore && currentUpperCaseSection.Length == 0)
+                    {
+                        currentUpperCaseSection = " ";
+                    }
+                    continue;
                 }
-                else
-                {
-                    alreadyPutASpace = false;
-                }
+                
                 nameBuilder.Append(current);
+            }
+
+            if (currentUpperCaseSection.Length > 0)
+            {
+                nameBuilder.Append(currentUpperCaseSection.TrimEnd());
             }
 
             return nameBuilder.ToString();

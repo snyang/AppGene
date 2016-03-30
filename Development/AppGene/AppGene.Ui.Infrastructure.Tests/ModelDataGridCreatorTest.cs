@@ -10,14 +10,15 @@ using System.Threading.Tasks;
 using System.Windows.Controls;
 using System.Windows;
 using System.Windows.Data;
+using AppGene.Common.Entities;
 
 namespace AppGene.Ui.Infrastructure.Tests
 {
     [Apartment(ApartmentState.STA)]
     [TestFixture(typeof(EmployeeModel))]
+    [TestFixture(typeof(DataTypeGroupA))]
     public class ModelDataGridCreatorTest<TModel>
     {
-        
         [Test]
         public void TestCreateGrid()
         {
@@ -26,21 +27,78 @@ namespace AppGene.Ui.Infrastructure.Tests
             {
                 EntityType = typeof(TModel)
             });
-            DataGrid dataGrid = creator.Create(displayProperties, null);
-
-            ValidateCreateGrid(dataGrid, displayProperties);
+            Window testWindow = new Window();
+            ModelDataGridUiInfo modelUiInfo = creator.Create(displayProperties, null);
+            testWindow.Content = modelUiInfo.Grid;
+            ValidateCreateGrid(modelUiInfo, displayProperties);
         }
 
-        private void ValidateCreateGrid(DataGrid grid, IList<DisplayPropertyInfo> displayProperties)
+        private void ValidateColumnHeader(DataGridColumn gridColumn, string header, int column)
         {
+            Assert.AreEqual(header, gridColumn.Header, $"property = {header}");
+        }
 
+        private void ValidateColumntDate(DataGridColumn gridColumn, DisplayPropertyInfo property)
+        {
+            if (string.IsNullOrEmpty(property.DisplayFormat))
+            {
+                property.DisplayFormat = "d";
+            }
+
+            Assert.IsTrue(gridColumn is DataGridTemplateColumn, $"property = {property.PropertyName}");
+            DataGridTemplateColumn templateColumn = (DataGridTemplateColumn)gridColumn;
+
+            templateColumn.CellTemplate.Seal();
+            var cell = templateColumn.CellTemplate.LoadContent() as TextBlock;
+            Assert.IsNotNull(cell, $"property = {property.PropertyName}");
+            ModellCreatorTestHelper.ValidateBinding(property, 
+                BindingOperations.GetBinding(cell, TextBlock.TextProperty),
+                $"property = {property.PropertyName}");
+
+            templateColumn.CellEditingTemplate.Seal();
+            var cellEditing = templateColumn.CellEditingTemplate.LoadContent() as DatePicker;
+            Assert.IsNotNull(cellEditing, $"property = {property.PropertyName}");
+            ModellCreatorTestHelper.ValidateBinding(property, 
+                BindingOperations.GetBinding(cellEditing, DatePicker.TextProperty),
+                $"property = {property.PropertyName}");
+        }
+
+        private void ValidateColumntEnum(DataGridColumn gridColumn, DisplayPropertyInfo property)
+        {
+            Assert.IsTrue(gridColumn is DataGridComboBoxColumn, $"property = {property.PropertyName}");
+            DataGridComboBoxColumn column = (DataGridComboBoxColumn)gridColumn;
+
+            ModellCreatorTestHelper.ValidateBinding(property, 
+                column.SelectedItemBinding as Binding,
+                $"property = {property.PropertyName}");
+        }
+
+        private void ValidateColumnTextBox(DataGridColumn gridColumn, DisplayPropertyInfo property)
+        {
+            Assert.IsTrue(gridColumn is DataGridTextColumn, $"property = {property.PropertyName}");
+            DataGridTextColumn textColumn = (DataGridTextColumn)gridColumn;
+            ModellCreatorTestHelper.ValidateBinding(property, 
+                textColumn.Binding as Binding,
+                $"property = {property.PropertyName}");
+        }
+
+        private void ValidateCreateGrid(ModelDataGridUiInfo modelUiInfo, IList<DisplayPropertyInfo> displayProperties)
+        {
+            ValidateGridColumns(modelUiInfo, displayProperties);
+
+            ValidateDependencyProperties(modelUiInfo, displayProperties);
+        }
+
+        private void ValidateGridColumns(ModelDataGridUiInfo modelUiInfo, IList<DisplayPropertyInfo> displayProperties)
+        {
+            var grid = modelUiInfo.Grid;
             int propertiesCount = displayProperties.Count(p => p.IsHidden == false);
             Assert.AreEqual(propertiesCount, grid.Columns.Count);
 
             IEnumerable<DisplayPropertyInfo> columnProperties = from p in displayProperties
                                                                 where p.IsHidden == false
                                                                 select p;
-            
+
             int index = 0;
             foreach (var property in columnProperties)
             {
@@ -52,7 +110,7 @@ namespace AppGene.Ui.Infrastructure.Tests
                 }
                 else if (elementType == LogicalUiElementType.Options)
                 {
-                    // TODO validate enum
+                    ValidateColumntEnum(grid.Columns[index], property);
                 }
                 else if (elementType == LogicalUiElementType.Textbox)
                 {
@@ -60,44 +118,32 @@ namespace AppGene.Ui.Infrastructure.Tests
                 }
                 else
                 {
-                    Assert.Fail("Unhandled test case! ");
+                    Assert.Fail("Unhandled test case!");
                 }
                 index++;
             }
-            
-            //ValidateDependencyProperty(grid.Columns[index],
-            //    "FemaleBenefit_IsReadOnly",
-            //    TextBox.IsReadOnlyCaretVisibleProperty);
         }
 
-        private void ValidateDependencyProperty(DataGridColumn gridColumn, string propertyName, DependencyProperty dp)
+        private void ValidateDependencyProperties(ModelDataGridUiInfo modelUiInfo, IList<DisplayPropertyInfo> properties)
         {
-            //TODO: Assert.AreEqual(propertyName, gridColumn.GetBindingExpression(dp).ParentBinding.Path.Path);
+            var dependencyProperties = from p in properties
+                                       where p.IsDependencyProperty == true
+                                       select p;
+            foreach (var property in dependencyProperties)
+            {
+                DataGridColumn column = modelUiInfo.Columns[property.DependencyHostPropertyName];
+                ValidateDependencyProperty(column,
+                                            property,
+                                            ModelUiCreatorHelper.GetDataGridColumnDependencyProperty(property, column));
+            }
         }
 
-        private void ValidateColumntDate(DataGridColumn gridColumn, DisplayPropertyInfo property)
+        private void ValidateDependencyProperty(DataGridColumn column, 
+            DisplayPropertyInfo property, DependencyProperty dp)
         {
-            Assert.IsTrue(gridColumn is DataGridTemplateColumn);
-            DataGridTemplateColumn textColumn = (DataGridTemplateColumn)gridColumn;
-
-            // TODO Assert.AreEqual(propertyName, (textColumn.CellTemplate.VisualTree.Binding as Binding).Path);
-        }
-
-        private void ValidateColumnHeader(DataGridColumn gridColumn, string header, int column)
-        {
-            Assert.AreEqual(header, gridColumn.Header);
-        }
-
-        private void ValidateColumnTextBox(DataGridColumn gridColumn, DisplayPropertyInfo property)
-        {
-            Assert.IsTrue(gridColumn is DataGridTextColumn);
-            DataGridTextColumn textColumn = (DataGridTextColumn)gridColumn;
-            
-            Assert.AreEqual(property.PropertyName, (textColumn.Binding as Binding).Path.Path);
-            Assert.AreEqual(property.IsReadOnly
-                    ? BindingMode.OneWay
-                    : BindingMode.TwoWay,
-                    (textColumn.Binding as Binding).Mode);
+            ModellCreatorTestHelper.ValidateBinding(property, 
+                BindingOperations.GetBinding(column, dp), 
+                $"property = {property.PropertyName}");
         }
     }
 }

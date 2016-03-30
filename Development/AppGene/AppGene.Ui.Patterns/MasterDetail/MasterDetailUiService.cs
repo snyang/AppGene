@@ -1,4 +1,5 @@
-﻿using AppGene.Common.Entities.Infrastructure.Inferences;
+﻿using AppGene.Common.Core.Logging;
+using AppGene.Common.Entities.Infrastructure.Inferences;
 using AppGene.Ui.Infrastructure;
 using System;
 using System.Collections.Generic;
@@ -11,9 +12,8 @@ namespace AppGene.Ui.Patterns.MasterDetail
         where TModel : class, new()
         where TEntity : class, new()
     {
-        private MasterDetailModelInference modelInference = new MasterDetailModelInference(typeof(TModel));
         private MasterDetailModelInference entityInference = new MasterDetailModelInference(typeof(TEntity));
-
+        private MasterDetailModelInference modelInference = new MasterDetailModelInference(typeof(TModel));
         public virtual bool DoFilter(TModel model, string keyword)
         {
             if (modelInference.FilterProperties.Count == 0)
@@ -35,6 +35,21 @@ namespace AppGene.Ui.Patterns.MasterDetail
             return false;
         }
 
+        public virtual IList<DisplayPropertyInfo> GetDisplayProperties()
+        {
+            return modelInference.DisplayProperties;
+        }
+
+        public virtual IList<DisplayPropertyInfo> GetGridDisplayProperties()
+        {
+            return modelInference.GridDisplayProperties;
+        }
+
+        public virtual string GetModelName()
+        {
+            return modelInference.ModelName;
+        }
+
         public virtual void SetDefault(TModel model)
         {
             foreach (var property in typeof(TModel).GetProperties(BindingFlags.Instance | BindingFlags.Public))
@@ -42,10 +57,33 @@ namespace AppGene.Ui.Patterns.MasterDetail
                 object value = modelInference.GetPropertyDefaultValue(property);
                 if (value != null)
                 {
-                    property.SetValue(model, value);
+                    if (value.GetType().Equals(property.PropertyType))
+                    {
+                        property.SetValue(model, value);
+                    }
+                    else
+                    {
+                        try
+                        {
+                            object newValue = Convert.ChangeType(value, property.PropertyType);
+                            property.SetValue(model, newValue);
+                        }
+                        catch(Exception ex)
+                        {
+                            LoggerFactory.GetLogger().Error(ex,
+                                $"Cannot set the default value for propety '{property.Name}' in class '{model.GetType().Name}'.");
+                        }
+                    }
                 }
             }
+        }
 
+        public virtual void Sort(IList<TEntity> entities)
+        {
+            if (entityInference.SortProperties.Count == 0) return;
+
+            EntitySortComparer<TEntity> comparer = new EntitySortComparer<TEntity>(entityInference.SortProperties);
+            (entities as List<TEntity>).Sort(comparer);
         }
 
         /// <summary>
@@ -79,25 +117,6 @@ namespace AppGene.Ui.Patterns.MasterDetail
             entityString = string.Format(CultureInfo.CurrentCulture, formatString, values);
 
             return entityString;
-        }
-
-
-        public virtual void Sort(IList<TEntity> entities)
-        {
-            if (entityInference.SortProperties.Count == 0) return;
-
-            EntitySortComparer<TEntity> comparer = new EntitySortComparer<TEntity>(entityInference.SortProperties);
-            (entities as List<TEntity>).Sort(comparer);
-        }
-
-        public virtual IList<DisplayPropertyInfo> GetDisplayProperties()
-        {
-            return modelInference.DisplayProperties;
-        }
-
-        public virtual IList<DisplayPropertyInfo> GetGridDisplayProperties()
-        {
-            return modelInference.GridDisplayProperties;
         }
     }
 }

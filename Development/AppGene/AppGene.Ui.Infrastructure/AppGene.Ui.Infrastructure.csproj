@@ -56,6 +56,7 @@
     <Compile Include="LogicalUiElementType.cs" />
     <Compile Include="ModelDataGridCreator.cs" />
     <Compile Include="ModelPanelCreator.cs" />
+    <Compile Include="ModelDataGridUiInfo.cs" />
     <Compile Include="ModelUiInfo.cs" />
     <Compile Include="ModelPropertyUiInfo.cs" />
     <Compile Include="ModelUiCreatorHelper.cs" />

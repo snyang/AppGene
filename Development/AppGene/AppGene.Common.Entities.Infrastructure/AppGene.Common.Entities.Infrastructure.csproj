@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations\ColumnTypeAttribute.cs" />
+    <Compile Include="Annotations\ModelAttribute.cs" />
     <Compile Include="Annotations\HiddenColumnAttribute.cs" />
     <Compile Include="Annotations\ComputeRelationshipAttribute.cs" />
     <Compile Include="Annotations\DependencyColumnAttribute.cs" />
@@ -48,6 +49,7 @@
     <Compile Include="EntityModels\IEntityModel.cs" />
     <Compile Include="Inferences\DefaultValueGetter.cs" />
     <Compile Include="Inferences\DateTypeConvention.cs" />
+    <Compile Include="Inferences\ModelNameGetter.cs" />
     <Compile Include="Inferences\HiddenPropertyConvention.cs" />
     <Compile Include="Inferences\DependencyPropertyConvention.cs" />
     <Compile Include="Inferences\DisplayFormatGetter.cs" />

@@ -6,6 +6,7 @@ using System.ComponentModel;
 using System.Globalization;
 using System.Windows;
 using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 using System.Windows.Data;
 using System.Windows.Input;
 
@@ -110,12 +111,12 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         private void BindingData()
         {
-            DataGridMain.SetBinding(DataGrid.ItemsSourceProperty,
+            DataGridMain.SetBinding(ItemsControl.ItemsSourceProperty,
                 new Binding("CollectionView")
                 {
                     Mode = BindingMode.TwoWay
                 });
-            DataGridMain.SetBinding(DataGrid.SelectedItemProperty,
+            DataGridMain.SetBinding(Selector.SelectedItemProperty,
                 new Binding("CurrentItem")
                 {
                     Mode = BindingMode.TwoWay,

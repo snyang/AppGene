@@ -4,6 +4,7 @@ using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Media;
 
 namespace AppGene.Ui.Patterns.MasterDetail
 {
@@ -40,11 +41,34 @@ namespace AppGene.Ui.Patterns.MasterDetail
 
         public void Initialize()
         {
+            InitWindow();
             InitContainer();
             InitCommandBar();
             InitDataGrid();
             InitDetailPanel();
             initController();
+        }
+
+        private void InitWindow()
+        {
+            Window window = GetWindow(PatternContext.View);
+            if (window != null)
+            {
+                window.Title = PatternContext.UiService.GetModelName();
+            }
+        }
+
+        private static Window GetWindow(DependencyObject element)
+        {
+            if (element == null) return null;
+
+            Window elementWindow = element as Window;
+            if (elementWindow != null)
+            {
+                return elementWindow;
+            }
+
+            return GetWindow(VisualTreeHelper.GetParent(element));
         }
 
         private static Style GetResourceStyle(string resourceName)
@@ -178,7 +202,7 @@ namespace AppGene.Ui.Patterns.MasterDetail
         {
             var editProperties = PatternContext.UiService.GetGridDisplayProperties();
             Style style = GetResourceStyle(FrameworkElementErrorStyle);
-            DataGridMain = new ModelDataGridCreator().Create(editProperties, style);
+            DataGridMain = new ModelDataGridCreator().Create(editProperties, style).Grid;
             this.GridContainer.Children.Add(DataGridMain);
         }
 

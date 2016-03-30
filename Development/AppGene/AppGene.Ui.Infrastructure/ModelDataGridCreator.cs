@@ -11,25 +11,29 @@ namespace AppGene.Ui.Infrastructure
 {
     public class ModelDataGridCreator
     {
-        public DataGrid DataGridMain { get; set; }
-
-        public DataGrid Create(IList<DisplayPropertyInfo> editProperties, Style style)
+        public ModelDataGridUiInfo Create(IList<DisplayPropertyInfo> editProperties, Style style)
         {
+            var DataGrid = new DataGrid
+            {
+                Margin = new Thickness(2)
+            };
+
+            var modelUiInfo = new ModelDataGridUiInfo()
+            {
+                Grid = DataGrid,
+            };
+
             try
             {
-                DataGridMain = new DataGrid
-                {
-                    Margin = new Thickness(2)
-                };
-                Grid.SetRow(DataGridMain, 1);
+                Grid.SetRow(DataGrid, 1);
 
-                DataGridMain.BeginInit();
-                DataGridMain.AutoGenerateColumns = false;
-                DataGridMain.IsSynchronizedWithCurrentItem = true;
-                DataGridMain.Columns.Clear();
+                DataGrid.BeginInit();
+                DataGrid.AutoGenerateColumns = false;
+                DataGrid.IsSynchronizedWithCurrentItem = true;
+                DataGrid.Columns.Clear();
 
                 // create data grid columns.
-                var modelUiInfo = new Dictionary<string, DataGridColumn>();
+
                 foreach (var property in editProperties)
                 {
                     if (property.IsHidden && !property.IsDependencyProperty) continue;
@@ -37,22 +41,22 @@ namespace AppGene.Ui.Infrastructure
                     if (!property.IsDependencyProperty)
                     {
                         DataGridColumn column = ModelDataGridColumnCreator.Create(property, style);
-                        DataGridMain.Columns.Add(column);
-                        modelUiInfo.Add(property.PropertyName, column);
+                        DataGrid.Columns.Add(column);
+                        modelUiInfo.Columns.Add(property.PropertyName, column);
                     }
                     else
                     {
-                        var column = modelUiInfo[property.DependencyHostPropertyName];
+                        var column = modelUiInfo.Columns[property.DependencyHostPropertyName];
                         ModelDataGridColumnCreator.CreateDependencyProperty(column, property);
                     }
                 }
             }
             finally
             {
-                DataGridMain.EndInit();
+                DataGrid.EndInit();
             }
 
-            return DataGridMain;
+            return modelUiInfo;
         }
     }
 }

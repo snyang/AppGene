@@ -8,18 +8,32 @@ namespace AppGene.Ui.Patterns.MasterDetail
     internal class MasterDetailModelInference
     {
         private IList<DisplayPropertyInfo> displayProperties;
-
         private IList<PropertyInfo> referenceProperties;
-
         private IList<PropertyInfo> filterProperties;
-
         private IList<DisplayPropertyInfo> gridDisplayProperties;
-
         private IList<SortPropertyInfo> sortProperties;
+        private string modelName = null;
 
         public MasterDetailModelInference(Type entityType)
         {
             EntityType = entityType;
+        }
+
+        public string ModelName
+        {
+            get
+            {
+                if (modelName == null)
+                {
+                    modelName = new ModelNameGetter().GetName(new EntityAnalysisContext
+                    {
+                        EntityType = EntityType,
+                        Source = this.GetType().FullName,
+                    });
+                }
+
+                return modelName;
+            }
         }
 
         public IList<DisplayPropertyInfo> DisplayProperties

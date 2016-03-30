@@ -5,9 +5,14 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:AppGene.Ui.Main"
         mc:Ignorable="d"
-        Title="Main Window" Height="300" Width="300">
+        Title="Main Window" Height="276.443" Width="239.03">
     <Grid>
-        <Button x:Name="employeeButton" Content="Employee" HorizontalAlignment="Left" Margin="43,21,0,0" VerticalAlignment="Top" Width="75" Click="employeeButton_Click" />
-        <StackPanel HorizontalAlignment="Left" Height="100" Margin="122,106,0,0" VerticalAlignment="Top" Width="100" Orientation="Horizontal"/>
+        <WrapPanel Margin="4"  Orientation="Vertical">
+            <Button x:Name="employeeButton" Content="Employee" HorizontalAlignment="Left" Margin="4" VerticalAlignment="Top" Width="75" Click="employeeButton_Click" />
+            <Button x:Name="dataTypeGroupAButton" Content="Data Type Group A" HorizontalAlignment="Left" Margin="4" VerticalAlignment="Top" MinWidth="75" Click="dataTypeGroupAButton_Click" />
+            <Button x:Name="dataTypeGroupAButton2" Content="Data Type Group A" HorizontalAlignment="Left" Margin="4" VerticalAlignment="Top" MinWidth="75" Click="dataTypeGroupAButton_Click" />
+            <Button x:Name="dataTypeGroupAButton3" Content="Data Type Group A" HorizontalAlignment="Left" Margin="4" VerticalAlignment="Top" MinWidth="75" Click="dataTypeGroupAButton_Click" />
+            <Button x:Name="dataTypeGroupAButton4" Content="Data Type Group A" HorizontalAlignment="Left" Margin="4" VerticalAlignment="Top" MinWidth="75" Click="dataTypeGroupAButton_Click" />
+        </WrapPanel>
     </Grid>
 </Window>

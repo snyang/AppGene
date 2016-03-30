@@ -39,12 +39,16 @@
     <Reference Include="Microsoft.CSharp" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="DataTypeGroupB.cs" />
+    <Compile Include="DataTypeGroupA.cs" />
     <Compile Include="Employee.cs" />
     <Compile Include="EntityResource.Designer.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
       <DependentUpon>EntityResource.resx</DependentUpon>
     </Compile>
+    <Compile Include="LongEnum.cs" />
+    <Compile Include="ShortEnum.cs" />
     <Compile Include="Gender.cs" />
     <Compile Include="Models\EmployeeModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

@@ -39,6 +39,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Inferences\DisplayPropertiesGetterTest.cs" />
+    <Compile Include="Inferences\EntityAnalysisHelperTest.cs" />
     <Compile Include="ObjectComparator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

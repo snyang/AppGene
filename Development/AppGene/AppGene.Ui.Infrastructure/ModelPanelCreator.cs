@@ -66,8 +66,6 @@ namespace AppGene.Ui.Infrastructure
             return modelUiInfo;
         }
 
-        
-
         /// <summary>
         /// Create columns for the details grid.
         /// </summary>
@@ -86,7 +84,6 @@ namespace AppGene.Ui.Infrastructure
                 }
             }
         }
-
 
         /// <summary>
         /// Create rows for the details grid.
