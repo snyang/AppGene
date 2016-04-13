@@ -36,6 +36,17 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
         public Type CustomType { get; set; }
 
         /// <summary>
+        /// Gets if the property has order value.
+        /// </summary>
+        public bool HasOrder
+        {
+            get
+            {
+                return order.HasValue;
+            }
+        }
+        
+        /// <summary>
         /// Gets or sets the host property name when the property is a dependency property.
         /// </summary>
         public string DependencyHostPropertyName { get; set; }
@@ -79,8 +90,7 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
             get
             {
                 return isHidden
-                    || IsDependencyProperty
-                    || Order < 0;
+                    || IsDependencyProperty;
             }
             set
             {
@@ -109,10 +119,22 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
         /// </summary>
         public string Name { get; set; }
 
+        private int? order;
         /// <summary>
         /// Gets or sets the order weight of the property.
         /// </summary>
-        public int Order { get; set; }
+        public int Order
+        {
+            get
+            {
+                if (order.HasValue) return order.Value;
+                return int.MaxValue;
+            }
+            set
+            {
+                order = value;
+            }
+        }
 
         /// <summary>
         /// Gets or sets a value that will be used to set the watermark for prompts in the UI.

@@ -46,13 +46,25 @@ namespace AppGene.Ui.Infrastructure
         {
             if (property.PropertyDataType.IsEnum)
             {
-                return LogicalUiElementType.Options;
+                if (property.PropertyDataType.GetEnumNames().Length <= 3)
+                {
+                    return LogicalUiElementType.Options;
+                }
+                else
+                {
+                    return LogicalUiElementType.ComboBox;
+                }
             }
 
             if (property.PropertyDataType == typeof(DateTime)
                 && property.LogicalDataType == LogicalDataType.Date)
             {
                 return LogicalUiElementType.Date;
+            }
+
+            if (property.PropertyDataType == typeof(Boolean))
+            {
+                return LogicalUiElementType.Boolean;
             }
 
             return LogicalUiElementType.Textbox;
@@ -154,7 +166,46 @@ namespace AppGene.Ui.Infrastructure
                 binding.StringFormat = property.DisplayFormat;
             }
 
+            if (ModelUiCreatorHelper.IsNullable(property.PropertyDataType))
+            {
+                binding.TargetNullValue = "";
+            }
+
             return binding;
+        }
+
+        public static bool IsNullable(Type type)
+        {
+            return type != null
+                && type.IsGenericType
+                && type.GetGenericTypeDefinition() == typeof(Nullable<>);
+        }
+
+        public static bool IsNumericType(Type type)
+        {
+            if (type == null || type.IsEnum)
+                return false;
+
+            if (IsNullable(type))
+                return IsNumericType(Nullable.GetUnderlyingType(type));
+
+            switch (Type.GetTypeCode(type))
+            {
+                case TypeCode.Byte:
+                case TypeCode.Decimal:
+                case TypeCode.Double:
+                case TypeCode.Int16:
+                case TypeCode.Int32:
+                case TypeCode.Int64:
+                case TypeCode.SByte:
+                case TypeCode.Single:
+                case TypeCode.UInt16:
+                case TypeCode.UInt32:
+                case TypeCode.UInt64:
+                    return true;
+                default:
+                    return false;
+            }
         }
     }
 }

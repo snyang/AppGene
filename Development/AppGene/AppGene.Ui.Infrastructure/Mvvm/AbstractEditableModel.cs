@@ -326,7 +326,7 @@ namespace AppGene.Ui.Infrastructure.Mvvm
 
         public virtual TypeConverter GetConverter()
         {
-            throw new NotImplementedException();
+            return null;
         }
 
         public virtual EventDescriptor GetDefaultEvent()

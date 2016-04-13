@@ -22,7 +22,25 @@ namespace AppGene.Ui.Infrastructure
             Style style)
         {
             LogicalUiElementType elementType = ModelUiCreatorHelper.DetermineElementType(property);
-            if (elementType == LogicalUiElementType.Date)
+            if (elementType == LogicalUiElementType.Boolean)
+            {
+                return CreateBooleanField(parent,
+                          property,
+                          bindingPathPrefix + "/" + property.PropertyName,
+                          null,
+                          row,
+                          column);
+            }
+            else if (elementType == LogicalUiElementType.ComboBox)
+            {
+                return CreateComboBoxField(parent,
+                          property,
+                          bindingPathPrefix + "/" + property.PropertyName,
+                          null,
+                          row,
+                          column);
+            }
+            else if(elementType == LogicalUiElementType.Date)
             {
                 return CreateDateField(parent,
                           property,
@@ -51,7 +69,7 @@ namespace AppGene.Ui.Infrastructure
         }
 
         internal static void CreateDependencyProperty(ModelPropertyUiInfo uiElementsInfo,
-            DisplayPropertyInfo property, 
+            DisplayPropertyInfo property,
             string bindingPathPrefix)
         {
             DependencyProperty dp = ModelUiCreatorHelper.GetDependencyProperty(property, uiElementsInfo.Content);
@@ -65,108 +83,130 @@ namespace AppGene.Ui.Infrastructure
                 ModelUiCreatorHelper.CreateBinding(property, bindingPathPrefix + "/" + property.PropertyName));
         }
 
-        /// <summary>
-        /// Creates UI element for specific property.
-        /// </summary>
-        /// <param name="parent"></param>
-        /// <param name="property"></param>
-        /// <param name="bindingPath"></param>
-        /// <param name="style"></param>
-        /// <param name="row"></param>
-        /// <param name="column"></param>
-        /// <returns></returns>
-        private static ModelPropertyUiInfo CreateTextBoxField(Grid parent,
+        private static ModelPropertyUiInfo CreateBooleanField(Grid parent,
+                    DisplayPropertyInfo property,
+            String bindingPath,
+            Style style,
+            int row,
+            int column)
+        {
+            Label labelElement = CreateLabel(property, row, column);
+
+            var checkBox = new CheckBox
+            {
+                Name = "checkBox" + property.PropertyName,
+            };
+            if (style != null)
+            {
+                checkBox.Style = style;
+            }
+            checkBox.VerticalAlignment = VerticalAlignment.Center;
+            checkBox.SetBinding(ToggleButton.IsCheckedProperty, ModelUiCreatorHelper.CreateBinding(property, bindingPath));
+
+            if (property.IsReadOnly)
+            {
+                checkBox.IsEnabled = false;
+            }
+
+            Grid.SetRow(checkBox, row);
+            Grid.SetColumn(checkBox, checked(column + 1));
+
+            parent.Children.Add(labelElement);
+            parent.Children.Add(checkBox);
+
+            // return
+            ModelPropertyUiInfo elememtsInfo = new ModelPropertyUiInfo(property);
+            elememtsInfo.Label = labelElement;
+            elememtsInfo.Content = checkBox;
+            return elememtsInfo;
+        }
+
+        private static ModelPropertyUiInfo CreateComboBoxField(Grid parent,
             DisplayPropertyInfo property,
             String bindingPath,
             Style style,
             int row,
             int column)
         {
-            Label labelElement = new Label
-            {
-                Name = "label" + property.PropertyName,
-                //TODO: localization ":"
-                Content = property.Name + ":"
-            };
-            Grid.SetRow(labelElement, row);
-            Grid.SetColumn(labelElement, column);
+            Label labelElement = CreateLabel(property, row, column);
 
-            TextBox textBox = new TextBox
+            var comboBox = new ComboBox
             {
-                Name = "textBox" + property.PropertyName,
+                Name = "comboBox" + property.PropertyName,
             };
             if (style != null)
             {
-                textBox.Style = style;
+                comboBox.Style = style;
             }
-            textBox.SetBinding(TextBox.TextProperty, ModelUiCreatorHelper.CreateBinding(property, bindingPath));
+            comboBox.SetBinding(Selector.SelectedItemProperty, ModelUiCreatorHelper.CreateBinding(property, bindingPath));
 
             if (property.IsReadOnly)
             {
-                textBox.IsReadOnly = true;
+                comboBox.IsReadOnly = true;
             }
 
-            SetInputBehavior(property, textBox);
+            ObjectDataProvider provider = new ObjectDataProvider()
+            {
+                ObjectType = typeof(Enum),
+                MethodName = "GetValues",
+            };
+            provider.MethodParameters.Add(property.PropertyInfo.PropertyType);
 
-            // display caret when readonly 
-            textBox.IsReadOnlyCaretVisible = true;
+            BindingOperations.SetBinding(comboBox, ItemsControl.ItemsSourceProperty, new Binding()
+            {
+                Source = provider
+            });
 
-            Grid.SetRow(textBox, row);
-            Grid.SetColumn(textBox, checked(column + 1));
+            Grid.SetRow(comboBox, row);
+            Grid.SetColumn(comboBox, checked(column + 1));
 
             parent.Children.Add(labelElement);
-            parent.Children.Add(textBox);
+            parent.Children.Add(comboBox);
 
             // return
             ModelPropertyUiInfo elememtsInfo = new ModelPropertyUiInfo(property);
             elememtsInfo.Label = labelElement;
-            elememtsInfo.Content = textBox;
+            elememtsInfo.Content = comboBox;
             return elememtsInfo;
         }
 
-        private static void SetInputBehavior(DisplayPropertyInfo property, DependencyObject element)
+        private static ModelPropertyUiInfo CreateDateField(Grid grid,
+            DisplayPropertyInfo property,
+            String bindingPath,
+            Style style,
+            int row,
+            int column)
         {
-            // TODO: Enhancement it to support nullable, Uxxx, decimal etc.
-            Type propertyType = property.PropertyInfo.PropertyType;
-            if (IsNumericType(propertyType))
+            Label labelElement = CreateLabel(property, row, column);
+
+            DatePicker control = new DatePicker
             {
-                element.SetValue(DigitsOnlyBehavior.IsDigitOnlyProperty, true);
-            }
-        }
-
-        private static bool IsNullable(Type type)
-        {
-            return
-                type != null &&
-                type.IsGenericType &&
-                type.GetGenericTypeDefinition() == typeof(Nullable<>);
-        }
-
-        private static bool IsNumericType(Type type)
-        {
-            if (type == null || type.IsEnum)
-                return false;
-
-            if (IsNullable(type))
-                return IsNumericType(Nullable.GetUnderlyingType(type));
-
-            switch (Type.GetTypeCode(type))
+                Name = "datePicker" + property.PropertyName
+            };
+            if (style != null)
             {
-                case TypeCode.Byte:
-                case TypeCode.Decimal:
-                case TypeCode.Double:
-                case TypeCode.Int16:
-                case TypeCode.Int32:
-                case TypeCode.Int64:
-                case TypeCode.SByte:
-                case TypeCode.Single:
-                case TypeCode.UInt16:
-                case TypeCode.UInt32:
-                case TypeCode.UInt64:
-                    return true;
-                default:
-                    return false;
+                control.Style = style;
             }
+
+            Binding binding = ModelUiCreatorHelper.CreateBinding(property, bindingPath);
+            control.SetBinding(DatePicker.SelectedDateProperty, binding);
+
+            if (property.IsReadOnly)
+            {
+                control.IsEnabled = false;
+            }
+
+            Grid.SetRow(control, row);
+            Grid.SetColumn(control, checked(column + 1));
+
+            grid.Children.Add(labelElement);
+            grid.Children.Add(control);
+
+            // return
+            ModelPropertyUiInfo elememtsInfo = new ModelPropertyUiInfo(property);
+            elememtsInfo.Label = labelElement;
+            elememtsInfo.Content = control;
+            return elememtsInfo;
         }
 
         private static ModelPropertyUiInfo CreateEnumField(Grid parent,
@@ -180,15 +220,8 @@ namespace AppGene.Ui.Infrastructure
             ModelPropertyUiInfo elememtsInfo = new ModelPropertyUiInfo(property);
 
             // create label
-            Label labelElement = new Label
-            {
-                Name = "label" + property.PropertyName,
-                Content = property.Name + ":"
-            };
-            Grid.SetRow(labelElement, row);
-            Grid.SetColumn(labelElement, column);
+            Label labelElement = CreateLabel(property, row, column);
             parent.Children.Add(labelElement);
-
             elememtsInfo.Label = labelElement;
 
             // create inputs
@@ -232,49 +265,73 @@ namespace AppGene.Ui.Infrastructure
             return elememtsInfo;
         }
 
-        private static ModelPropertyUiInfo CreateDateField(Grid grid,
+        private static Label CreateLabel(DisplayPropertyInfo property, int row, int column)
+        {
+            Label labelElement = new Label
+            {
+                Name = "label" + property.PropertyName,
+                //TODO: localization ":"
+                Content = property.Name + ":"
+            };
+            Grid.SetRow(labelElement, row);
+            Grid.SetColumn(labelElement, column);
+            return labelElement;
+        }
+ 
+        private static ModelPropertyUiInfo CreateTextBoxField(Grid parent,
             DisplayPropertyInfo property,
             String bindingPath,
             Style style,
             int row,
             int column)
         {
-            Label labelElement = new Label
-            {
-                Name = "label" + property.PropertyName,
-                Content = property.Name + ":"
-            };
-            Grid.SetRow(labelElement, row);
-            Grid.SetColumn(labelElement, column);
+            Label labelElement = CreateLabel(property, row, column);
 
-            DatePicker control = new DatePicker
+            TextBox textBox = new TextBox
             {
-                Name = "datePicker" + property.PropertyName
+                Name = "textBox" + property.PropertyName,
             };
             if (style != null)
             {
-                control.Style = style;
+                textBox.Style = style;
             }
-
-            Binding binding = ModelUiCreatorHelper.CreateBinding(property, bindingPath);
-            control.SetBinding(DatePicker.SelectedDateProperty, binding);
+            textBox.SetBinding(TextBox.TextProperty, ModelUiCreatorHelper.CreateBinding(property, bindingPath));
 
             if (property.IsReadOnly)
             {
-                control.IsEnabled = false;
+                textBox.IsReadOnly = true;
             }
 
-            Grid.SetRow(control, row);
-            Grid.SetColumn(control, checked(column + 1));
+            SetInputBehavior(property, textBox);
 
-            grid.Children.Add(labelElement);
-            grid.Children.Add(control);
+            if (ModelUiCreatorHelper.IsNumericType(property.PropertyDataType))
+            {
+                textBox.HorizontalContentAlignment = HorizontalAlignment.Right;
+            }
+            // display caret when readonly 
+            textBox.IsReadOnlyCaretVisible = true;
+
+            Grid.SetRow(textBox, row);
+            Grid.SetColumn(textBox, checked(column + 1));
+
+            parent.Children.Add(labelElement);
+            parent.Children.Add(textBox);
 
             // return
             ModelPropertyUiInfo elememtsInfo = new ModelPropertyUiInfo(property);
             elememtsInfo.Label = labelElement;
-            elememtsInfo.Content = control;
+            elememtsInfo.Content = textBox;
             return elememtsInfo;
+        }
+
+        private static void SetInputBehavior(DisplayPropertyInfo property, DependencyObject element)
+        {
+            // TODO: Enhancement it to support nullable, Uxxx, decimal etc.
+            Type propertyType = property.PropertyInfo.PropertyType;
+            if (ModelUiCreatorHelper.IsNumericType(propertyType))
+            {
+                element.SetValue(DigitsOnlyBehavior.IsDigitOnlyProperty, true);
+            }
         }
     }
 }

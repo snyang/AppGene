@@ -1,4 +1,5 @@
-﻿using AppGene.Common.Entities.Infrastructure.Annotations;
+﻿using AppGene.Common.Core.Logging;
+using AppGene.Common.Entities.Infrastructure.Annotations;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -8,6 +9,10 @@ using System.Reflection;
 
 namespace AppGene.Common.Entities.Infrastructure.Inferences
 {
+    /// <summary>
+    /// The class provides functions to return a list of <ref="DisplayPropertyInfo">
+    /// from a specific model class.
+    /// </summary>
     public class DisplayPropertiesGetter
     {
 
@@ -31,7 +36,7 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
                 displayProperties.Add(displayPropertyInfo);
             }
 
-            ConfigureOrder(displayProperties);
+            ConfigurePropertiesOrder(context, displayProperties);
 
             return displayProperties;
         }
@@ -142,17 +147,11 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
             { 
                 displayPropertyInfo.IsComputed = true;
             }
-
-            //displayPropertyInfo.ComputeComputedPropertyNames = computedColumnAttribute.ComputedColumns;
         }
 
         private static void ConfigurePropertyInfoHidden(DisplayPropertyInfo displayPropertyInfo, PropertyInfo property)
         {
             if (displayPropertyInfo.IsDependencyProperty)
-            {
-                displayPropertyInfo.IsHidden = true;
-            }
-            if (displayPropertyInfo.Order == -1)
             {
                 displayPropertyInfo.IsHidden = true;
             }
@@ -206,22 +205,48 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
             return displayPropertyInfo;
         }
 
-        private void ConfigureOrder(List<DisplayPropertyInfo> displayProperties)
+        /// <summary>
+        /// # Order logical
+        /// * If a <ref="ModelDisplayAttribut"> is applied, use the order in the attribute.
+        /// * Otherwise, use the Order property value.
+        /// * If the Order property value are same, the property in the model class overs the property in the entity class. 
+        /// * If these 2 properties are in same class, use the declaration order.
+        /// * If the Order property is not set and the property is a computed property, set the order after the last computing property.
+        /// </summary>
+        /// <param name="context"></param>
+        /// <param name="displayProperties"></param>
+        private void ConfigurePropertiesOrder(EntityAnalysisContext context,
+            List<DisplayPropertyInfo> displayProperties)
         {
-            // Sort: the order is Order > 0; Order = 0; IsDependencyProperty
-            displayProperties.Sort(new Comparer());
+            var modelDisplayAttribute = context.EntityType.GetCustomAttribute<ModelDisplayAttribute>();
+            if (modelDisplayAttribute != null 
+                && modelDisplayAttribute.DisplayedColumns != null 
+                && modelDisplayAttribute.DisplayedColumns.Length > 0)
+            { 
+                // Configure order by using ModelDisplayAttribute
+                ConfigurePropertiesOrder(displayProperties, modelDisplayAttribute);
+                return;
+            }
+
+            // Configure order with order settings
+
+            // Sort
+            displayProperties.Sort(new PropertyOrderComparer());
 
             // put cumputed property (when order = 0) after the last reference property
             for (int i = 0; i < displayProperties.Count; i++)
             {
                 DisplayPropertyInfo displayProperty = displayProperties[i];
-                if (displayProperty.Order == 0 && displayProperty.IsComputed)
+                if (!displayProperty.HasOrder 
+                    && displayProperty.IsComputed
+                    && !displayProperty.IsDependencyProperty)
                 {
                     int lastReferencePropertyIndex = GetLastReferencePropertyIndex(displayProperties, displayProperty.ComputeReferencePropertyNames);
                     if (lastReferencePropertyIndex == -1)
                     {
-                        Debug.WriteLine(string.Format("{0} computedProperty setting is incorrect, cannot find reference property names.",
-                            displayProperty.PropertyName));
+                        LoggerFactory.GetLogger().Warn(
+                            "The setting of ComputeRelationship of property '{0}' is incorrect, cannot find reference property names.",
+                            displayProperty.PropertyName);
                         continue;
 
                     }
@@ -245,22 +270,48 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
             }
 
             // set order
-            int order = 1;
+            int order = 0;
             foreach (var displayProperty in displayProperties)
             {
-                if (displayProperty.IsDependencyProperty)
-                {
-                    displayProperty.Order = -1;
-                }
-                else if (displayProperty.Order >= 0)
-                {
-                    displayProperty.Order = order;
-                    order++;
+                displayProperty.Order = order;
+                order++;
+            }
+
+            // Sort
+            displayProperties.Sort(new PropertyOrderComparer());
+        }
+
+        /// <summary>
+        /// If the name of a property is defined in the ModelDisplayAttribute, set the order as the sequence in the attribute,
+        /// otherwise, hidden the property.
+        /// </summary>
+        /// <param name="displayProperties"></param>
+        /// <param name="modelDisplayAttribute"></param>
+        private void ConfigurePropertiesOrder(List<DisplayPropertyInfo> displayProperties, ModelDisplayAttribute modelDisplayAttribute)
+        {
+            // clear all order settings
+            foreach(var property in displayProperties)
+            {
+                property.IsHidden = true;
+                if (property.HasOrder) { 
+                    property.Order = int.MaxValue;
                 }
             }
 
-            // Sort: the order is Order > 0; IsDependencyProperty
-            displayProperties.Sort(new Comparer());
+            int order = 0;
+            foreach (var columnName in modelDisplayAttribute.DisplayedColumns)
+            {
+                foreach (var property in displayProperties)
+                {
+                    if (property.PropertyName.Equals(columnName, StringComparison.OrdinalIgnoreCase))
+                    {
+                        property.IsHidden = false;
+                        property.Order = order;
+                        order++;
+                        break;
+                    }
+                }
+            }
         }
 
         private int GetLastReferencePropertyIndex(List<DisplayPropertyInfo> displayProperties, string[] computedReferencePropertyNames)
@@ -279,13 +330,12 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
             return lastIndex;
         }
 
-        private class Comparer :
+        private class PropertyOrderComparer :
             IComparer<DisplayPropertyInfo>
         {
             /// <summary>
             /// The order is:
-            /// * Order (order > 0)
-            /// * Order == 0
+            /// * Order
             /// * IsDependencyProperty
             /// </summary>
             /// <param name="x"></param>
@@ -297,18 +347,6 @@ namespace AppGene.Common.Entities.Infrastructure.Inferences
                 {
                     if (x.IsDependencyProperty) return 1;
                     if (y.IsDependencyProperty) return -1;
-                }
-
-                if ((x.Order < 0) != (y.Order < 0))
-                {
-                    if (x.Order < 0) return -1;
-                    if (y.Order < 0) return 1;
-                }
-
-                if ((x.Order == 0) != (y.Order == 0))
-                {
-                    if (x.Order == 0) return -1;
-                    if (y.Order == 0) return 1;
                 }
 
                 return x.Order - y.Order;

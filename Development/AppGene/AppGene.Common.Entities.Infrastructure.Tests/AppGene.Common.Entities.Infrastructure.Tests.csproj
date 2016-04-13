@@ -36,12 +36,20 @@
       <Private>True</Private>
     </Reference>
     <Reference Include="System" />
+    <Reference Include="System.ComponentModel.DataAnnotations" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Inferences\DisplayPropertiesGetterOrderTest.cs" />
     <Compile Include="Inferences\DisplayPropertiesGetterTest.cs" />
     <Compile Include="Inferences\EntityAnalysisHelperTest.cs" />
     <Compile Include="ObjectComparator.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TestData\ModelWithOrderAttribute.cs" />
+    <Compile Include="TestData\EntityWithOrderAttribute.cs" />
+    <Compile Include="TestData\ModelWithOrder.cs" />
+    <Compile Include="TestData\EntityWithOrder.cs" />
+    <Compile Include="TestData\ModelWithoutOrder.cs" />
+    <Compile Include="TestData\EntityWithoutOrder.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppGene.Common.Core\AppGene.Common.Core.csproj">

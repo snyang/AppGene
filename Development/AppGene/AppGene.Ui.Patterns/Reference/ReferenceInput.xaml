@@ -1,0 +1,17 @@
+﻿<UserControl x:Class="AppGene.Ui.Patterns.Reference.ReferenceInput"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:AppGene.Ui.Patterns.Reference"
+             mc:Ignorable="d" 
+             d:DesignHeight="23" d:DesignWidth="300">
+    <Grid Height="23">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="27"/>
+        </Grid.ColumnDefinitions>
+        <TextBox x:Name="textBoxReference" Grid.Column="0"/>
+        <Button x:Name="buttonReference" Content="..." Grid.Column="1" HorizontalAlignment="Left" Width="25" Margin="2,0,0,0"/>
+    </Grid>
+</UserControl>

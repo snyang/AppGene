@@ -25,6 +25,7 @@ namespace AppGene.Common.Entities.Infrastructure.Tests
 
             var properties = typeof(T).GetProperties(BindingFlags.Instance | BindingFlags.Public);
 
+            StringBuilder expectedPropertyContentBuilder = new StringBuilder();
             StringBuilder actualPropertyContentBuilder = new StringBuilder();
             foreach (var property in properties)
             {
@@ -39,14 +40,20 @@ namespace AppGene.Common.Entities.Infrastructure.Tests
 
                 if (!property.PropertyType.Equals(typeof(string))) continue;
 
-                string value = property.GetValue(actual) as string;
+                // get expected
+                string value = property.GetValue(expected) as string;
+                if (!string.IsNullOrEmpty(value))
+                {
+                    expectedPropertyContentBuilder.AppendFormat("    {0}: {1}", property.Name, value);
+                }
+
+                // get actual value
+                value = property.GetValue(actual) as string;
                 if (!string.IsNullOrEmpty(value))
                 { 
                     actualPropertyContentBuilder.AppendFormat("    {0}: {1}", property.Name, value);
                 }
             }
-
-            string actualPropertyContent = actualPropertyContentBuilder.ToString();
 
             foreach (var property in properties)
             {
@@ -61,7 +68,8 @@ namespace AppGene.Common.Entities.Infrastructure.Tests
                 var expectedPropertyValue = property.GetValue(expected);
                 var actualPropertyValue = property.GetValue(actual);
                 Assert.AreEqual(expectedPropertyValue, actualPropertyValue,
-                    string.Format("{0} Property: {1} Actual Object:{2}", message, property.Name, actualPropertyContentBuilder));
+                    string.Format("{0} Property: {1} Expected Object : {2} Actual Object : {3}", 
+                    message, property.Name, expectedPropertyContentBuilder, actualPropertyContentBuilder));
             }
         }
 

@@ -17,23 +17,6 @@ namespace AppGene.Common.Entities.Models
             }
         }
 
-        //[ComputeRelationship(ComputedColumn = "FemaleBenefit")]
-        //public new Gender Gender
-        //{
-        //    get
-        //    {
-        //        return base.Gender;
-        //    }
-        //    set
-        //    {
-        //        base.Gender = value;
-        //        if (base.Gender!= Gender.Female)
-        //        {
-        //            base.FemaleBenefit = 0;
-        //        }
-        //    }
-        //}
-
         [ComputeRelationship(ReferenceColumn = "Gender")]
         public bool FemaleBenefit_IsReadOnly
         {

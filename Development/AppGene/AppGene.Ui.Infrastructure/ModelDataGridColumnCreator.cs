@@ -11,11 +11,15 @@ namespace AppGene.Ui.Infrastructure
         public static DataGridColumn Create(DisplayPropertyInfo property, Style style)
         {
             LogicalUiElementType elementType = ModelUiCreatorHelper.DetermineElementType(property);
-            if (elementType == LogicalUiElementType.Date)
+            if (elementType == LogicalUiElementType.Boolean)
+            {
+                return CreateBooleanColumn(property, style);
+            }
+            else if (elementType == LogicalUiElementType.Date)
             {
                 return CreateDateColumn(property, style);
             }
-            else if (elementType == LogicalUiElementType.Options)
+            else if (elementType == LogicalUiElementType.Options || elementType == LogicalUiElementType.ComboBox)
             {
                 return CreateEnumColumn(property, style);
             }
@@ -26,12 +30,32 @@ namespace AppGene.Ui.Infrastructure
         internal static void CreateDependencyProperty(DataGridColumn column, DisplayPropertyInfo property)
         {
             DependencyProperty dp = ModelUiCreatorHelper.GetDataGridColumnDependencyProperty(property, column);
-
             if (dp == null) return;
 
             BindingOperations.SetBinding(column, dp, ModelUiCreatorHelper.CreateBinding(property));
         }
 
+        private static DataGridColumn CreateBooleanColumn(DisplayPropertyInfo property, Style style)
+        {
+            //TODO center checkbox
+            //< DataGridCheckBoxColumn.ElementStyle >
+            // <Style TargetType = "CheckBox" >
+            //      < Setter Property = "VerticalAlignment" Value = "Center" />
+            //      < Setter Property = "HorizontalAlignment" Value = "Center" />
+            // </ Style >
+            // </ DataGridCheckBoxColumn.ElementStyle >
+
+            var column = new DataGridCheckBoxColumn
+            {
+                Header = property.ShortName,
+                EditingElementStyle = style,
+                ElementStyle = style,
+                Binding = ModelUiCreatorHelper.CreateBinding(property),
+            };
+            column.IsReadOnly = property.IsReadOnly;
+
+            return column;
+        }
         private static DataTemplate CreateDataTemplate<T>(DependencyProperty bindingProperty, Binding binding)
         {
             FrameworkElementFactory cellElement = new FrameworkElementFactory(typeof(T));
@@ -98,20 +122,11 @@ namespace AppGene.Ui.Infrastructure
                 Header = property.ShortName,
                 EditingElementStyle = style,
                 ElementStyle = style,
-                Binding = new Binding(property.PropertyName)
-                {
-                    UpdateSourceTrigger = UpdateSourceTrigger.PropertyChanged,
-                    Mode = property.IsReadOnly ? BindingMode.OneWay : BindingMode.TwoWay,
-                    ValidatesOnDataErrors = true,
-                    NotifyOnValidationError = true,
-                    ValidatesOnExceptions = true,
-                }
+                Binding = ModelUiCreatorHelper.CreateBinding(property),
             };
-            if (!string.IsNullOrEmpty(property.DisplayFormat))
-            {
-                column.Binding.StringFormat = property.DisplayFormat;
-            }
+            
             column.IsReadOnly = property.IsReadOnly;
+
 
             return column;
         }

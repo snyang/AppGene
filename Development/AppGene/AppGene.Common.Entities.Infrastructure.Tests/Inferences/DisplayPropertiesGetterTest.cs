@@ -34,7 +34,7 @@ namespace AppGene.Common.Entities.Infrastructure.Tests.Inferences
                 Source = this.GetType().FullName,
             });
 
-            ObjectComparator.AreListEqual<DisplayPropertyInfo>(
+            ObjectComparator.AreListEqual(
                 GetEmployeeModelValidateDisplayProperties(),
                 displayProperties,
                 new List<string>(new string[] { "PropertyInfo" }));
@@ -43,7 +43,7 @@ namespace AppGene.Common.Entities.Infrastructure.Tests.Inferences
         private IList<DisplayPropertyInfo> GetEmployeValidateDisplayProperties()
         {
             var properties = new List<DisplayPropertyInfo>();
-            int order = 1;
+            int order = 0;
 
             properties.Add(new DisplayPropertyInfo
             {
@@ -117,7 +117,7 @@ namespace AppGene.Common.Entities.Infrastructure.Tests.Inferences
         private IList<DisplayPropertyInfo> GetEmployeeModelValidateDisplayProperties()
         {
             var properties = new List<DisplayPropertyInfo>();
-            int order = 1;
+            int order = 0;
 
             properties.Add(new DisplayPropertyInfo
             {
@@ -200,7 +200,7 @@ namespace AppGene.Common.Entities.Infrastructure.Tests.Inferences
             {
                 Name = "Female Benefit Is Read Only",
                 ShortName = "Female Benefit Is Read Only",
-                Order = -1,
+                Order = order,
                 ComputeReferencePropertyNames = new string[] { "Gender" },
                 IsComputed = true,
                 IsReadOnly = true,

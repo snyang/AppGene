@@ -52,10 +52,6 @@ namespace AppGene.Common.Entities
         [StringLength(255)]
         public String DataString { get; set; }
 
-        [StringLength(1024)]
-        [PasswordPropertyText]
-        public String DataPassword { get; set; }
-
         [Timestamp]
         public Byte[] DataTimestamp { get; set; }
     }

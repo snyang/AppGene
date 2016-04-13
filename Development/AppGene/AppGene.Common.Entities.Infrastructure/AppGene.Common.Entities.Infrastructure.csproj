@@ -37,6 +37,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Annotations\ColumnTypeAttribute.cs" />
+    <Compile Include="Annotations\ModelDisplayAttribute.cs" />
     <Compile Include="Annotations\ModelAttribute.cs" />
     <Compile Include="Annotations\HiddenColumnAttribute.cs" />
     <Compile Include="Annotations\ComputeRelationshipAttribute.cs" />

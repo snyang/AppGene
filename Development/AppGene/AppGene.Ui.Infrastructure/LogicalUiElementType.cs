@@ -2,8 +2,10 @@
 {
     public enum LogicalUiElementType
     {
-        Textbox,
+        Boolean,
+        ComboBox,
         Date,
-        Options
+        Options,
+        Textbox,
     }
 }

@@ -56,6 +56,10 @@
     <Compile Include="MasterDetail\MasterDetailViewConstructor.cs" />
     <Compile Include="MasterDetail\MasterDetailViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Reference\ReferenceHelper.cs" />
+    <Compile Include="Reference\ReferenceInput.xaml.cs">
+      <DependentUpon>ReferenceInput.xaml</DependentUpon>
+    </Compile>
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\AppGene.Business.Infrastructure\AppGene.Business.Infrastructure.csproj">
@@ -77,6 +81,10 @@
   </ItemGroup>
   <ItemGroup>
     <Page Include="MasterDetail\MasterDetailView.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Reference\ReferenceInput.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

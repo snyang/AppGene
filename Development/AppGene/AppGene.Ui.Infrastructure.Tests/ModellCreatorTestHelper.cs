@@ -38,6 +38,10 @@ namespace AppGene.Ui.Infrastructure.Tests
             {
                 Assert.AreEqual(property.DisplayFormat, binding.StringFormat, message);
             }
+            if (ModelUiCreatorHelper.IsNullable(property.PropertyDataType))
+            {
+                Assert.IsNotNull(binding.TargetNullValue, message);
+            }
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using System;
+using System.ComponentModel;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace AppGene.Common.Entities
@@ -22,6 +24,10 @@ namespace AppGene.Common.Entities
 
         public TimeSpan DataTimeSpan { get; set; }
 
+        [StringLength(1024)]
+        [PasswordPropertyText]
+        public String DataPassword { get; set; }
+
         [Column(TypeName = "timestamp")]
         public Byte[] DataTimestamp { get; set; }
 
@@ -30,5 +36,6 @@ namespace AppGene.Common.Entities
         // Rich text
         // Html/xml
         // File
+        // geo*
     }
 }
